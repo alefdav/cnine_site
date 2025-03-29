@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <!-- Background elements -->
+  <rect width="800" height="600" fill="#F3F4F6" />
+  <circle cx="400" cy="300" r="250" fill="#EBF4FF" />
+  
+  <!-- Clouds in the background -->
+  <path d="M100 150 C100 130, 130 120, 150 130 C160 110, 190 110, 200 130 C220 120, 240 130, 240 150 Z" fill="white" opacity="0.8"/>
+  <path d="M550 100 C550 80, 580 70, 600 80 C610 60, 640 60, 650 80 C670 70, 690 80, 690 100 Z" fill="white" opacity="0.8"/>
+  <path d="M120 400 C120 380, 150 370, 170 380 C180 360, 210 360, 220 380 C240 370, 260 380, 260 400 Z" fill="white" opacity="0.7"/>
+  <path d="M500 450 C500 430, 530 420, 550 430 C560 410, 590 410, 600 430 C620 420, 640 430, 640 450 Z" fill="white" opacity="0.7"/>
+  
+  <!-- Logo Cloud Element -->
+  <path d="M400 80 C400 60, 430 50, 450 60 C460 40, 490 40, 500 60 C520 50, 540 60, 540 80 C540 100, 520 110, 500 110 C490 120, 460 120, 450 110 C430 110, 400 100, 400 80 Z" fill="#3B82F6" opacity="0.9"/>
+  
+  <!-- Devices and charts -->
+  <rect x="250" y="200" width="300" height="200" rx="10" fill="#FFFFFF" stroke="#3B82F6" stroke-width="4" />
+  <rect x="270" y="220" width="260" height="140" rx="5" fill="#DBEAFE" />
+  
+  <!-- Chart representation -->
+  <path d="M290 320 L330 280 L370 300 L410 250 L450 260 L490 230 L530 310" stroke="#3B82F6" stroke-width="4" fill="none" />
+  <circle cx="330" cy="280" r="5" fill="#3B82F6" />
+  <circle cx="370" cy="300" r="5" fill="#3B82F6" />
+  <circle cx="410" cy="250" r="5" fill="#3B82F6" />
+  <circle cx="450" cy="260" r="5" fill="#3B82F6" />
+  <circle cx="490" cy="230" r="5" fill="#3B82F6" />
+  
+  <!-- People silhouettes -->
+  <circle cx="230" cy="350" r="40" fill="#4F46E5" />
+  <rect x="210" y="390" width="40" height="70" rx="10" fill="#4F46E5" />
+  
+  <circle cx="400" cy="380" r="40" fill="#3B82F6" />
+  <rect x="380" y="420" width="40" height="70" rx="10" fill="#3B82F6" />
+  
+  <circle cx="570" cy="350" r="40" fill="#8B5CF6" />
+  <rect x="550" y="390" width="40" height="70" rx="10" fill="#8B5CF6" />
+  
+  <!-- Weather elements -->
+  <path d="M180 110 L160 130 M190 115 L170 135 M200 110 L180 130" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M580 85 L560 105 M590 90 L570 110 M600 85 L580 105" stroke="#3B82F6" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Number 9 in the cloud -->
+  <text x="480" y="82" font-family="Arial" font-size="30" font-weight="bold" fill="white">9</text>
+  
+  <!-- Abstract marketing elements -->
+  <circle cx="200" cy="200" r="30" fill="#F59E0B" opacity="0.7" />
+  <circle cx="600" cy="180" r="40" fill="#EC4899" opacity="0.5" />
+  <circle cx="150" cy="400" r="25" fill="#10B981" opacity="0.6" />
+  <circle cx="650" cy="420" r="35" fill="#6366F1" opacity="0.6" />
+  
+  <!-- Social media icons abstract -->
+  <rect x="170" y="170" width="20" height="20" rx="4" fill="#3B82F6" />
+  <circle cx="630" cy="150" r="15" fill="#8B5CF6" />
+  <rect x="130" y="430" width="15" height="15" transform="rotate(45 130 430)" fill="#10B981" />
+</svg> 

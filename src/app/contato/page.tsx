@@ -158,9 +158,17 @@ const ContactForm = () => {
     handleSubmit,
     reset,
     formState: { errors } 
-  } = useForm();
+  } = useForm<FormData>();
 
-  const onSubmit = async (data: any) => {
+  interface FormData {
+    name: string;
+    email: string;
+    phone: string;
+    service: string;
+    message: string;
+  }
+
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     setFormStatus({});
 

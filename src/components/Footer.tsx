@@ -1,8 +1,12 @@
+'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+  const pathname = usePathname();
+
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className={`bg-gray-800 text-white ${pathname === '/whatsapp' ? 'hidden' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo e Sobre */}

@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-
+import { usePathname } from 'next/navigation';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <header className="bg-white shadow-sm fixed w-full z-10">
+    <header className={`bg-white shadow-sm fixed w-full z-10 ${pathname === '/whatsapp' ? 'hidden' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">

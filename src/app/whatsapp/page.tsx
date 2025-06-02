@@ -11,6 +11,10 @@ declare global {
       [elemName: string]: any;
     }
   }
+  
+  interface Window {
+    fbq: any;
+  }
 }
 
 export default function WhatsAppPage() {
@@ -71,6 +75,13 @@ export default function WhatsAppPage() {
       document.head.removeChild(fontLink);
     };
   }, []);
+  
+  // Função para rastrear eventos do Meta Pixel
+  const trackEvent = (eventName, params = {}) => {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', eventName, params);
+    }
+  };
   
   // Funções auxiliares
   const startCountdown = (element) => {
@@ -212,6 +223,14 @@ export default function WhatsAppPage() {
           return;
         }
         
+        // Rastrear evento de Lead no Meta Pixel
+        trackEvent('Lead', {
+          content_name: 'Formulário ZapMind',
+          content_category: 'WhatsApp',
+          value: 1,
+          currency: 'BRL'
+        });
+        
         // Preparar os dados para envio
         const formData = {
           nome: nome,
@@ -253,6 +272,12 @@ export default function WhatsAppPage() {
             </div>
           `;
           
+          // Rastrear evento de conclusão no Meta Pixel
+          trackEvent('CompleteRegistration', {
+            content_name: 'Registro Concluído',
+            status: 'success'
+          });
+          
           // Rolar para o topo da mensagem de sucesso
           form.scrollIntoView({ behavior: 'smooth' });
         })
@@ -275,6 +300,14 @@ export default function WhatsAppPage() {
         
         const href = this.getAttribute('href');
         if (!href) return;
+        
+        if (href === '#formulario') {
+          // Rastrear evento de clique no botão CTA
+          trackEvent('InitiateCheckout', {
+            content_name: 'Clique em CTA',
+            content_category: 'Botão Principal'
+          });
+        }
         
         const targetElement = document.querySelector(href);
         
@@ -305,6 +338,14 @@ export default function WhatsAppPage() {
     }, 10000);
   };
 
+  // Função para lidar com cliques em botões CTA
+  const handleCtaClick = () => {
+    trackEvent('InitiateCheckout', {
+      content_name: 'Clique em CTA',
+      content_category: 'Botão Principal'
+    });
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -317,7 +358,7 @@ export default function WhatsAppPage() {
               <p>Oferta por tempo limitado: <span id="timer">00:00:00</span></p>
             </div>
             <div className="cta-primary">
-              <a href="#formulario" className="btn-primary">Quero conhecer a solução</a>
+              <a href="#formulario" className="btn-primary" onClick={handleCtaClick}>Quero conhecer a solução</a>
               <p className="social-proof"><i className="fas fa-check-circle"></i> Mais de 500 empresas já estão usando</p>
             </div>
           </div>
@@ -444,7 +485,7 @@ export default function WhatsAppPage() {
                 />
               </div>
               <input type="hidden" id="origem" name="origem" value="Landing Page ZapMind" />
-              <button type="submit" className="btn-submit">QUERO FALAR COM UM ESPECIALISTA</button>
+              <button type="submit" className="btn-submit" onClick={() => trackEvent('Contact')}>QUERO FALAR COM UM ESPECIALISTA</button>
               <p className="form-disclaimer">
                 <i className="fas fa-lock"></i> Seus dados estão seguros. Não compartilhamos com terceiros.
               </p>
@@ -516,7 +557,7 @@ export default function WhatsAppPage() {
         <div className="container">
           <h2>Não perca mais clientes por falta de respostas rápidas</h2>
           <p>Junte-se a centenas de empresas que já transformaram seu atendimento</p>
-          <a href="#formulario" className="btn-primary">QUERO FALAR COM UM ESPECIALISTA</a>
+          <a href="#formulario" className="btn-primary" onClick={handleCtaClick}>QUERO FALAR COM UM ESPECIALISTA</a>
           <div className="urgency">
             <p><i className="fas fa-clock"></i> Consultoria gratuita por tempo limitado. Vagas restantes: <span className="counter">17</span></p>
           </div>

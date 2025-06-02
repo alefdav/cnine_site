@@ -4,7 +4,7 @@
 import React from 'react';
 import './styles.css';
 
-// Definição da interface JSX necessária para elementos HTML
+// Namespace para compatibilidade com o TypeScript
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -32,8 +32,8 @@ export default function WhatsAppPage() {
     document.head.appendChild(fontLink);
     
     // Inicializar o contador regressivo
-    let timerElement = document.getElementById('timer');
-    let counterElement = document.querySelector('.counter');
+    const timerElement = document.getElementById('timer');
+    const counterElement = document.querySelector('.counter');
     
     // Aguardar a renderização dos elementos
     setTimeout(() => {
@@ -307,10 +307,8 @@ export default function WhatsAppPage() {
 
   return (
     <>
-      
-
       {/* Hero Section */}
-      <section className="hero p-0">
+      <section className="hero">
         <div className="container">
           <div className="hero-content">
             <h1>Atenda seus clientes automaticamente no WhatsApp <span className="highlight">— sem precisar de um time de suporte</span></h1>
@@ -327,9 +325,9 @@ export default function WhatsAppPage() {
             <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1074&q=80" alt="Demonstração de atendimento WhatsApp automatizado" />
             <div className="floating-card testimonial">
               <i className="fas fa-quote-left"></i>
-              <p>"Aumentei minhas vendas em 40% no primeiro mês!"</p>
+              <p>&ldquo;Aumentei minhas vendas em 40% no primeiro mês!&rdquo;</p>
               <div className="testimonial-author">
-                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Cliente" />
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Cliente" className="avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                 <span>Maria S., Loja de Roupas</span>
               </div>
             </div>
@@ -466,9 +464,9 @@ export default function WhatsAppPage() {
                   <i className="fas fa-star"></i>
                   <i className="fas fa-star"></i>
                 </div>
-                <p>"Economizei mais de R$3.000 por mês com equipe de atendimento!"</p>
+                <p>&ldquo;Economizei mais de R$3.000 por mês com equipe de atendimento!&rdquo;</p>
                 <div className="testimonial-author">
-                  <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Cliente" />
+                  <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Cliente" className="avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
                   <span>João P., Consultoria</span>
                 </div>
               </div>
@@ -524,30 +522,6 @@ export default function WhatsAppPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer>
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-logo">
-              <i className="fab fa-whatsapp"></i>
-              <span>ZapMind</span>
-            </div>
-            <div className="footer-contact">
-              <h3>Contato</h3>
-              <p><i className="fab fa-whatsapp"></i> +55 21 99508-0714</p>
-              <p><i className="far fa-envelope"></i> contato@zapmind.com.br</p>
-            </div>
-            <div className="footer-security">
-              <h3>Segurança e Privacidade</h3>
-              <p>Respeitamos a privacidade dos seus dados. Apenas usaremos suas informações para contato e análise de necessidades para nossa solução.</p>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2023 ZapMind. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
     </>
   );
 } 

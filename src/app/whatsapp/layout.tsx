@@ -37,7 +37,7 @@ export default function WhatsAppLayout({
           t.src=v;s=b.getElementsByTagName(e)[0];
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '576323608521612');
+          fbq('init', '1344402923355724');
           fbq('track', 'PageView');
         `}
       </Script>
@@ -48,7 +48,7 @@ export default function WhatsAppLayout({
           height="1" 
           width="1" 
           style={{ display: 'none' }} 
-          src="https://www.facebook.com/tr?id=576323608521612&ev=PageView&noscript=1"
+          src="https://www.facebook.com/tr?id=1344402923355724&ev=PageView&noscript=1"
           alt=""
         />
       </noscript>

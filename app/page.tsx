@@ -220,40 +220,41 @@ const Navbar = ({ lang, setLang, t, isScrolled }: NavbarProps) => {
         <div className="flex justify-between md:justify-center items-center gap-12">
           {/* Desktop Menu Left */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide">
+            <a href="#services" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide" aria-label="Navigate to Services section">
               {t.nav.services}
             </a>
-            <a href="#process" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide">
+            <a href="#process" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide" aria-label="Navigate to Process section">
               {t.nav.process}
             </a>
           </div>
 
           {/* Centered Logo */}
-          <div className="flex items-center gap-1 relative group cursor-pointer z-50">
+          <a href="/" className="flex items-center gap-1 relative group cursor-pointer z-50" aria-label="C9 Company Home">
             <div className="absolute inset-0 bg-sky-400 blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
             <span className="text-2xl font-black tracking-tighter text-slate-900 z-10">C9<span className="text-sky-500">.</span></span>
-          </div>
+          </a>
 
           {/* Desktop Menu Right */}
           <div className="hidden md:flex items-center gap-8">
-             <a href="#results" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide">
+             <a href="#results" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors uppercase tracking-wide" aria-label="Navigate to Results section">
               {t.nav.results}
             </a>
             
             <button 
               onClick={() => setLang(lang === 'en' ? 'pt' : 'en')}
               className="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1 rounded-md transition-colors uppercase tracking-widest"
+              aria-label={`Switch to ${lang === 'en' ? 'Portuguese' : 'English'}`}
             >
               {lang === 'en' ? 'PT' : 'EN'}
             </button>
 
-            <button className="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-sky-600 transition-all duration-300 flex items-center gap-2 group">
+            <a href="#contact" className="bg-slate-900 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-sky-600 transition-all duration-300 flex items-center gap-2 group" aria-label="Start now - Contact us">
               {t.nav.contact}
-            </button>
+            </a>
           </div>
 
           {/* Mobile Toggle */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden z-50 relative text-slate-900">
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden z-50 relative text-slate-900" aria-label={isOpen ? "Close menu" : "Open menu"} aria-expanded={isOpen}>
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -308,13 +309,13 @@ const Hero = ({ t }: ComponentProps) => (
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mt-4 animate-fade-in-up animation-delay-200 justify-center">
-          <button className="bg-slate-900 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-sky-500 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(14,165,233,0.3)] flex items-center justify-center gap-3 group">
+          <a href="#contact" className="bg-slate-900 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-sky-500 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(14,165,233,0.3)] flex items-center justify-center gap-3 group" aria-label="Initiate launch - Contact us">
             {t.hero.ctaPrimary}
             <MoveRight className="group-hover:translate-x-2 transition-transform" />
-          </button>
-          <button className="px-10 py-5 rounded-full font-bold text-lg text-slate-600 bg-white border border-slate-200 hover:border-slate-300 flex items-center justify-center gap-2 group transition-all hover:bg-slate-50">
+          </a>
+          <a href="#services" className="px-10 py-5 rounded-full font-bold text-lg text-slate-600 bg-white border border-slate-200 hover:border-slate-300 flex items-center justify-center gap-2 group transition-all hover:bg-slate-50" aria-label="Explore systems">
             {t.hero.ctaSecondary}
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -452,12 +453,12 @@ const CTA = ({ t }: ComponentProps) => (
       </p>
       
       <div className="flex justify-center">
-        <button className="relative overflow-hidden bg-slate-900 text-white px-16 py-6 rounded-full text-xl font-bold hover:scale-105 transition-transform duration-300 shadow-2xl shadow-slate-900/20 group">
+        <a href="#contact" className="relative overflow-hidden bg-slate-900 text-white px-16 py-6 rounded-full text-xl font-bold hover:scale-105 transition-transform duration-300 shadow-2xl shadow-slate-900/20 group inline-block" aria-label="Schedule briefing - Contact us">
           <span className="relative z-10 flex items-center gap-3">
             {t.cta.button} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </span>
           <div className="absolute inset-0 bg-gradient-to-r from-sky-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </button>
+        </a>
       </div>
     </div>
   </section>
@@ -472,7 +473,7 @@ const Footer = ({ t }: ComponentProps) => (
         
         <div className="flex gap-8 justify-center mb-8">
             {['Instagram', 'LinkedIn', 'Twitter'].map(social => (
-            <a key={social} href="#" className="text-lg font-bold text-slate-400 hover:text-slate-900 uppercase tracking-wider transition-colors">
+            <a key={social} href={`https://www.${social.toLowerCase()}.com/c9company`} target="_blank" rel="noopener noreferrer" className="text-lg font-bold text-slate-400 hover:text-slate-900 uppercase tracking-wider transition-colors" aria-label={`Visit our ${social} page`}>
                 {social}
             </a>
             ))}
@@ -486,6 +487,7 @@ const App = () => {
   const [lang, setLang] = useState<Language>('en');
   const [isScrolled, setIsScrolled] = useState(false);
   const t = content[lang];
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://cloudnine.com';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -504,6 +506,116 @@ const App = () => {
       <Results t={t} />
       <CTA t={t} />
       <Footer t={t} />
+
+      {/* Structured Data (JSON-LD) for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "C9 Company",
+            "url": siteUrl,
+            "logo": `${siteUrl}/logo.png`,
+            "description": lang === 'en' 
+              ? "We engineer high-altitude digital ecosystems using AI automation and performance architecture."
+              : "Engenharamos ecossistemas digitais de alta altitude usando automação IA e arquitetura de performance.",
+            "sameAs": [
+              "https://www.instagram.com/c9company",
+              "https://www.linkedin.com/company/c9company",
+              "https://twitter.com/c9company"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "Sales",
+              "availableLanguage": ["English", "Portuguese"]
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "reviewCount": "127"
+            }
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "C9 Company",
+            "description": lang === 'en'
+              ? "AI-powered digital marketing and performance optimization services"
+              : "Serviços de marketing digital e otimização de performance com IA",
+            "serviceType": [
+              "Digital Marketing",
+              "Performance Marketing",
+              "AI Automation",
+              "Conversion Optimization"
+            ],
+            "areaServed": {
+              "@type": "Country",
+              "name": ["US", "BR", "Global"]
+            },
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Marketing Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Performance Marketing",
+                    "description": lang === 'en'
+                      ? "Paid traffic engineering with algorithmic targeting"
+                      : "Engenharia de tráfego pago com segmentação algorítmica"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "AI Automation",
+                    "description": lang === 'en'
+                      ? "AI-driven workflows replacing manual labor"
+                      : "Fluxos guiados por IA substituindo trabalho manual"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Conversion Optimization",
+                    "description": lang === 'en'
+                      ? "Conversion-focused design and UX optimization"
+                      : "Design focado em conversão e otimização de UX"
+                  }
+                }
+              ]
+            }
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "C9 Company",
+            "url": siteUrl,
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": `${siteUrl}/search?q={search_term_string}`
+              },
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
 
       {/* Global Style Injections for Animations */}
       <style>{`

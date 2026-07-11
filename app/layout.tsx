@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,24 +12,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://cloudnine.com";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#1466a8",
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://cloudnine.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "C9 - Atmospheric Growth | AI-Powered Digital Marketing",
-    template: "%s | C9 Company"
+    default: "C9 Company | Tráfego pago, automação com IA e conversão",
+    template: "%s | C9 Company",
   },
-  description: "We don't just run ads. We engineer high-altitude digital ecosystems using AI automation and performance architecture. Transform your business with 300% average ROI.",
+  description:
+    "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema. Agende um diagnóstico.",
   keywords: [
-    "digital marketing",
-    "AI automation",
-    "performance marketing",
-    "paid traffic",
-    "conversion optimization",
-    "marketing automation",
+    "tráfego pago",
+    "automação com IA",
+    "marketing de performance",
+    "otimização de conversão",
     "growth marketing",
-    "ROI optimization",
-    "PPC advertising",
-    "marketing technology"
+    "agência de marketing digital",
   ],
   authors: [{ name: "C9 Company" }],
   creator: "C9 Company",
@@ -41,26 +46,19 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    alternateLocale: ["pt_BR"],
+    locale: "pt_BR",
+    alternateLocale: ["en_US"],
     url: "/",
     siteName: "C9 Company",
-    title: "C9 - Atmospheric Growth | AI-Powered Digital Marketing",
-    description: "We don't just run ads. We engineer high-altitude digital ecosystems using AI automation and performance architecture.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "C9 Company - Atmospheric Growth",
-      },
-    ],
+    title: "C9 Company | Tráfego pago, automação com IA e conversão",
+    description:
+      "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "C9 - Atmospheric Growth | AI-Powered Digital Marketing",
-    description: "We don't just run ads. We engineer high-altitude digital ecosystems using AI automation and performance architecture.",
-    images: ["/og-image.jpg"],
+    title: "C9 Company | Tráfego pago, automação com IA e conversão",
+    description:
+      "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema.",
     creator: "@c9company",
   },
   robots: {
@@ -76,18 +74,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
-    languages: {
-      "en": "/",
-      "pt": "/?lang=pt",
-    },
   },
   category: "Marketing",
-  classification: "Business",
-  other: {
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "black-translucent",
-    "theme-color": "#0ea5e9",
-  },
 };
 
 export default function RootLayout({
@@ -96,21 +84,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || "https://cloudnine.com"} />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        <meta name="theme-color" content="#0ea5e9" />
-        <meta name="msapplication-TileColor" content="#0ea5e9" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="pt-BR">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>

@@ -1,26 +1,107 @@
 @import "tailwindcss";
 
+/*
+  C9 design tokens. Light theme, locked: the brand is the daylight sky
+  (Cloud Nine); the single dark moment is the Protocol section (--deep).
+  Palette strategy: committed sky-cobalt on pure white.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.972 0.007 240);
+  --ink: oklch(0.2 0.02 250);
+  --muted: oklch(0.45 0.02 248);
+  --primary: oklch(0.52 0.14 240);
+  --primary-hover: oklch(0.46 0.14 243);
+  --deep: oklch(0.22 0.05 255);
+  --tint: oklch(0.94 0.025 230);
+  --line: oklch(0.9 0.01 240);
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-deep: var(--deep);
+  --color-tint: var(--tint);
+  --color-line: var(--line);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* Page-load choreography (hero only; always above the fold) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise {
+  animation: rise 0.8s var(--ease-out-quint) both;
+}
+
+.rise-1 { animation-delay: 0.05s; }
+.rise-2 { animation-delay: 0.15s; }
+.rise-3 { animation-delay: 0.25s; }
+.rise-4 { animation-delay: 0.35s; }
+
+/*
+  Scroll reveal. `.reveal-init` is added by JS only (content is fully
+  visible without JS or under reduced motion); `.is-visible` releases it.
+*/
+.reveal-init {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.reveal-init.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out-quint),
+    transform 0.7s var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise {
+    animation: none;
+  }
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

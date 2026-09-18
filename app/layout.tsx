@@ -12,29 +12,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://cloudnine.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://c9company.com.br";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1466a8",
+  themeColor: "#16233d",
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "C9 Company | Tráfego pago, automação com IA e conversão",
+    default: "C9 Company | Anúncio, página e recepção automática num sistema só",
     template: "%s | C9 Company",
   },
   description:
-    "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema. Agende um diagnóstico.",
+    "Anúncio, página e recepção automática no WhatsApp para negócios que atendem com hora marcada. Teste a recepção antes de contratar.",
   keywords: [
-    "tráfego pago",
-    "automação com IA",
-    "marketing de performance",
-    "otimização de conversão",
-    "growth marketing",
-    "agência de marketing digital",
+    "recepção automática no WhatsApp",
+    "atendente de IA para clínica",
+    "agendamento automático",
+    "tráfego pago local",
+    "página de conversão",
+    "SEO local",
   ],
   authors: [{ name: "C9 Company" }],
   creator: "C9 Company",
@@ -50,15 +50,15 @@ export const metadata: Metadata = {
     alternateLocale: ["en_US"],
     url: "/",
     siteName: "C9 Company",
-    title: "C9 Company | Tráfego pago, automação com IA e conversão",
+    title: "C9 Company | Anúncio, página e recepção automática num sistema só",
     description:
-      "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema.",
+      "Anúncio, página e recepção automática no WhatsApp para negócios que atendem com hora marcada. Teste a recepção antes de contratar.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "C9 Company | Tráfego pago, automação com IA e conversão",
+    title: "C9 Company | Anúncio, página e recepção automática num sistema só",
     description:
-      "Agência de growth para PMEs: tráfego pago, automação com IA e design de conversão operando como um único sistema.",
+      "Anúncio, página e recepção automática no WhatsApp para negócios que atendem com hora marcada. Teste a recepção antes de contratar.",
     creator: "@c9company",
   },
   robots: {

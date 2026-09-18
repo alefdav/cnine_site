@@ -1,15 +1,29 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { content, type Language } from '@/lib/content';
+import {
+  CITY,
+  EMAIL,
+  LEGAL_NAME,
+  WHATSAPP_NUMBER,
+  content,
+  type Language,
+} from '@/lib/content';
 import { Nav } from '@/components/nav';
 import { Hero } from '@/components/hero';
-import { Systems } from '@/components/systems';
+import { Proof } from '@/components/proof';
+import { System } from '@/components/system';
+import { ReceptionTest } from '@/components/reception-test';
+import { Services } from '@/components/services';
 import { Protocol } from '@/components/protocol';
-import { Results } from '@/components/results';
+import { Pledges } from '@/components/pledges';
+import { NotDoing } from '@/components/not-doing';
+import { Audience } from '@/components/audience';
+import { Faq } from '@/components/faq';
 import { Closing } from '@/components/closing';
+import { Footer } from '@/components/footer';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://cloudnine.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://c9company.com.br';
 
 export default function Page() {
   const [lang, setLang] = useState<Language>('pt');
@@ -23,12 +37,19 @@ export default function Page() {
     <>
       <Nav lang={lang} setLang={setLang} t={t} />
       <main>
-        <Hero t={t} />
-        <Systems t={t} />
+        <Hero t={t} lang={lang} />
+        <Proof t={t} />
+        <System t={t} />
+        <ReceptionTest t={t} lang={lang} />
+        <Services t={t} />
         <Protocol t={t} />
-        <Results t={t} />
+        <Pledges t={t} />
+        <NotDoing t={t} />
+        <Audience t={t} />
+        <Faq t={t} />
       </main>
-      <Closing t={t} />
+      <Closing t={t} lang={lang} />
+      <Footer t={t} />
 
       <script
         type="application/ld+json"
@@ -37,20 +58,27 @@ export default function Page() {
             '@context': 'https://schema.org',
             '@type': 'Organization',
             name: 'C9 Company',
+            legalName: LEGAL_NAME,
             url: SITE_URL,
             logo: `${SITE_URL}/logo.png`,
+            email: EMAIL,
             description:
               lang === 'pt'
-                ? 'Agência de growth: tráfego pago, automação com IA e design de conversão operando como um único sistema.'
-                : 'Growth agency: paid traffic, AI automation and conversion design running as a single system.',
-            sameAs: [
-              'https://www.instagram.com/c9company',
-              'https://www.linkedin.com/company/c9company',
-            ],
+                ? 'Anúncio, página e recepção automática no WhatsApp operando como um único sistema para negócios que atendem com hora marcada.'
+                : 'Ads, landing page and automated WhatsApp reception running as a single system for appointment-based businesses.',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Rio de Janeiro',
+              addressRegion: 'RJ',
+              addressCountry: 'BR',
+            },
             contactPoint: {
               '@type': 'ContactPoint',
               contactType: 'Sales',
-              availableLanguage: ['Portuguese', 'English'],
+              telephone: `+${WHATSAPP_NUMBER}`,
+              email: EMAIL,
+              areaServed: ['BR', 'US', 'MX'],
+              availableLanguage: ['Portuguese', 'English', 'Spanish'],
             },
           }),
         }}
@@ -62,20 +90,18 @@ export default function Page() {
             '@context': 'https://schema.org',
             '@type': 'ProfessionalService',
             name: 'C9 Company',
+            areaServed: { '@type': 'Country', name: ['BR', 'US', 'MX'] },
             description:
               lang === 'pt'
-                ? 'Serviços de marketing de performance, automação com IA e otimização de conversão'
-                : 'Performance marketing, AI automation and conversion optimization services',
+                ? `Recepção automática no WhatsApp, recepção por voz, páginas de conversão, tráfego pago local e medição, operados como um sistema único a partir de ${CITY}.`
+                : `Automated WhatsApp reception, voice reception, conversion pages, local paid traffic and measurement, run as a single system from ${CITY}.`,
             serviceType: [
-              'Digital Marketing',
-              'Performance Marketing',
-              'AI Automation',
-              'Conversion Optimization',
+              'WhatsApp Automation',
+              'Voice AI Reception',
+              'Conversion Pages',
+              'Local Paid Traffic',
+              'Local SEO and Measurement',
             ],
-            areaServed: {
-              '@type': 'Country',
-              name: ['BR', 'US'],
-            },
           }),
         }}
       />

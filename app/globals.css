@@ -15,6 +15,10 @@
   --deep: oklch(0.22 0.05 255);
   --tint: oklch(0.94 0.025 230);
   --line: oklch(0.9 0.01 240);
+  /* Noite de voo: o hero e o rodapé ficam acima da camada, no escuro. */
+  --night: oklch(0.19 0.045 258);
+  --night-2: oklch(0.27 0.06 262);
+  --accent: oklch(0.62 0.15 238);
   --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -28,6 +32,9 @@
   --color-deep: var(--deep);
   --color-tint: var(--tint);
   --color-line: var(--line);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -104,4 +111,40 @@ h3 {
     transform: none;
     transition: none;
   }
+}
+
+/*
+  Hero "Noite de voo": céu escuro com brilho cobalto subindo do rodapé,
+  grão por feTurbulence e o mar de nuvens sangrando na base em `screen`.
+*/
+.night-sky {
+  background:
+    radial-gradient(90% 60% at 50% 118%, oklch(0.48 0.13 240) 0%, transparent 62%),
+    radial-gradient(120% 70% at 50% -20%, var(--night-2) 0%, transparent 70%);
+}
+
+.grain-layer {
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+}
+
+.clouds-mask {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 36%,
+    #000 78%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 36%,
+    #000 78%
+  );
+}
+
+.clouds-mask img {
+  filter: grayscale(1) brightness(0.85) contrast(1.9);
+  mix-blend-mode: screen;
+  opacity: 0.6;
 }

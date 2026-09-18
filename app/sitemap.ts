@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cloudnine.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://c9company.com.br';
 
   return [
     {

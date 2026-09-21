@@ -1,11 +1,24 @@
 @import "tailwindcss";
 
 /*
-  C9 design tokens. Light theme, locked: the brand is the daylight sky
-  (Cloud Nine); the single dark moment is the Protocol section (--deep).
-  Palette strategy: committed sky-cobalt on pure white.
+  C9 design tokens.
+
+  A marca é o céu (Cloud Nine), e o site mostra o céu na hora do visitante:
+  `data-daypart` no <html> escolhe um dos quatro conjuntos abaixo (night,
+  dawn, day, dusk). O atributo é definido antes da primeira pintura por um
+  script inline em `app/layout.tsx`, a partir do relógio local ou da escolha
+  salva pelo visitante no seletor da barra superior. Sem JS, fica `night`.
+
+  Regra: componente nunca escreve cor literal. Tudo sai de token, senão a
+  troca de céu quebra em alguma seção.
+
+  Dois grupos de token:
+  - corpo da página (--bg, --surface, --ink, --muted, --primary, --deep, …);
+  - superfícies de céu (--hero-*), usadas pelo hero, pela nav e pelo rodapé,
+    que são as únicas que invertem de claro para escuro entre os céus.
 */
-:root {
+:root,
+:root[data-daypart="night"] {
   --bg: oklch(1 0 0);
   --surface: oklch(0.972 0.007 240);
   --ink: oklch(0.2 0.02 250);
@@ -15,11 +28,105 @@
   --deep: oklch(0.22 0.05 255);
   --tint: oklch(0.94 0.025 230);
   --line: oklch(0.9 0.01 240);
-  /* Noite de voo: o hero e o rodapé ficam acima da camada, no escuro. */
-  --night: oklch(0.19 0.045 258);
-  --night-2: oklch(0.27 0.06 262);
+
+  --hero-bg: oklch(0.19 0.045 258);
+  --hero-glow-top: oklch(0.27 0.06 262);
+  --hero-glow-low: oklch(0.48 0.13 240);
+  --hero-ink: oklch(1 0 0);
+  --hero-soft: oklch(1 0 0 / 0.66);
+  --hero-faint: oklch(1 0 0 / 0.08);
+  --hero-line: oklch(1 0 0 / 0.25);
   --accent: oklch(0.62 0.15 238);
+  --accent-ink: oklch(0.19 0.045 258);
+
+  --clouds-filter: grayscale(1) brightness(0.85) contrast(1.9);
+  --clouds-blend: screen;
+  --clouds-opacity: 0.6;
+
   --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Amanhecer: índigo em cima, brasa embaixo, âmbar como acento. */
+:root[data-daypart="dawn"] {
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.975 0.012 70);
+  --ink: oklch(0.21 0.03 60);
+  --muted: oklch(0.46 0.03 58);
+  --primary: oklch(0.5 0.16 45);
+  --primary-hover: oklch(0.44 0.16 42);
+  --deep: oklch(0.26 0.07 300);
+  --tint: oklch(0.94 0.04 72);
+  --line: oklch(0.9 0.02 62);
+
+  --hero-bg: oklch(0.3 0.075 288);
+  --hero-glow-top: oklch(0.26 0.08 292);
+  --hero-glow-low: oklch(0.62 0.16 45);
+  --hero-ink: oklch(1 0 0);
+  --hero-soft: oklch(1 0 0 / 0.74);
+  --hero-faint: oklch(1 0 0 / 0.1);
+  --hero-line: oklch(1 0 0 / 0.3);
+  --accent: oklch(0.82 0.15 78);
+  --accent-ink: oklch(0.26 0.06 60);
+
+  --clouds-filter: grayscale(1) sepia(1) saturate(2.2) hue-rotate(-14deg)
+    brightness(1.05) contrast(1.6);
+  --clouds-blend: screen;
+  --clouds-opacity: 0.85;
+}
+
+/* Dia: céu de gelo. É o único céu em que o hero, a nav e o rodapé ficam claros. */
+:root[data-daypart="day"] {
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.972 0.007 240);
+  --ink: oklch(0.2 0.02 250);
+  --muted: oklch(0.45 0.02 248);
+  --primary: oklch(0.48 0.15 242);
+  --primary-hover: oklch(0.42 0.15 244);
+  --deep: oklch(0.22 0.05 255);
+  --tint: oklch(0.94 0.028 232);
+  --line: oklch(0.89 0.015 240);
+
+  --hero-bg: oklch(1 0 0);
+  --hero-glow-top: oklch(1 0 0);
+  --hero-glow-low: oklch(0.93 0.032 230);
+  --hero-ink: oklch(0.21 0.03 250);
+  --hero-soft: oklch(0.47 0.03 248);
+  --hero-faint: oklch(0.965 0.018 232);
+  --hero-line: oklch(0.89 0.015 240);
+  --accent: oklch(0.48 0.15 242);
+  --accent-ink: oklch(1 0 0);
+
+  --clouds-filter: grayscale(1) brightness(1.06) contrast(1.15);
+  --clouds-blend: multiply;
+  --clouds-opacity: 0.34;
+}
+
+/* Entardecer: violeta em cima, rosa queimado embaixo, coral como acento. */
+:root[data-daypart="dusk"] {
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.975 0.01 20);
+  --ink: oklch(0.21 0.03 20);
+  --muted: oklch(0.46 0.03 18);
+  --primary: oklch(0.48 0.17 15);
+  --primary-hover: oklch(0.42 0.17 13);
+  --deep: oklch(0.24 0.06 305);
+  --tint: oklch(0.94 0.03 20);
+  --line: oklch(0.9 0.015 15);
+
+  --hero-bg: oklch(0.24 0.07 310);
+  --hero-glow-top: oklch(0.3 0.08 305);
+  --hero-glow-low: oklch(0.55 0.17 15);
+  --hero-ink: oklch(1 0 0);
+  --hero-soft: oklch(1 0 0 / 0.72);
+  --hero-faint: oklch(1 0 0 / 0.1);
+  --hero-line: oklch(1 0 0 / 0.28);
+  --accent: oklch(0.78 0.13 25);
+  --accent-ink: oklch(0.22 0.06 20);
+
+  --clouds-filter: grayscale(1) sepia(1) saturate(2.6) hue-rotate(-40deg)
+    brightness(0.95) contrast(1.7);
+  --clouds-blend: screen;
+  --clouds-opacity: 0.8;
 }
 
 @theme inline {
@@ -32,9 +139,13 @@
   --color-deep: var(--deep);
   --color-tint: var(--tint);
   --color-line: var(--line);
-  --color-night: var(--night);
-  --color-night-2: var(--night-2);
+  --color-hero: var(--hero-bg);
+  --color-hero-ink: var(--hero-ink);
+  --color-hero-soft: var(--hero-soft);
+  --color-hero-faint: var(--hero-faint);
+  --color-hero-line: var(--hero-line);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -58,6 +169,18 @@ h3 {
 ::selection {
   background: var(--primary);
   color: white;
+}
+
+/*
+  Troca de céu: só cor transiciona, nunca propriedade de layout. Mantém a
+  mudança legível quando o visitante usa o seletor, sem custo de reflow.
+*/
+.sky-shift,
+.sky-shift * {
+  transition:
+    background-color 0.45s var(--ease-out-quint),
+    border-color 0.45s var(--ease-out-quint),
+    color 0.45s var(--ease-out-quint);
 }
 
 /* Page-load choreography (hero only; always above the fold) */
@@ -111,16 +234,20 @@ h3 {
     transform: none;
     transition: none;
   }
+  .sky-shift,
+  .sky-shift * {
+    transition: none;
+  }
 }
 
 /*
-  Hero "Noite de voo": céu escuro com brilho cobalto subindo do rodapé,
-  grão por feTurbulence e o mar de nuvens sangrando na base em `screen`.
+  Céu do hero: brilho subindo do rodapé, grão por feTurbulence e o mar de
+  nuvens sangrando na base. Filtro e blend das nuvens vêm do céu ativo.
 */
-.night-sky {
+.hero-sky {
   background:
-    radial-gradient(90% 60% at 50% 118%, oklch(0.48 0.13 240) 0%, transparent 62%),
-    radial-gradient(120% 70% at 50% -20%, var(--night-2) 0%, transparent 70%);
+    radial-gradient(90% 60% at 50% 118%, var(--hero-glow-low) 0%, transparent 62%),
+    radial-gradient(120% 70% at 50% -20%, var(--hero-glow-top) 0%, transparent 70%);
 }
 
 .grain-layer {
@@ -144,7 +271,7 @@ h3 {
 }
 
 .clouds-mask img {
-  filter: grayscale(1) brightness(0.85) contrast(1.9);
-  mix-blend-mode: screen;
-  opacity: 0.6;
+  filter: var(--clouds-filter);
+  mix-blend-mode: var(--clouds-blend);
+  opacity: var(--clouds-opacity);
 }

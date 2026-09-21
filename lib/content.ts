@@ -16,14 +16,28 @@ export interface ChatLine {
   time?: string;
 }
 
+export type Daypart = 'night' | 'dawn' | 'day' | 'dusk';
+
+export const DAYPARTS: Daypart[] = ['dawn', 'day', 'dusk', 'night'];
+
+/* Hora local do visitante -> céu. Usada no cliente e no script de pré-pintura. */
+export function daypartFromHour(hour: number): Daypart {
+  if (hour < 5) return 'night';
+  if (hour < 9) return 'dawn';
+  if (hour < 17) return 'day';
+  if (hour < 20) return 'dusk';
+  return 'night';
+}
+
 export interface ContentType {
-  nav: {
-    system: string;
-    protocol: string;
-    services: string;
-    faq: string;
-  };
   cta: string;
+  ctaShort: string;
+  sky: {
+    label: string;
+    auto: string;
+    pinned: string;
+    names: Record<Daypart, string>;
+  };
   hero: {
     badgeTag: string;
     badgeText: string;
@@ -127,13 +141,19 @@ export function whatsappLink(lang: Language): string {
 
 export const content: Record<Language, ContentType> = {
   pt: {
-    nav: {
-      system: 'O sistema',
-      protocol: 'Protocolo',
-      services: 'Serviços',
-      faq: 'Perguntas',
-    },
     cta: 'Agendar diagnóstico',
+    ctaShort: 'Agendar',
+    sky: {
+      label: 'Céu da página',
+      auto: 'seguindo a sua hora',
+      pinned: 'clique de novo para voltar ao automático',
+      names: {
+        dawn: 'Amanhecer',
+        day: 'Dia',
+        dusk: 'Entardecer',
+        night: 'Noite',
+      },
+    },
     hero: {
       badgeTag: 'Novo',
       badgeText: 'Protocolo de 7 dias, do diagnóstico ao primeiro teste',
@@ -381,13 +401,19 @@ export const content: Record<Language, ContentType> = {
   },
 
   en: {
-    nav: {
-      system: 'The system',
-      protocol: 'Protocol',
-      services: 'Services',
-      faq: 'Questions',
-    },
     cta: 'Book a diagnostic',
+    ctaShort: 'Book a call',
+    sky: {
+      label: 'Sky on this page',
+      auto: 'following your local time',
+      pinned: 'click again to go back to automatic',
+      names: {
+        dawn: 'Dawn',
+        day: 'Day',
+        dusk: 'Dusk',
+        night: 'Night',
+      },
+    },
     hero: {
       badgeTag: 'New',
       badgeText: 'A 7-day protocol, from diagnostic to first test',

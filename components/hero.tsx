@@ -9,8 +9,8 @@ const HERO_IMAGE =
 
 export function Hero({ t, lang }: { t: ContentType; lang: Language }) {
   return (
-    <section className="relative overflow-hidden bg-night text-white">
-      <div className="night-sky absolute inset-0" aria-hidden />
+    <section className="relative overflow-hidden bg-hero text-hero-ink">
+      <div className="hero-sky absolute inset-0" aria-hidden />
 
       {/* Grão: SVG inline, sem asset externo e sem custo de rede. */}
       <svg
@@ -42,9 +42,9 @@ export function Hero({ t, lang }: { t: ContentType; lang: Language }) {
       <div className="relative z-20 mx-auto flex min-h-[calc(100dvh-4rem)] max-w-6xl flex-col items-center px-5 pb-40 pt-14 text-center md:px-8 md:pb-56 md:pt-20">
         <a
           href="#protocolo"
-          className="rise inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 py-1.5 pl-1.5 pr-4 text-sm text-white/80 transition-colors hover:border-white/40 hover:text-white"
+          className="rise inline-flex items-center gap-3 rounded-full border border-hero-line bg-hero-faint py-1.5 pl-1.5 pr-4 text-sm text-hero-soft transition-colors hover:text-hero-ink"
         >
-          <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-night">
+          <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-ink">
             {t.hero.badgeTag}
           </span>
           <span className="hidden sm:inline">{t.hero.badgeText}</span>
@@ -57,20 +57,20 @@ export function Hero({ t, lang }: { t: ContentType; lang: Language }) {
           <span className="text-accent">{t.hero.headlineBottom}</span>
         </h1>
 
-        <p className="rise rise-2 mt-6 max-w-[50ch] text-lg leading-relaxed text-white/65 md:text-xl">
+        <p className="rise rise-2 mt-6 max-w-[50ch] text-lg leading-relaxed text-hero-soft md:text-xl">
           {t.hero.subheadline}
         </p>
 
         <div className="rise rise-3 mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <a
             href="#sistema"
-            className="inline-flex items-center justify-center rounded-full border border-white/25 px-8 py-4 text-base font-bold text-white transition-colors hover:border-white active:translate-y-px"
+            className="inline-flex items-center justify-center rounded-full border border-hero-line px-8 py-4 text-base font-bold text-hero-ink transition-colors hover:border-hero-ink active:translate-y-px"
           >
             {t.hero.ctaSecondary}
           </a>
           <a
             href={whatsappLink(lang)}
-            className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-accent px-8 py-4 text-base font-bold text-night transition-opacity hover:opacity-90 active:translate-y-px"
+            className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-accent px-8 py-4 text-base font-bold text-accent-ink transition-opacity hover:opacity-90 active:translate-y-px"
           >
             {t.cta}
             <MoveRight

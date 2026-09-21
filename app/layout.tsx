@@ -78,14 +78,23 @@ export const metadata: Metadata = {
   category: "Marketing",
 };
 
+/*
+  Escolhe o céu antes da primeira pintura, a partir da escolha salva pelo
+  visitante ou do relógio local dele. Sem isso a página pintaria a noite e
+  trocaria depois da hidratação, piscando. Sem JS, fica a noite do HTML.
+  As faixas aqui espelham `daypartFromHour()` em `lib/content.ts`.
+*/
+const SKY_SCRIPT = `(function(){try{var k=localStorage.getItem('c9-sky');var v=['night','dawn','day','dusk'];var h=new Date().getHours();var d=(k&&v.indexOf(k)>-1)?k:(h<5?'night':h<9?'dawn':h<17?'day':h<20?'dusk':'night');document.documentElement.dataset.daypart=d;}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" data-daypart="night" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <script dangerouslySetInnerHTML={{ __html: SKY_SCRIPT }} />
         {children}
       </body>
     </html>

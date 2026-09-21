@@ -4,9 +4,22 @@ Visual system of the C9 Company landing page. Generated from the shipped code (2
 
 ## Theme
 
-Light body, locked; there is no dark mode toggle. The brand is the sky (Cloud Nine), and the page reads as a climb through it: the hero opens **above the layer at night** (`--night`, "Noite de voo", chosen 2026-09-18), the body runs light, the Protocol section darkens again (`--deep`), the closing CTA is drenched in `--primary` and the footer lands back on `--night`.
+The brand is the sky (Cloud Nine), so the page shows the sky at the visitor's own hour. `data-daypart` on `<html>` selects one of four palettes, and every token in `:root` is redefined per daypart:
 
-Dark surfaces (hero, nav, Protocol, footer) use `--accent` for their single highlight; light surfaces use `--primary`. Never mix the two on the same background.
+| Daypart | Local hours | Sky |
+|---|---|---|
+| `dawn` | 05–09 | Indigo above, ember below, amber accent |
+| `day` | 09–17 | Ice white; the **only** daypart where hero, nav and footer are light |
+| `dusk` | 17–20 | Violet above, burnt rose below, coral accent |
+| `night` | 20–05 | Cobalt night above the cloud layer. The baseline, and the fallback with no JS |
+
+The attribute is written **before first paint** by the inline script in `app/layout.tsx`, from `localStorage['c9-sky']` (a sky the visitor pinned in the top bar) or from their clock. The HTML ships with `data-daypart="night"`, so bots, no-JS and prerender all get the night. The hour ranges in that script mirror `daypartFromHour()` in `lib/content.ts`; change one, change the other.
+
+Structure holds in every daypart: the hero opens above the layer, the body runs light, the Protocol section darkens (`--deep`), the closing CTA is drenched in `--primary` and the footer returns to the sky surface.
+
+Two token groups: **page body** (`--bg`, `--surface`, `--ink`, `--muted`, `--primary`, `--deep`, `--tint`, `--line`) and **sky surfaces** (`--hero-*`, `--accent`, `--accent-ink`) used by hero, nav and footer, which are the ones that invert between light and dark. Sky surfaces highlight with `--accent`; body surfaces with `--primary`. Never mix the two on one background.
+
+**A component must never write a literal color.** One hardcoded `text-white` and a daypart breaks in that section.
 
 ## Color
 
@@ -46,7 +59,7 @@ Strategy: **committed**. One hue family (sky-cobalt) carries the identity across
 ## Layout
 
 - Content container: `max-w-6xl mx-auto px-5 md:px-8`.
-- Nav: sticky, 64px, `bg-night/90 backdrop-blur-md`, no hairline. No scroll listeners.
+- Nav: sticky, 64px, `bg-hero/90 backdrop-blur-md` + `border-hero-line`. No scroll listeners. **No menu links**: this is a landing page, so the bar carries only the wordmark, the sky switcher, the language pill and the CTA. Anchors live in the content itself (`#sistema`, `#protocolo`).
 - Section rhythm: `py-24 md:py-32`; alternating `background` / `surface`; one `deep` block; one `primary` drench (closing only, the hero uses `--night`).
 - Layout families in use (do not repeat one for a new section): centered drenched hero with bleeding image, hairline-divided stat band, asymmetric bento (1 tall + 2 stacked), two-col proof with chat card, three-up icon grid, two-col rail with numbered sequence, label/prose rows (pledges and FAQ), three-up cards, centered drenched CTA.
 - Every multi-column layout collapses to single column below `md`/`lg` in the same component.
@@ -68,6 +81,7 @@ Dials: VARIANCE 7 / MOTION 5 / DENSITY 4.
 - Page load: hero-only stagger (`.rise` + `.rise-1..4` delays, `rise` keyframe, ease `cubic-bezier(0.16,1,0.3,1)`).
 - Scroll: `components/reveal.tsx` adds `.reveal-init` via JS then releases with `.is-visible` on 20% intersection (IntersectionObserver, disconnect after fire). Content is fully visible without JS.
 - Hover: color shifts + `translate-x` on arrow icons; `:active` gets `translate-y-px`.
+- Sky change: `.sky-shift` on `<html>` cross-fades `background-color`, `border-color` and `color` over 0.45s. The class is added by `components/sky-switch.tsx` only after first paint, so the page load itself never animates.
 - `prefers-reduced-motion: reduce` disables all of the above (static, instant).
 - Banned: `window.addEventListener('scroll')`, animating layout properties, bounce/elastic easings, infinite loops.
 

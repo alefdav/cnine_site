@@ -2,10 +2,10 @@ import type { SosPage } from '@/lib/sos-content';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://c9company.com.br';
 
+/* Só o que tem preço fixo público (o diagnóstico grátis). O resto é orçado caso a caso. */
 interface Offer {
   name: string;
   price: number;
-  monthly?: boolean;
 }
 
 /* Service + FAQPage. Sem aggregateRating: não há avaliação publicada pra citar. */
@@ -36,14 +36,6 @@ export function SosJsonLd({
         name: o.name,
         price: o.price,
         priceCurrency: 'BRL',
-        ...(o.monthly && {
-          priceSpecification: {
-            '@type': 'UnitPriceSpecification',
-            price: o.price,
-            priceCurrency: 'BRL',
-            unitCode: 'MON',
-          },
-        }),
       })),
     },
     {

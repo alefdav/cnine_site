@@ -319,13 +319,7 @@ function Pricing({ page }: { page: SosPage }) {
               )}
               <span className="text-[15px] font-medium text-muted">{plan.who}</span>
               <h3 className="mt-2 text-[28px] font-extrabold tracking-tight">{plan.name}</h3>
-              <p className="mt-5 flex items-baseline gap-2">
-                <span className="font-mono text-[44px] font-medium leading-none tracking-tighter">
-                  <span className="relative -top-4 mr-1 text-lg tracking-normal text-muted">R$</span>
-                  {plan.price}
-                </span>
-                <span className="text-[15px] text-muted">{plan.per}</span>
-              </p>
+              <p className="mt-4 text-[15.5px] leading-relaxed text-muted">{plan.pitch}</p>
               <ul className="mt-7 grid gap-3.5 border-t border-line pt-6">
                 {plan.items.map((item) => (
                   <li key={item} className="flex gap-3 leading-normal">

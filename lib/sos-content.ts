@@ -53,8 +53,7 @@ export interface Step {
 export interface Plan {
   who: string;
   name: string;
-  price: number;
-  per: string;
+  pitch: string;
   items: string[];
   cta: string;
   featured?: string;
@@ -197,13 +196,12 @@ export const sosWordpress: SosPage = {
   pricing: {
     id: 'preco',
     title: 'Quanto custa a manutenção de um site WordPress.',
-    lede: 'Preço aberto, sem precisar ligar pra descobrir. O diagnóstico é grátis e você sabe o valor antes de qualquer coisa.',
+    lede: 'Depende do tamanho do problema. Um plugin quebrado não custa o mesmo que um site inteiro infectado. Por isso o diagnóstico é grátis, e você recebe o valor fechado antes de a gente mexer em qualquer coisa.',
     plans: [
       {
         who: 'Pra quem tem um problema agora',
         name: 'SOS pontual',
-        price: 399,
-        per: 'por atendimento',
+        pitch: 'Um problema, um conserto. O valor sai do diagnóstico, fechado, antes de começar.',
         items: [
           'Diagnóstico completo do que está errado',
           'Remoção de vírus e limpeza do site',
@@ -216,8 +214,7 @@ export const sosWordpress: SosPage = {
       {
         who: 'Manutenção mensal WordPress',
         name: 'Plano mensal',
-        price: 199,
-        per: 'por mês',
+        pitch: 'Cuidado contínuo pro site não voltar a quebrar. O valor mensal depende do tamanho do site e vem junto com o diagnóstico.',
         featured: 'Pra não passar por isso de novo',
         items: [
           'Atualização de WordPress, tema e plugins, testada numa cópia',
@@ -233,7 +230,7 @@ export const sosWordpress: SosPage = {
   faq: [
     {
       q: 'Quanto custa a manutenção de um site WordPress?',
-      a: 'O SOS pontual sai por R$ 399 e o plano mensal por R$ 199 por mês. O diagnóstico é grátis, e você recebe o valor fechado antes de a gente mexer em qualquer coisa.',
+      a: 'Depende do tamanho do problema e do site. Por isso o diagnóstico é grátis: a gente olha primeiro e te passa o valor fechado, do conserto ou do plano mensal, antes de mexer em qualquer coisa. Você só paga se aprovar.',
     },
     {
       q: 'Preciso passar minha senha?',
@@ -372,7 +369,7 @@ export const sosVibeCode: SosPage = {
       {
         title: 'Sprint de produção',
         body: 'Corrige o que trava, fecha o que está aberto e coloca o app no seu domínio, funcionando com gente de verdade usando.',
-        tags: ['R$ 299', 'Prazo a combinar'],
+        tags: ['Valor sai da auditoria', 'Prazo a combinar'],
       },
       {
         title: 'Entrega no seu GitHub',
@@ -397,7 +394,7 @@ export const sosVibeCode: SosPage = {
     },
     {
       q: 'Quanto custa?',
-      a: 'A auditoria de 20 minutos é grátis. O sprint de produção sai por R$ 299, e você só decide depois da auditoria, com a lista de problemas na mão.',
+      a: 'A auditoria de 20 minutos é grátis. O valor do sprint depende do que ela encontrar, e você recebe fechado, com a lista de problemas na mão, antes de decidir qualquer coisa.',
     },
     {
       q: 'Quanto tempo leva?',

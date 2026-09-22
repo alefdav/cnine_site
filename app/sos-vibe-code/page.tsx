@@ -25,7 +25,6 @@ export default function Page() {
         description={DESCRIPTION}
         offers={[
           { name: 'Auditoria de 20 minutos', price: 0 },
-          { name: 'Sprint de produção', price: 299 },
         ]}
       />
     </>

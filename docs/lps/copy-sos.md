@@ -7,6 +7,9 @@ SEO: OpenSEO, projeto "C9 Company" (Brasil, pt), pesquisa de 5 sementes em 2026-
 Regras herdadas da skill: sem travessão na copy, sem jargão de marketing, número sem fonte não entra,
 dado ausente vira `[PREENCHER]` visível, nada de `aggregateRating` inventado.
 
+
+> **Atualização 2026-09-22: sem preço público.** Os valores (SOS pontual R$ 399, mensal R$ 199, sprint R$ 299) saíram das LPs: o suporte varia com o tamanho do problema. O H2 "Quanto custa" continua, respondendo "depende do tamanho do problema; diagnóstico grátis e valor fechado antes de começar". Só o diagnóstico/auditoria grátis (R$ 0) aparece como número. Os valores abaixo neste documento são histórico e **não devem voltar pra página**.
+
 ---
 
 ## 0. O que o SEO disse (e o que isso muda)

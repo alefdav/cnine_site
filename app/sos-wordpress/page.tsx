@@ -5,7 +5,7 @@ import { sosWordpress } from '@/lib/sos-content';
 
 const TITLE = 'Manutenção de site WordPress: hackeado, lento ou com erro | C9';
 const DESCRIPTION =
-  'Site WordPress com vírus, lento ou com erro crítico? A C9 conserta, limpa e deixa monitorado. Preço aberto e diagnóstico grátis pelo WhatsApp.';
+  'Site WordPress com vírus, lento ou com erro crítico? A C9 conserta, limpa e deixa monitorado. Diagnóstico grátis e valor fechado antes de começar.';
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -24,8 +24,7 @@ export default function Page() {
         serviceType="Manutenção de site WordPress"
         description={DESCRIPTION}
         offers={[
-          { name: 'SOS pontual', price: 399 },
-          { name: 'Plano mensal de manutenção WordPress', price: 199, monthly: true },
+          { name: 'Diagnóstico de site WordPress', price: 0 },
         ]}
       />
     </>

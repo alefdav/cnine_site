@@ -275,3 +275,93 @@ h3 {
   mix-blend-mode: var(--clouds-blend);
   opacity: var(--clouds-opacity);
 }
+
+/*
+  LPs de campanha (/sos-wordpress, /sos-vibe-code).
+
+  Travadas no céu azul da marca, fora do seletor de hora: a página de destino
+  de um anúncio precisa ter a mesma cor do criativo que trouxe o visitante,
+  seja 7h ou 22h. O bloco redefine os mesmos tokens do corpo, então os
+  componentes continuam sem cor literal.
+*/
+.lp-lock {
+  --bg: oklch(1 0 0);
+  --surface: oklch(0.972 0.007 240);
+  --ink: oklch(0.2 0.02 250);
+  --muted: oklch(0.45 0.02 248);
+  --primary: oklch(0.52 0.14 240);
+  --primary-hover: oklch(0.46 0.14 243);
+  --deep: oklch(0.22 0.05 255);
+  --tint: oklch(0.94 0.025 230);
+  --line: oklch(0.9 0.01 240);
+
+  --lp-sky-top: oklch(0.6 0.135 238);
+  --lp-sky-low: oklch(0.44 0.14 243);
+  --lp-night-a: oklch(0.42 0.12 245 / 0.85);
+  --lp-night-b: oklch(0.32 0.09 250 / 0.9);
+  --lp-moon: oklch(0.8 0.08 235);
+  --lp-fill-bg: oklch(0.95 0.06 90);
+  --lp-fill-ink: oklch(0.42 0.1 70);
+
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.lp-sky {
+  background:
+    radial-gradient(120% 80% at 50% -10%, var(--lp-sky-top) 0%, transparent 60%),
+    radial-gradient(100% 70% at 50% 115%, var(--lp-sky-low) 0%, transparent 65%),
+    var(--primary);
+}
+
+.lp-night {
+  background:
+    radial-gradient(70% 60% at 85% 0%, var(--lp-night-a) 0%, transparent 70%),
+    radial-gradient(60% 50% at 0% 100%, var(--lp-night-b) 0%, transparent 70%),
+    var(--deep);
+}
+
+.lp-close {
+  background:
+    radial-gradient(120% 90% at 50% 120%, var(--lp-sky-top) 0%, transparent 62%),
+    var(--primary);
+}
+
+.lp-clouds {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.28) 34%,
+    rgba(0, 0, 0, 0.8) 62%,
+    #000 82%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.28) 34%,
+    rgba(0, 0, 0, 0.8) 62%,
+    #000 82%
+  );
+}
+
+.lp-clouds img {
+  filter: grayscale(1) brightness(1.12) contrast(1.9) saturate(0);
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+
+/* Funde a base do hero azul no branco da primeira seção. */
+.lp-fade::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 130px;
+  z-index: 25;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 0%, color-mix(in oklch, var(--bg) 35%, transparent) 48%, var(--bg) 100%);
+}
+
+.lp-texture {
+  opacity: 0.25;
+  mix-blend-mode: luminosity;
+}

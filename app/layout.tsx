@@ -76,6 +76,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   category: "Marketing",
+  verification: {
+    google: "BU1ES7AXEcAR5N2qadX7GA6n6ltxsonH9LNzyCoLmfI",
+  },
 };
 
 /*

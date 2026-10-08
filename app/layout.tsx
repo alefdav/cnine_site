@@ -80,6 +80,9 @@ export const metadata: Metadata = {
   verification: {
     google: "BU1ES7AXEcAR5N2qadX7GA6n6ltxsonH9LNzyCoLmfI",
   },
+  other: {
+    "facebook-domain-verification": "ot1f6odp5bjx5n9dsemkolstfrky24",
+  },
 };
 
 /*

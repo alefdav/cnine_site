@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Download, MessageCircle, MoveRight } from 'lucide-react';
 import { CITY, LEGAL_ID, LEGAL_NAME, WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from '@/lib/content';
 import { Reveal } from '@/components/reveal';
+import { PurchasePixel } from '@/components/purchase-pixel';
 
 const PDF = '/claude-no-adm-logistico.pdf';
 const TITLE = 'Obrigado pela compra: Claude no Administrativo Logístico';
@@ -49,6 +50,7 @@ function Grain() {
 export default function Page() {
   return (
     <div className="lp-lock">
+      <PurchasePixel />
       <main>
         <section className="lp-sky relative overflow-hidden pb-20 text-background md:pb-28">
           <Grain />

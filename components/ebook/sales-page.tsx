@@ -26,6 +26,7 @@ import { Reveal } from '@/components/reveal';
 import { BuyButton } from '@/components/ebook/buy-button';
 import { CopyBox } from '@/components/ebook/copy-box';
 import { SalesTracking } from '@/components/ebook/sales-tracking';
+import { Clarity } from '@/components/clarity';
 import { StickyBuy } from '@/components/ebook/sticky-buy';
 import {
   ExitIntent,
@@ -234,6 +235,7 @@ export function SalesPage({ variant }: { variant?: SalesVariant }) {
   return (
     <div className="lp-lock">
       <SalesTracking variant={variant} />
+      <Clarity tags={{ page: 'ebook-vendas', test_variant: variant ?? 'original' }} />
       {dopamine && <ScrollProgress />}
       <main>
         {/* 0. Primeira tela */}

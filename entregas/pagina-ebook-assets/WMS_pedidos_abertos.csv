@@ -1,0 +1,31 @@
+Pedido;Cliente;Transportadora;Data_Prometida;Status;Valor_Pedido
+PV-50100;Loja A0;Rapido Sul;12/10/2026;Entregue;1362,41
+PV-50101;Loja B1;TransLog Vale;03/10/2026;Em rota de entrega;1620,51
+PV-50102;Loja C2;Expresso Norte;13/10/2026;Cancelado;1618,24
+PV-50103;Loja D3;Rapido Sul;07/10/2026;Entregue;2074,35
+PV-50104;Loja E4;TransLog Vale;11/10/2026;Entregue;1795,80
+PV-50105;Loja F5;Expresso Norte;14/10/2026;Entregue;211,50
+PV-50106;Loja G6;Rapido Sul;03/10/2026;Em transito;2464,14
+PV-50107;Loja H7;TransLog Vale;13/10/2026;Em transito;588,92
+PV-50108;Loja I8;Expresso Norte;07/10/2026;Entregue;871,72
+PV-50109;Loja J9;Rapido Sul;14/10/2026;Em rota de entrega;218,17
+PV-50110;Loja K10;TransLog Vale;14/10/2026;Entregue;2303,73
+PV-50111;Loja L11;Expresso Norte;04/10/2026;Entregue;1504,55
+PV-50112;Loja A12;Rapido Sul;01/10/2026;Em rota de entrega;2257,67
+PV-50113;Loja B13;TransLog Vale;14/10/2026;Cancelado;241,39
+PV-50114;Loja C14;Expresso Norte;14/10/2026;Em rota de entrega;1321,70
+PV-50115;Loja D15;Rapido Sul;07/10/2026;Em transito;762,27
+PV-50116;Loja E16;TransLog Vale;12/10/2026;Em rota de entrega;1516,57
+PV-50117;Loja F17;Expresso Norte;03/10/2026;Em transito;1372,23
+PV-50118;Loja G18;Rapido Sul;14/10/2026;Cancelado;719,04
+PV-50119;Loja H19;TransLog Vale;05/10/2026;Aguardando coleta;2234,15
+PV-50120;Loja I20;Expresso Norte;03/10/2026;Entregue;2428,87
+PV-50121;Loja J21;Rapido Sul;01/10/2026;Entregue;494,10
+PV-50122;Loja K22;TransLog Vale;09/10/2026;Entregue;668,14
+PV-50123;Loja L23;Expresso Norte;04/10/2026;Entregue;571,03
+PV-50124;Loja A24;Rapido Sul;13/10/2026;Entregue;320,09
+PV-50125;Loja B25;TransLog Vale;06/10/2026;Entregue;2371,34
+PV-50126;Loja C26;Expresso Norte;12/10/2026;Aguardando coleta;1977,80
+PV-50127;Loja D27;Rapido Sul;06/10/2026;Em transito;1320,50
+PV-50128;Loja E28;TransLog Vale;04/10/2026;Em transito;428,46
+PV-50129;Loja F29;Expresso Norte;14/10/2026;Em transito;2136,01

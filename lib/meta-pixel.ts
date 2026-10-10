@@ -36,6 +36,35 @@ export function track(event: FbqEvent, params?: FbqParams, options?: FbqOptions)
   }
 }
 
+/* Evento personalizado (ex.: profundidade de rolagem). Mesmas garantias de `track`. */
+export function trackCustom(name: string, params?: FbqParams): boolean {
+  if (!pixelReady()) return false;
+  try {
+    window.fbq!('trackCustom', name, params ?? {});
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/*
+  O snippet do pixel é afterInteractive e pode chegar depois do efeito que
+  quer disparar; espera `window.fbq` por até 10 s.
+*/
+export function whenPixelReady(run: () => void): () => void {
+  let tries = 0;
+  const timer = window.setInterval(() => {
+    tries += 1;
+    if (pixelReady()) {
+      window.clearInterval(timer);
+      run();
+    } else if (tries >= 100) {
+      window.clearInterval(timer);
+    }
+  }, 100);
+  return () => window.clearInterval(timer);
+}
+
 /* Ebook "Claude no ADM Logístico". */
 export const EBOOK_LOGISTICA = {
   content_ids: ['ebook-logistica'],

@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1,
     },
-    ...['sos-wordpress', 'sos-vibe-code'].map((slug) => ({
+    ...['sos-wordpress', 'sos-vibe-code', 'claude-no-adm-logistico'].map((slug) => ({
       url: `${baseUrl}/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,

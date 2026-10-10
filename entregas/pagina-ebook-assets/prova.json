@@ -1,0 +1,25 @@
+{
+  "modelo": "claude-sonnet-5",
+  "geradoEm": "2026-10-10T12:39:38.056Z",
+  "pedido3": "Cruze WMS_expedicao_outubro e RapidoSul_coletas_outubro por Pedido. Antes, mostre as diferenças\nde formato e como vai tratar. Mantenha os originais. Separe em: batem,\ndiferentes, só na 1, só na 2. Marque duplicidades sem apagar.",
+  "pedido2": "Hoje é 10/10/2026.\nAtrasado = Data_Prometida antes de hoje e Status\ndiferente de Entregue e Cancelado. Faixas: 1, 2-3, 4-7 e mais de 7 dias.\nAgrupe por transportadora com quantidade e valor. Não altere os dados originais.",
+  "plantado": {
+    "pesoDiferente": [
+      "PV-48213",
+      "PV-48219",
+      "PV-48227"
+    ],
+    "volumesDiferente": [
+      "PV-48224"
+    ],
+    "soNoWms": [
+      "PV-48230",
+      "PV-48231"
+    ],
+    "soNaTransportadora": [
+      "PV-48299"
+    ],
+    "duplicado": "PV-48216"
+  },
+  "custoUSD": 0.04356
+}

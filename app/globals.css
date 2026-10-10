@@ -365,3 +365,125 @@ h3 {
   opacity: 0.25;
   mix-blend-mode: luminosity;
 }
+
+/*
+  Animação da primeira tela do ebook (/claude-no-adm-logistico): duas
+  planilhas entram e viram a tabela verde/laranja/vermelha. 6 s em loop, só
+  CSS. Dados do resultado real do pedido 3 (planilhas de exemplo, fictícias).
+*/
+.hero-anim {
+  --ok: oklch(0.5 0.12 155);
+  --ok-bg: oklch(0.95 0.04 155);
+  --dif: oklch(0.52 0.14 55);
+  --dif-bg: oklch(0.95 0.04 70);
+  --falta: oklch(0.5 0.18 25);
+  --falta-bg: oklch(0.94 0.04 20);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  background: var(--bg);
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--ink);
+  box-shadow: 0 24px 60px -24px oklch(0.2 0.08 250 / 0.55);
+}
+.hero-anim .sheet {
+  position: absolute;
+  top: 14%;
+  width: 44%;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  display: grid;
+  gap: 4px;
+}
+.hero-anim .sheet b {
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.hero-anim .sheet i { display: block; height: 8px; border-radius: 3px; background: var(--line); }
+.hero-anim .s1 { left: 4%; animation: ha-s1 6s infinite ease-in-out; }
+.hero-anim .s2 { right: 4%; animation: ha-s2 6s infinite ease-in-out; }
+.hero-anim .result {
+  position: absolute;
+  inset: 7% 5%;
+  display: grid;
+  gap: 5px;
+  align-content: start;
+  opacity: 0;
+  animation: ha-res 6s infinite ease-in-out;
+}
+.hero-anim .row {
+  display: grid;
+  grid-template-columns: 1.15fr 0.75fr 1.6fr;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 7px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  animation: ha-row 6s infinite;
+}
+.hero-anim .row span:last-child { font-family: var(--font-geist-sans), system-ui, sans-serif; font-weight: 600; }
+.hero-anim .head { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); opacity: 1; animation: none; }
+.hero-anim .ok { background: var(--ok-bg); color: var(--ok); }
+.hero-anim .dif { background: var(--dif-bg); color: var(--dif); }
+.hero-anim .falta { background: var(--falta-bg); color: var(--falta); }
+.hero-anim .row:nth-child(2) { animation-delay: 0.15s; }
+.hero-anim .row:nth-child(3) { animation-delay: 0.3s; }
+.hero-anim .row:nth-child(4) { animation-delay: 0.45s; }
+.hero-anim .row:nth-child(5) { animation-delay: 0.6s; }
+.hero-anim .row:nth-child(6) { animation-delay: 0.75s; }
+
+@keyframes ha-s1 { 0%, 12% { transform: translateX(-120%); opacity: 0; } 25%, 38% { transform: translateX(0); opacity: 1; } 48%, 100% { transform: translateX(55%); opacity: 0; } }
+@keyframes ha-s2 { 0%, 12% { transform: translateX(120%); opacity: 0; } 25%, 38% { transform: translateX(0); opacity: 1; } 48%, 100% { transform: translateX(-55%); opacity: 0; } }
+@keyframes ha-res { 0%, 45% { opacity: 0; } 52%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes ha-row { 0%, 50% { opacity: 0; transform: translateY(4px); } 58%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+/*
+  Pulso dos botões de compra, sem parar: o botão cresce 6% e volta (batida
+  dupla, como coração) enquanto dois anéis expandem e somem, a cada 1,6 s.
+  Cor dos anéis em --pulse (branco sobre o céu, azul na barra fixa).
+  Parar o pulso no hover deixa o clique estável.
+*/
+.buy-pulse {
+  animation:
+    buy-beat 1.6s ease-in-out infinite,
+    buy-ring 1.6s ease-out infinite;
+  will-change: transform;
+}
+.buy-pulse:hover,
+.buy-pulse:active {
+  animation-play-state: paused;
+}
+@keyframes buy-beat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.06); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.04); }
+  70% { transform: scale(1); }
+}
+@keyframes buy-ring {
+  0% {
+    box-shadow:
+      0 0 0 0 color-mix(in oklch, var(--pulse, #fff) 85%, transparent),
+      0 0 0 0 color-mix(in oklch, var(--pulse, #fff) 55%, transparent),
+      0 0 24px 2px color-mix(in oklch, var(--pulse, #fff) 45%, transparent);
+  }
+  70%, 100% {
+    box-shadow:
+      0 0 0 12px color-mix(in oklch, var(--pulse, #fff) 0%, transparent),
+      0 0 0 26px color-mix(in oklch, var(--pulse, #fff) 0%, transparent),
+      0 0 24px 2px color-mix(in oklch, var(--pulse, #fff) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buy-pulse { animation: none; }
+  .hero-anim .sheet { display: none; }
+  .hero-anim .result, .hero-anim .row { animation: none; opacity: 1; }
+}

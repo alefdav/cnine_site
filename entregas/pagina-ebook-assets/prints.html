@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Prints de prova</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Atkinson+Hyperlegible+Mono:wght@400;600&display=swap">
+<style>
+  :root { --ink:#161a22; --muted:#5a6272; --line:#dde2ea; --ok:#1d7a4b; --ok-bg:#e3f4ea; --dif:#a8500a; --dif-bg:#fbebd9; --falta:#b4232a; --falta-bg:#fbe3e4; --dup:#4b4fa8; --dup-bg:#e6e7fb; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9ecf1; font: 26px/1.4 "Atkinson Hyperlegible", system-ui, sans-serif; color: var(--ink); }
+  .shot { width: 1080px; padding: 48px; background: #f6f7f9; display: grid; gap: 28px; }
+  .tag { font: 600 20px "Atkinson Hyperlegible Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: 44px; line-height: 1.15; }
+  .pedido { background: #fff; border: 2px dashed var(--line); border-radius: 16px; padding: 20px 24px; font: 22px/1.45 "Atkinson Hyperlegible Mono", monospace; white-space: pre-wrap; color: #39404d; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: grid; gap: 14px; }
+  .counts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .count { border-radius: 14px; padding: 16px; display: grid; gap: 4px; }
+  .count b { font: 600 48px/1 "Atkinson Hyperlegible Mono", monospace; }
+  .count span { font-size: 20px; }
+  .ok { background: var(--ok-bg); color: var(--ok); } .dif { background: var(--dif-bg); color: var(--dif); } .falta { background: var(--falta-bg); color: var(--falta); } .dup { background: var(--dup-bg); color: var(--dup); }
+  table { width: 100%; border-collapse: collapse; font-size: 22px; }
+  th { text-align: left; font: 600 17px "Atkinson Hyperlegible Mono", monospace; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 8px 10px; border-bottom: 2px solid var(--line); }
+  td { padding: 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  td.n { text-align: right; font-family: "Atkinson Hyperlegible Mono", monospace; }
+  tr.r-dif td:first-child { border-left: 8px solid var(--dif); } tr.r-falta td:first-child { border-left: 8px solid var(--falta); } tr.r-dup td:first-child { border-left: 8px solid var(--dup); }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 12px; font-size: 18px; font-weight: 700; }
+  .foot { font-size: 18px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- PRINT 1: pedido 3, cruzar planilhas -->
+<div class="shot" id="print1">
+  <span class="tag">Pedido 3 do guia · resultado real</span>
+  <h1>Cruzar o WMS com a planilha da transportadora</h1>
+  <div class="pedido">Cruze WMS_expedicao_outubro e RapidoSul_coletas_outubro por Pedido. Antes, mostre as diferenças de formato e como vai tratar. Mantenha os originais. Separe em: batem, diferentes, só na 1, só na 2. Marque duplicidades sem apagar.</div>
+  <div class="counts">
+    <div class="count ok"><b>18</b><span>batem</span></div>
+    <div class="count dif"><b>4</b><span>diferentes</span></div>
+    <div class="count falta"><b>3</b><span>faltam (2 + 1)</span></div>
+    <div class="count dup"><b>1</b><span>duplicado</span></div>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Pedido</th><th>O que o Claude achou</th><th class="n">WMS</th><th class="n">Transp.</th></tr></thead>
+      <tbody>
+        <tr class="r-dif"><td>PV-48213</td><td><span class="pill dif">peso</span> +12 kg</td><td class="n">46,0</td><td class="n">58,0</td></tr>
+        <tr class="r-dif"><td>PV-48219</td><td><span class="pill dif">peso</span> +7,5 kg</td><td class="n">38,9</td><td class="n">46,4</td></tr>
+        <tr class="r-dif"><td>PV-48224</td><td><span class="pill dif">volumes</span> 2 → 4</td><td class="n">2</td><td class="n">4</td></tr>
+        <tr class="r-dif"><td>PV-48227</td><td><span class="pill dif">peso</span> +20 kg, parece digitação</td><td class="n">9,8</td><td class="n">29,8</td></tr>
+        <tr class="r-falta"><td>PV-48230</td><td><span class="pill falta">só no WMS</span> sem coleta</td><td class="n">63,0</td><td class="n">—</td></tr>
+        <tr class="r-falta"><td>PV-48231</td><td><span class="pill falta">só no WMS</span> sem coleta</td><td class="n">42,8</td><td class="n">—</td></tr>
+        <tr class="r-falta"><td>PV-48299</td><td><span class="pill falta">só na transp.</span> cobrado sem expedição</td><td class="n">—</td><td class="n">18,0</td></tr>
+        <tr class="r-dup"><td>PV-48216</td><td><span class="pill dup">duplicado</span> mesmo CT-e 2×</td><td class="n">28,3</td><td class="n">28,3 ×2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="foot">Também apontou antes as diferenças de formato: separador ; e , · vírgula e ponto no peso · data DD/MM e AAAA-MM-DD · NF com zeros à esquerda. Resposta real do Claude com as planilhas anexadas. Planilhas de exemplo, dados fictícios.</p>
+</div>
+
+<!-- PRINT 2: pedido 2, atrasados -->
+<div class="shot" id="print2">
+  <span class="tag">Pedido 2 do guia · resultado real</span>
+  <h1>Pedidos atrasados por transportadora, sem PROCV</h1>
+  <div class="pedido">Atrasado = Data_Prometida antes de hoje e Status diferente de Entregue e Cancelado. Faixas: 1, 2-3, 4-7 e mais de 7 dias. Agrupe por transportadora com quantidade e valor. Não altere os dados originais.</div>
+  <div class="counts">
+    <div class="count falta"><b>8</b><span>atrasados de 30</span></div>
+    <div class="count dif"><b style="font-size:38px">R$ 12,5 mil</b><span>em pedidos parados</span></div>
+    <div class="count falta"><b style="font-size:38px">9 dias</b><span>o pior atraso</span></div>
+    <div class="count dif"><b>55%</b><span>na Rapido Sul</span></div>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Transportadora</th><th class="n">2-3 d</th><th class="n">4-7 d</th><th class="n">+7 d</th><th class="n">Qtd</th><th class="n">Valor (R$)</th></tr></thead>
+      <tbody>
+        <tr class="r-falta"><td>Rapido Sul</td><td class="n">1</td><td class="n">2</td><td class="n">1</td><td class="n"><b>4</b></td><td class="n"><b>6.804,58</b></td></tr>
+        <tr class="r-dif"><td>TransLog Vale</td><td class="n">—</td><td class="n">3</td><td class="n">—</td><td class="n"><b>3</b></td><td class="n"><b>4.283,12</b></td></tr>
+        <tr class="r-dif"><td>Expresso Norte</td><td class="n">—</td><td class="n">1</td><td class="n">—</td><td class="n"><b>1</b></td><td class="n"><b>1.372,23</b></td></tr>
+        <tr><td><b>Total</b></td><td class="n">1</td><td class="n">6</td><td class="n">1</td><td class="n"><b>8</b></td><td class="n"><b>12.459,93</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="foot">Resposta real do Claude com a planilha anexada. Planilha de exemplo, dados fictícios.</p>
+</div>
+
+</body>
+</html>

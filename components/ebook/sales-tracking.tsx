@@ -7,12 +7,20 @@ const DEPTHS = [25, 50, 75] as const;
 
 /*
   ViewContent ao abrir e ScrollDepth 25/50/75 (uma vez cada) na página de
-  vendas do ebook. Com variante de teste ativa, todo evento leva `test_variant`.
+  vendas do ebook. Com variante de teste ativa, todo evento leva `test_variant`;
+  o título da primeira tela (teste A/B) vai sempre como `hero_headline`.
 */
-export function SalesTracking({ variant }: { variant?: string }) {
+export function SalesTracking({ variant, headline }: { variant?: string; headline?: string }) {
   useEffect(
-    () => whenPixelReady(() => track('ViewContent', { ...EBOOK_LOGISTICA, ...(variant && { test_variant: variant }) })),
-    [variant],
+    () =>
+      whenPixelReady(() =>
+        track('ViewContent', {
+          ...EBOOK_LOGISTICA,
+          ...(variant && { test_variant: variant }),
+          ...(headline && { hero_headline: headline }),
+        }),
+      ),
+    [variant, headline],
   );
 
   useEffect(() => {
@@ -33,6 +41,7 @@ export function SalesTracking({ variant }: { variant?: string }) {
             percent: depth,
             content_ids: EBOOK_LOGISTICA.content_ids,
             ...(variant && { test_variant: variant }),
+            ...(headline && { hero_headline: headline }),
           })
         ) {
           sent.add(depth);
@@ -49,7 +58,7 @@ export function SalesTracking({ variant }: { variant?: string }) {
       window.removeEventListener('scroll', onScroll);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [variant]);
+  }, [variant, headline]);
 
   return null;
 }

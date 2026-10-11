@@ -406,16 +406,15 @@ h3 {
   text-transform: uppercase;
 }
 .hero-anim .sheet i { display: block; height: 8px; border-radius: 3px; background: var(--line); }
-.hero-anim .s1 { left: 4%; animation: ha-s1 6s infinite ease-in-out; }
-.hero-anim .s2 { right: 4%; animation: ha-s2 6s infinite ease-in-out; }
+.hero-anim .s1 { left: 4%; opacity: 0; animation: ha-s1 8s infinite ease-in-out; }
+.hero-anim .s2 { right: 4%; opacity: 0; animation: ha-s2 8s infinite ease-in-out; }
 .hero-anim .result {
   position: absolute;
   inset: 7% 5%;
   display: grid;
   gap: 5px;
   align-content: start;
-  opacity: 0;
-  animation: ha-res 6s infinite ease-in-out;
+  animation: ha-res 8s infinite ease-in-out;
 }
 .hero-anim .row {
   display: grid;
@@ -425,24 +424,29 @@ h3 {
   border-radius: 7px;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
-  opacity: 0;
-  animation: ha-row 6s infinite;
+  animation: ha-row 8s infinite;
 }
 .hero-anim .row span:last-child { font-family: var(--font-geist-sans), system-ui, sans-serif; font-weight: 600; }
 .hero-anim .head { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); opacity: 1; animation: none; }
 .hero-anim .ok { background: var(--ok-bg); color: var(--ok); }
 .hero-anim .dif { background: var(--dif-bg); color: var(--dif); }
 .hero-anim .falta { background: var(--falta-bg); color: var(--falta); }
-.hero-anim .row:nth-child(2) { animation-delay: 0.15s; }
-.hero-anim .row:nth-child(3) { animation-delay: 0.3s; }
-.hero-anim .row:nth-child(4) { animation-delay: 0.45s; }
-.hero-anim .row:nth-child(5) { animation-delay: 0.6s; }
-.hero-anim .row:nth-child(6) { animation-delay: 0.75s; }
+/*
+  O ciclo começa pela tabela pronta (quem sai em 3 s já viu o resultado):
+  tabela parada até 50% (4 s), as duas planilhas entram e se juntam até 82%, e a tabela
+  volta montando linha a linha. Atrasos negativos escalonam as linhas sem
+  esconder nenhuma no primeiro quadro.
+*/
+.hero-anim .row:nth-child(2) { animation-delay: -0.75s; }
+.hero-anim .row:nth-child(3) { animation-delay: -0.6s; }
+.hero-anim .row:nth-child(4) { animation-delay: -0.45s; }
+.hero-anim .row:nth-child(5) { animation-delay: -0.3s; }
+.hero-anim .row:nth-child(6) { animation-delay: -0.15s; }
 
-@keyframes ha-s1 { 0%, 12% { transform: translateX(-120%); opacity: 0; } 25%, 38% { transform: translateX(0); opacity: 1; } 48%, 100% { transform: translateX(55%); opacity: 0; } }
-@keyframes ha-s2 { 0%, 12% { transform: translateX(120%); opacity: 0; } 25%, 38% { transform: translateX(0); opacity: 1; } 48%, 100% { transform: translateX(-55%); opacity: 0; } }
-@keyframes ha-res { 0%, 45% { opacity: 0; } 52%, 92% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes ha-row { 0%, 50% { opacity: 0; transform: translateY(4px); } 58%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+@keyframes ha-s1 { 0%, 54% { transform: translateX(-120%); opacity: 0; } 63%, 73% { transform: translateX(0); opacity: 1; } 82%, 100% { transform: translateX(55%); opacity: 0; } }
+@keyframes ha-s2 { 0%, 54% { transform: translateX(120%); opacity: 0; } 63%, 73% { transform: translateX(0); opacity: 1; } 82%, 100% { transform: translateX(-55%); opacity: 0; } }
+@keyframes ha-res { 0%, 50% { opacity: 1; } 55%, 84% { opacity: 0; } 88%, 100% { opacity: 1; } }
+@keyframes ha-row { 0%, 50% { opacity: 1; transform: none; } 55%, 86% { opacity: 0; transform: translateY(4px); } 92%, 100% { opacity: 1; transform: none; } }
 
 /*
   Pulso dos botões de compra, sem parar: o botão cresce 6% e volta (batida

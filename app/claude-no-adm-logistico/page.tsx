@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SalesPage, parseVariant } from '@/components/ebook/sales-page';
+import { SalesPage, parseHeadline, parseVariant } from '@/components/ebook/sales-page';
 
 const TITLE = 'Cruze a planilha do WMS com a da transportadora em 2 minutos, sem PROCV';
 const DESCRIPTION =
@@ -19,8 +19,15 @@ export const metadata: Metadata = {
   },
 };
 
-/* ?v=urgencia | dopamina | combo liga as variantes de teste; sem ele, a página de verdade. */
-export default async function Page({ searchParams }: { searchParams: Promise<{ v?: string | string[] }> }) {
-  const { v } = await searchParams;
-  return <SalesPage variant={parseVariant(v)} />;
+/*
+  ?v=urgencia | dopamina | combo liga as variantes de teste; sem ele, a página de verdade.
+  ?h=dor | solucao é o título da primeira tela, sorteado pelo proxy.ts (teste A/B).
+*/
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ v?: string | string[]; h?: string | string[] }>;
+}) {
+  const { v, h } = await searchParams;
+  return <SalesPage variant={parseVariant(v)} headline={parseHeadline(h)} />;
 }

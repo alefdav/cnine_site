@@ -6,7 +6,6 @@ import {
   Landmark,
   ChevronDown,
   ClipboardCheck,
-  FileSpreadsheet,
   FileText,
   GitCompareArrows,
   Mail,
@@ -47,6 +46,48 @@ export function parseVariant(v: string | string[] | undefined): SalesVariant | u
   const value = Array.isArray(v) ? v[0] : v;
   return value === 'urgencia' || value === 'dopamina' || value === 'combo' ? value : undefined;
 }
+
+/*
+  Teste A/B do título da primeira tela (sorteado no proxy.ts): "dor" abre
+  com a cena da sexta à tarde, "solucao" com a promessa de 2 minutos. Vai
+  ao pixel e ao Clarity como `hero_headline`.
+*/
+export type HeroHeadline = 'dor' | 'solucao';
+
+export function parseHeadline(h: string | string[] | undefined): HeroHeadline {
+  const value = Array.isArray(h) ? h[0] : h;
+  return value === 'dor' ? 'dor' : 'solucao';
+}
+
+const headlines: Record<HeroHeadline, { title: React.ReactNode; sub: React.ReactNode }> = {
+  dor: {
+    title: (
+      <>
+        Sexta, 17h40, e o WMS <span className="text-[var(--lp-moon)]">ainda não bate</span> com a planilha da
+        transportadora?
+      </>
+    ),
+    sub: (
+      <>
+        Com 12 pedidos prontos para a IA, esse cruzamento sai em 2 minutos, sem PROCV.{' '}
+        <strong className="font-bold text-background">Mesmo se você nunca usou IA.</strong>
+      </>
+    ),
+  },
+  solucao: {
+    title: (
+      <>
+        Cruze WMS × transportadora <span className="text-[var(--lp-moon)]">em 2 minutos, sem PROCV</span>
+      </>
+    ),
+    sub: (
+      <>
+        12 pedidos prontos para copiar e colar na IA.{' '}
+        <strong className="font-bold text-background">Funciona mesmo se você nunca usou.</strong>
+      </>
+    ),
+  },
+};
 
 const wrap = 'mx-auto max-w-6xl px-5 md:px-8';
 const narrow = 'mx-auto max-w-[44rem] px-5 md:px-8';
@@ -147,6 +188,10 @@ const faq = [
     a: 'Logo depois do Pix você vai direto para a página de download do PDF. Dá para baixar ou abrir no navegador.',
   },
   {
+    q: 'E se eu não gostar?',
+    a: `Você tem 7 dias depois da compra para pedir o dinheiro de volta, sem precisar explicar o motivo. É só mandar mensagem no WhatsApp ${WHATSAPP_DISPLAY} e devolvemos o valor do Pix.`,
+  },
+  {
     q: 'Funciona no celular?',
     a: 'O PDF abre no celular. Para cruzar planilhas, o computador é mais confortável.',
   },
@@ -214,6 +259,7 @@ function ProofShot({ src, alt, width, height }: { src: string; alt: string; widt
 function TrustBlock({ className = '' }: { className?: string }) {
   const items: { icon: LucideIcon; text: React.ReactNode }[] = [
     { icon: Landmark, text: <>Pix processado pela AbacatePay · PDF liberado na hora</> },
+    { icon: ShieldCheck, text: <>7 dias para pedir o dinheiro de volta, pelo WhatsApp</> },
     { icon: Building2, text: <>{LEGAL_NAME} · {LEGAL_ID}</> },
   ];
   return (
@@ -228,14 +274,14 @@ function TrustBlock({ className = '' }: { className?: string }) {
   );
 }
 
-export function SalesPage({ variant }: { variant?: SalesVariant }) {
+export function SalesPage({ variant, headline = 'solucao' }: { variant?: SalesVariant; headline?: HeroHeadline }) {
   const urgency = variant === 'urgencia' || variant === 'combo';
   const dopamine = variant === 'dopamina' || variant === 'combo';
 
   return (
     <div className="lp-lock">
-      <SalesTracking variant={variant} />
-      <Clarity tags={{ page: 'ebook-vendas', test_variant: variant ?? 'original' }} />
+      <SalesTracking variant={variant} headline={headline} />
+      <Clarity tags={{ page: 'ebook-vendas', test_variant: variant ?? 'original', hero_headline: headline }} />
       {dopamine && <ScrollProgress />}
       <main>
         {/* 0. Primeira tela */}
@@ -248,38 +294,46 @@ export function SalesPage({ variant }: { variant?: SalesVariant }) {
               </span>
             </div>
 
-            <div className="grid gap-6 pt-2 md:gap-9 md:pt-12 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14">
+            {/*
+              No celular: público → título → botão → tabela, para o preço e o
+              botão caberem na primeira tela. No desktop a tabela vai para a
+              coluna da direita. Sem `rise` no texto e no botão: aparecem já
+              no primeiro quadro.
+            */}
+            <div className="grid gap-5 pt-1 md:gap-9 md:pt-12 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-x-14 lg:gap-y-8">
               <div>
-                <span className="rise inline-flex h-[30px] items-center gap-2 rounded-full bg-background/12 px-3.5 text-[13.5px] font-bold">
-                  <FileSpreadsheet size={15} strokeWidth={2} aria-hidden />
-                  Guia em PDF · 34 páginas
+                <span className="inline-flex h-[30px] items-center gap-2 rounded-full bg-background/12 px-3.5 text-[13.5px] font-bold">
+                  <Warehouse size={15} strokeWidth={2} aria-hidden />
+                  Para o ADM de CD e transportadora
                 </span>
-                <h1 className="rise rise-1 mt-4 text-[clamp(2rem,7.4vw,3.75rem)] font-extrabold leading-[1.04] tracking-tighter">
-                  Cruze a planilha do WMS com a da transportadora{' '}
-                  <span className="text-[var(--lp-moon)]">em 2 minutos, sem PROCV</span>
+                <h1 className="mt-3.5 text-[clamp(1.875rem,7.4vw,3.75rem)] font-extrabold leading-[1.04] tracking-tighter">
+                  {headlines[headline].title}
                 </h1>
-                <p className="rise rise-2 mt-4 max-w-[40ch] text-lg leading-relaxed text-background/85 md:text-[19px]">
-                  12 pedidos prontos para copiar e colar{' '}
-                  <strong className="font-bold text-background">no ChatGPT, Gemini, Copilot ou Claude que você já usa.</strong>{' '}
-                  Funciona mesmo se você nunca usou IA.
+                <p className="mt-3.5 max-w-[40ch] text-[17px] leading-snug text-background/85 md:text-[19px] md:leading-relaxed">
+                  {headlines[headline].sub}
                 </p>
               </div>
 
-              <div className="rise rise-3 lg:row-span-2">
-                <HeroAnimation />
-              </div>
-
-              <div className="rise rise-4">
+              <div>
                 <BuyButton
                   id="hero-buy"
                   variant={variant}
+                  headline={headline}
                   placement="hero"
                   className={`${buyLarge} bg-background text-primary hover:bg-tint`}
                 >
                   Quero o guia por {PRICE}
                 </BuyButton>
-                <TrustBlock className="mt-4" />
+                <p className="mt-3 text-center text-[14px] text-background/85 sm:text-left">
+                  Pix · PDF na hora · <strong className="font-bold text-background">Garantia de 7 dias</strong>
+                </p>
               </div>
+
+              <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
+                <HeroAnimation />
+              </div>
+
+              <TrustBlock />
             </div>
           </div>
         </section>
@@ -487,7 +541,9 @@ export function SalesPage({ variant }: { variant?: SalesVariant }) {
                 </li>
               ))}
             </ol>
-            <p className="mt-5 text-sm text-muted">Pagamento só por Pix, processado pela AbacatePay.</p>
+            <p className="mt-5 text-sm text-muted">
+              Pagamento só por Pix, processado pela AbacatePay. Não gostou? Peça o dinheiro de volta em até 7 dias pelo WhatsApp.
+            </p>
           </div>
         </section>
 
@@ -548,7 +604,7 @@ export function SalesPage({ variant }: { variant?: SalesVariant }) {
             <p className="mt-4 font-mono text-[15px] text-background/85">34 páginas · 12 pedidos prontos · acesso imediato</p>
             <p className="mt-8 text-[3rem] font-extrabold leading-none tracking-tighter">{PRICE}</p>
             <div className="mt-8 flex flex-col items-center">
-              <BuyButton variant={variant} placement="closing" className={`${buyLarge} bg-background text-primary hover:bg-tint`}>
+              <BuyButton variant={variant} headline={headline} placement="closing" className={`${buyLarge} bg-background text-primary hover:bg-tint`}>
                 Quero o guia por {PRICE}
               </BuyButton>
               <TrustBlock className="mt-5 w-full max-w-md" />
@@ -569,7 +625,7 @@ export function SalesPage({ variant }: { variant?: SalesVariant }) {
         </div>
       </footer>
 
-      <StickyBuy heroId="hero-buy" closingId="closing" variant={variant} />
+      <StickyBuy heroId="hero-buy" closingId="closing" variant={variant} headline={headline} />
       {urgency && <PurchaseToasts />}
       {urgency && <ExitIntent variant={variant} />}
     </div>

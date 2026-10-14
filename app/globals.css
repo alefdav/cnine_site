@@ -486,8 +486,55 @@ h3 {
   }
 }
 
+/*
+  C9. Achados (/achados-natal): céu noturno da marca com estrelas e um varal
+  de luzes douradas no lugar do vermelho e verde que os concorrentes usam.
+*/
+.achados {
+  --ac-navy: #16233d;
+  --ac-navy-deep: #0e1729;
+  --ac-gold: #f5c451;
+  --ac-gold-soft: #ffe3a3;
+  --ac-ink: #f4f1ea;
+  --ac-muted: rgb(244 241 234 / 0.72);
+  --ac-line: rgb(244 241 234 / 0.14);
+  --ac-wa: #1fae5b;
+  background:
+    radial-gradient(90% 55% at 50% 0%, #22355c 0%, transparent 70%),
+    radial-gradient(80% 50% at 50% 110%, #1b2c4d 0%, transparent 70%),
+    var(--ac-navy);
+  color: var(--ac-ink);
+}
+.achados-stars {
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 42%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 46% 12%, var(--ac-gold-soft) 50%, transparent 51%),
+    radial-gradient(1px 1px at 63% 33%, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 81% 21%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 90% 48%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 7% 62%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 37% 74%, var(--ac-gold-soft) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 72% 66%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 95% 82%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 20% 90%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 55% 88%, #fff 50%, transparent 51%);
+  opacity: 0.8;
+}
+.achados-bulb {
+  animation: achados-twinkle 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+.achados-bulb:nth-of-type(3n) { animation-delay: -0.8s; }
+.achados-bulb:nth-of-type(3n + 1) { animation-delay: -1.6s; }
+@keyframes achados-twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .buy-pulse { animation: none; }
+  .achados-bulb { animation: none; }
   .hero-anim .sheet { display: none; }
   .hero-anim .result, .hero-anim .row { animation: none; opacity: 1; }
 }

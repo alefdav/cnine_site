@@ -452,16 +452,37 @@ h3 {
   Pulso dos botões de compra, sem parar: o botão cresce 6% e volta (batida
   dupla, como coração) enquanto dois anéis expandem e somem, a cada 1,6 s.
   Cor dos anéis em --pulse (branco sobre o céu, azul na barra fixa).
+  Só transform e opacity (anéis em pseudo-elementos): roda no compositor,
+  sem repintar a tela a cada quadro. O box-shadow animado de antes pesava
+  no INP do navegador do Facebook em Android.
   Parar o pulso no hover deixa o clique estável.
 */
 .buy-pulse {
-  animation:
-    buy-beat 1.6s ease-in-out infinite,
-    buy-ring 1.6s ease-out infinite;
+  position: relative;
+  isolation: isolate;
+  animation: buy-beat 1.6s ease-in-out infinite;
   will-change: transform;
 }
+.buy-pulse::before,
+.buy-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--pulse, #fff);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: buy-ring 1.6s ease-out infinite;
+}
+.buy-pulse::after {
+  animation-delay: 0.25s;
+}
 .buy-pulse:hover,
-.buy-pulse:active {
+.buy-pulse:active,
+.buy-pulse:hover::before,
+.buy-pulse:hover::after {
   animation-play-state: paused;
 }
 @keyframes buy-beat {
@@ -472,18 +493,8 @@ h3 {
   70% { transform: scale(1); }
 }
 @keyframes buy-ring {
-  0% {
-    box-shadow:
-      0 0 0 0 color-mix(in oklch, var(--pulse, #fff) 85%, transparent),
-      0 0 0 0 color-mix(in oklch, var(--pulse, #fff) 55%, transparent),
-      0 0 24px 2px color-mix(in oklch, var(--pulse, #fff) 45%, transparent);
-  }
-  70%, 100% {
-    box-shadow:
-      0 0 0 12px color-mix(in oklch, var(--pulse, #fff) 0%, transparent),
-      0 0 0 26px color-mix(in oklch, var(--pulse, #fff) 0%, transparent),
-      0 0 24px 2px color-mix(in oklch, var(--pulse, #fff) 0%, transparent);
-  }
+  0% { transform: scale(1, 1); opacity: 0.55; }
+  70%, 100% { transform: scale(1.07, 1.5); opacity: 0; }
 }
 
 /*
@@ -533,7 +544,7 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .buy-pulse { animation: none; }
+  .buy-pulse, .buy-pulse::before, .buy-pulse::after { animation: none; }
   .achados-bulb { animation: none; }
   .hero-anim .sheet { display: none; }
   .hero-anim .result, .hero-anim .row { animation: none; opacity: 1; }

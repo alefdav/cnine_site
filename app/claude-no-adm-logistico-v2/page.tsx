@@ -117,17 +117,6 @@ const faq = [
   },
 ];
 
-function Grain() {
-  return (
-    <svg className="grain-layer pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
-      <filter id="v2-grain">
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#v2-grain)" />
-    </svg>
-  );
-}
-
 /* Celular com a capa real do PDF. Pequeno de propósito: não pode empurrar o botão. */
 function PhoneMockup({ className = '' }: { className?: string }) {
   return (
@@ -188,7 +177,6 @@ export default function Page() {
       <main>
         {/* 1. Primeira tela: vende sozinha em 390×844, acima da barra fixa */}
         <section className="lp-sky relative overflow-hidden pb-8 text-background md:pb-20">
-          <Grain />
           <div className={`relative z-20 ${narrow}`}>
             <div className="flex h-11 items-center md:h-16">
               <span className="text-[20px] font-extrabold tracking-tighter">
@@ -198,7 +186,13 @@ export default function Page() {
 
             <h1 className="rise rise-1 mt-1 text-[clamp(1.75rem,7.6vw,3.25rem)] font-extrabold leading-[1.05] tracking-tighter">
               Saia no horário sem passar a tarde no PROCV.{' '}
-              <span className="text-[var(--lp-moon)]">A IA cruza as planilhas da logística por você.</span>
+              {/* O Clarity mostrou metade dos toques aqui (azul-claro parece link): agora é link para o checkout. */}
+              <BuyButton
+                placement="headline"
+                className="text-[var(--lp-moon)] underline decoration-[var(--lp-moon)]/45 decoration-2 underline-offset-[6px]"
+              >
+                A IA cruza as planilhas da logística por você.
+              </BuyButton>
             </h1>
             <p className="rise rise-2 mt-3 text-[17px] leading-snug text-background/90 md:text-lg">
               Guia em PDF com 12 pedidos prontos para copiar e colar.
@@ -477,7 +471,6 @@ export default function Page() {
 
         {/* 10. Chamada final */}
         <section className="lp-close relative overflow-hidden py-16 text-background md:py-24">
-          <Grain />
           <div className={`relative z-20 ${narrow} text-center`}>
             <h2 className="text-[2.25rem] font-extrabold leading-[1.05] tracking-tighter md:text-[3rem]">
               Hoje você ainda sai no horário.

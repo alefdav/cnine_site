@@ -6,7 +6,7 @@ import { BuyButton } from '../buy-button';
 */
 export function StickyBar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-background/95 px-4 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-background px-4 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:hidden">
       <div className="flex items-center gap-3">
         <p className="flex-none leading-tight">
           <span className="block text-[19px] font-extrabold tracking-tight text-ink">R$ 17,90</span>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MetaPixel } from "@/components/meta-pixel";
+import { ERROR_BEACON_SCRIPT } from "@/lib/error-beacon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -100,6 +101,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" data-daypart="night" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: ERROR_BEACON_SCRIPT }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: SKY_SCRIPT }} />
         {children}

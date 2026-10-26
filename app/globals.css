@@ -385,10 +385,19 @@ h3 {
   --line: oklch(0.88 0.018 85);
   --accent: oklch(0.8 0.13 82);
   --accent-ink: oklch(0.2 0.055 264);
-  --pg-paper-soft: oklch(0.985 0.008 85 / 0.78);
+  --pg-focus: var(--primary);
 
   background: var(--bg);
   color: var(--ink);
+}
+
+/* Foco de teclado: marinho no papel, dourado nas faixas escuras (3:1 nas duas). */
+.lp-paraguai :is(a, button, summary, input, textarea):focus-visible {
+  outline: 3px solid var(--pg-focus);
+  outline-offset: 3px;
+}
+.lp-paraguai :is(.pg-hero, .bg-deep) {
+  --pg-focus: var(--accent);
 }
 
 /* Primeira tela: marinho com um brilho dourado baixo, como a capa. */

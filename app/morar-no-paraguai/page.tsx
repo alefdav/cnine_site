@@ -50,7 +50,7 @@ const band = 'py-14 md:py-24';
 const eyebrow = 'font-mono text-[13px] font-medium uppercase tracking-[0.08em] text-primary';
 const h2 = 'mt-3 text-[1.875rem] font-extrabold leading-[1.08] tracking-tighter md:text-[2.5rem]';
 const buyLarge =
-  'buy-pulse flex h-14 w-full items-center justify-center rounded-full bg-accent px-8 text-[17px] font-bold text-accent-ink [--pulse:var(--accent)] transition-colors hover:bg-accent/90 active:translate-y-px';
+  'buy-pulse flex h-14 w-full items-center justify-center whitespace-nowrap rounded-full bg-accent px-5 text-[17px] font-bold text-accent-ink [--pulse:var(--accent)] transition-colors hover:bg-accent/90 active:translate-y-px';
 
 const whatsapp = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   'Olá! Comprei o guia Paraguai ou Uruguai? e quero pedir a devolução. O código da compra é: ',
@@ -246,7 +246,7 @@ export default function Page() {
 
             <a href="#erros" className="mt-6 flex flex-col items-center gap-0.5 text-[13px] font-semibold text-background/75">
               Veja o que ninguém conta
-              <ChevronDown size={22} strokeWidth={2} className="animate-bounce" aria-hidden />
+              <ChevronDown size={22} strokeWidth={2} className="motion-safe:animate-bounce" aria-hidden />
             </a>
           </div>
         </section>

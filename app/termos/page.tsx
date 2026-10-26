@@ -10,29 +10,33 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <LegalPage title="Termos de uso" updated="13/10/2026">
+    <LegalPage title="Termos de uso" updated="26/10/2026">
       <p>
-        Estes termos valem para a compra e o uso dos produtos digitais vendidos pela {LEGAL_NAME}, {LEGAL_ID}, como o
-        guia em PDF &quot;Claude no Administrativo Logístico&quot;.
+        Estes termos valem para a compra e o uso dos produtos digitais vendidos pela {LEGAL_NAME}, {LEGAL_ID}, como os
+        guias em PDF &quot;Claude no Administrativo Logístico&quot; e &quot;Paraguai ou Uruguai? O Guia Definitivo do
+        Brasileiro que Quer se Mudar em 2026&quot;.
       </p>
 
-      <h2>1. O produto</h2>
+      <h2>1. Os produtos</h2>
       <p>
-        O guia é um arquivo PDF com orientações e pedidos (textos para usar em ferramentas de inteligência artificial).
-        Ele não inclui assinatura de nenhuma ferramenta de IA nem suporte técnico a sistemas da sua empresa.
+        Cada guia é um arquivo PDF. O &quot;Claude no Administrativo Logístico&quot; traz orientações e pedidos (textos
+        para usar em ferramentas de inteligência artificial) e não inclui assinatura de nenhuma ferramenta de IA nem
+        suporte técnico a sistemas da sua empresa. O &quot;Paraguai ou Uruguai?&quot; é um guia informativo sobre
+        mudança, residência, custos e impostos, com valores levantados em outubro de 2026.
       </p>
 
       <h2>2. Pagamento e entrega</h2>
       <p>
         O pagamento é feito por Pix e processado pela AbacatePay. Depois da confirmação do Pix, você é levado à página
-        de download do PDF.
+        de download do PDF. No guia &quot;Paraguai ou Uruguai?&quot;, o código da compra (identificador do Pix) mostrado
+        nessa página dá acesso a novos downloads.
       </p>
 
       <h2>3. Direito de arrependimento</h2>
       <p>
         Você pode desistir da compra em até 7 dias a partir da data do pagamento (Código de Defesa do Consumidor, art.
-        49). Para isso, envie uma mensagem para o WhatsApp {WHATSAPP_DISPLAY} com o e-mail usado na compra. O valor é
-        devolvido por Pix.
+        49). Para isso, envie uma mensagem para o WhatsApp {WHATSAPP_DISPLAY} com o e-mail usado na compra ou o código da
+        compra. O valor é devolvido por Pix.
       </p>
 
       <h2>4. Uso permitido</h2>
@@ -43,15 +47,21 @@ export default function Page() {
 
       <h2>5. Responsabilidade</h2>
       <p>
-        Os exemplos do guia usam dados fictícios. Respostas de ferramentas de IA podem conter erros: confira sempre os
-        resultados antes de usá-los em decisões, cobranças ou comunicações. Siga a política de uso de dados da sua
-        empresa.
+        Os exemplos do guia de logística usam dados fictícios. Respostas de ferramentas de IA podem conter erros:
+        confira sempre os resultados antes de usá-los em decisões, cobranças ou comunicações. Siga a política de uso de
+        dados da sua empresa.
+      </p>
+      <p>
+        O guia &quot;Paraguai ou Uruguai?&quot; é conteúdo informativo e não substitui a orientação de advogado,
+        contador ou despachante. Taxas, câmbio e leis mudam: confira os valores no órgão oficial antes de pagar ou
+        assinar qualquer coisa.
       </p>
 
       <h2>6. Marcas</h2>
       <p>
         Claude é marca da Anthropic. ChatGPT, Gemini, Copilot e Excel pertencem às respectivas empresas. O guia é
-        independente e não tem vínculo com elas.
+        independente e não tem vínculo com elas. Os guias não têm vínculo com os governos do Brasil, do Paraguai ou
+        do Uruguai.
       </p>
 
       <h2>7. Contato</h2>

@@ -75,3 +75,12 @@ export const EBOOK_LOGISTICA = {
 } as const;
 
 export const EBOOK_LOGISTICA_CHECKOUT_URL = 'https://app.abacatepay.com/pay/bill_HLLxP43NzPteT1z5BgswQwkj';
+
+/* Ebook "Paraguai ou Uruguai?" (Pix transparente, sem link de checkout). */
+export const EBOOK_PARAGUAI = {
+  content_ids: ['ebook-paraguai-uruguai-2026'],
+  content_type: 'product',
+  content_name: 'Paraguai ou Uruguai? O Guia Definitivo do Brasileiro que Quer se Mudar em 2026',
+  value: 17.9,
+  currency: 'BRL',
+} as const;

@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+entregas/
+
+# playwright mcp
+/.playwright-mcp/

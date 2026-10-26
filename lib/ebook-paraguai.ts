@@ -19,7 +19,7 @@ export const EBOOK_PARAGUAI_PRODUCT = {
   e nenhum evento de compra no pixel. O checkout funciona se houver chave no
   ambiente (com a chave de teste, dá para testar o fluxo inteiro).
 */
-export const EBOOK_PARAGUAI_LIVE = false;
+export const EBOOK_PARAGUAI_LIVE = true;
 
 /* Pix expira em 30 min: tempo de abrir o app do banco sem pressa. */
 export const PIX_EXPIRES_IN_SECONDS = 1800;

@@ -55,7 +55,7 @@ Teste da troca de marca: um blog genérico não consegue dizer "a taxa antiga ai
 - Rótulo pequeno: `Guia em PDF · edição de outubro de 2026`
 - **H1:** Como morar no Paraguai em 2026 usando o seu RG, sem passaporte
 - **Subtítulo:** O passo a passo da residência, quanto custa viver em Assunção e os prazos que fazem brasileiro perder dinheiro. Com comparativo do Uruguai.
-- Mockup da capa: `[PREENCHER: capa do ebook]` (até lá, uma capa tipográfica provisória com o título)
+- Mockup da capa: imagem do produto na AbacatePay (`imageUrl`), servida otimizada
 - **Botão:** Quero o guia por R$ 17,90
 - Abaixo do botão: Pix · PDF na hora · 7 dias para pedir o dinheiro de volta
 - Selo: Valores conferidos em fontes oficiais em outubro de 2026
@@ -117,7 +117,7 @@ Dois blocos curtos:
 
 ### 5. O que tem dentro
 
-Números em linha: `[PREENCHER: nº] páginas · 16 capítulos · checklist dos 90 dias · valores de outubro de 2026`
+Números em linha: `48 páginas · 16 capítulos · checklist dos 90 dias · valores de outubro de 2026`
 
 Lista recolhível "Ver os 16 capítulos" com os títulos do dossiê (Paraguai ou Uruguai? O teste de perfil; Documentos para entrar; Residência no Paraguai, passo a passo; Residência no Uruguai, passo a passo; Impostos e saída definitiva do Brasil; Quanto custa viver; Moradia: alugar e comprar; Trabalho, renda e empresa; Saúde; Escola, idioma, cultura e clima; Segurança e qualidade de vida; Banco, câmbio e envio de dinheiro; Como chegar, mudança e pets; Checklist dos 90 dias e erros comuns; O que mudou em 2026; Perguntas frequentes). `[CONFIRMAR: sumário final quando o ebook fechar]`
 
@@ -137,8 +137,8 @@ Identificação: Feito e vendido pela C9 COMPANY LTDA, CNPJ 39.710.160/0001-60 (
 ### 8. Garantia e pagamento
 
 - **Garantia:** Não gostou? Peça o dinheiro de volta em até 7 dias depois da compra. Sem perguntas.
-- **Como pedir:** pelo WhatsApp `[PREENCHER: prazo de devolução do Pix]`. Link do WhatsApp com mensagem pré-preenchida citando o guia.
-- **Pix:** Você paga no app do banco e vai direto para a página de download do PDF.
+- **Como pedir:** pelo WhatsApp, informando o código da compra (id do Pix), `[PREENCHER: prazo de devolução do Pix]`. Link do WhatsApp com mensagem pré-preenchida citando o guia.
+- **Pix:** O QR code aparece aqui mesmo. Você paga no app do banco e o download abre sozinho quando o pagamento cai.
 
 ### 9. Perguntas frequentes (recolhíveis)
 
@@ -147,13 +147,13 @@ Identificação: Feito e vendido pela C9 COMPANY LTDA, CNPJ 39.710.160/0001-60 (
 3. **O guia fala do Uruguai também?** Sim: residência, custos, impostos e um comparativo lado a lado.
 4. **E se a lei ou a taxa mudar?** Este é o guia de outubro de 2026 e cada valor mostra a data. Antes de pagar qualquer taxa, confira no órgão oficial; o guia diz onde. `[DECIDIR: compradores recebem a próxima edição de graça?]`
 5. **Isso é consultoria?** Não. É um guia de pesquisa. Para impostos e compra de imóvel, o guia indica quando falar com um contador ou escrivão local.
-6. **Como recebo?** Logo depois do Pix, você vai para a página de download do PDF.
+6. **Como recebo?** Assim que o Pix é confirmado, a própria página abre o download do PDF. Sem cadastro e sem sair daqui.
 7. **E se eu não gostar?** Você tem 7 dias para pedir o dinheiro de volta.
 
 ### 10. Fechamento
 
 - **H2:** Antes de fazer as malas, saiba o prazo, a taxa e a regra.
-- Resumo: `[PREENCHER: nº] páginas · 16 capítulos · valores de outubro de 2026`
+- Resumo: `48 páginas · 16 capítulos · valores de outubro de 2026`
 - Botão: Quero o guia por R$ 17,90
 - Abaixo: Pix · 7 dias para pedir o dinheiro de volta
 
@@ -172,26 +172,65 @@ Empresa e CNPJ, WhatsApp, links de `/termos` e `/privacidade`, e a nota: Valores
 
 ## Arquitetura
 
-**Produto (`lib/meta-pixel.ts`):**
+**Produto AbacatePay (consultado pelo MCP em 2026-10-26):** `prod_uyJ56LPA3n5ZL2HyxcCLKQFm`, externalId `ebook-paraguai-uruguai-2026`, nome "Paraguai ou Uruguai? O Guia Definitivo do Brasileiro que Quer se Mudar em 2026", 48 páginas, R$ 17,90, `hasFile: true`, capa em `imageUrl`. O nome do produto aparece na capa, no resumo da compra e no pixel; o H1 da página continua sendo o gancho do Paraguai.
+
+**Produto no código (`lib/meta-pixel.ts`):**
 
 ```ts
 export const EBOOK_PARAGUAI = {
-  content_ids: ['ebook-paraguai'],
+  content_ids: ['ebook-paraguai-uruguai-2026'],
   content_type: 'product',
-  content_name: 'Como morar no Paraguai em 2026',
+  content_name: 'Paraguai ou Uruguai? O Guia Definitivo do Brasileiro que Quer se Mudar em 2026',
   value: 17.9,
   currency: 'BRL',
 } as const;
-export const EBOOK_PARAGUAI_CHECKOUT_URL = ''; // [PREENCHER: link da AbacatePay]
-export const EBOOK_PARAGUAI_LIVE = false;      // vira true no lançamento
+export const EBOOK_PARAGUAI_LIVE = false; // vira true no lançamento
 ```
 
-**Componentes de compra (refatoração pequena):** `BuyButton`, `StickyBar`, `UtmPassthrough` e `SalesTracking` passam a receber o produto e o link do checkout por prop, com o ebook logístico como padrão. As páginas atuais não mudam de comportamento.
+**Componentes reaproveitados (refatoração pequena):** `SalesTracking` e `StickyBar` passam a receber o produto por prop, com o ebook logístico como padrão. `BuyButton` e `UtmPassthrough` ficam como estão, porque continuam servindo ao checkout hospedado do ebook logístico. As páginas atuais não mudam de comportamento.
 
-**Rascunho oculto (`EBOOK_PARAGUAI_LIVE = false`):**
+### Checkout transparente (Pix na própria página)
+
+O botão de compra não leva mais para a página da AbacatePay. O Pix é gerado e pago dentro da página.
+
+**Fluxo:**
+
+1. Qualquer botão "Quero o guia" abre uma janela de compra (sheet no celular, modal no desktop) com a capa, o nome do produto, R$ 17,90 e "7 dias para pedir o dinheiro de volta". Dispara `InitiateCheckout`.
+2. A janela tem um campo **opcional**: "Seu e-mail (opcional, para o suporte achar sua compra)". Embaixo vai o botão "Gerar Pix".
+3. `POST /api/pix` chama `POST https://api.abacatepay.com/v2/transparents/create` com:
+   - `method: "PIX"`, `data.amount: 1790`, `data.description` com o nome do guia, `data.expiresIn: 1800` (30 min)
+   - `data.metadata: { product: "ebook-paraguai-uruguai-2026", email? }`. O e-mail vai no metadata, **não** no objeto `customer`, porque `customer` exige nome, e-mail, CPF e celular juntos.
+   - `data.utm` com as UTMs da URL da página.
+   - Sem `customer` e sem CPF.
+4. A janela mostra o QR (`brCodeBase64`), o botão "Copiar código Pix" (`brCode`) e o tempo até expirar.
+5. A página consulta `GET /api/pix/[id]` a cada 4 s enquanto a janela está aberta (a rota usa o endpoint de status do Pix transparente, o mesmo do `checkTransparentPix` do MCP).
+   - `PAID`: dispara `Purchase` com `eventID` igual ao id do Pix, grava o id em `localStorage` e leva para `/obrigado-morar-no-paraguai?pix=<id>`.
+   - `EXPIRED`: oferece "Gerar novo Pix".
+   - Erro de rede: continua tentando, sem travar a tela.
+6. A página de obrigado mostra o download do PDF e o código da compra (o id do Pix) para o suporte.
+
+**Rotas de servidor (`app/api/`):**
+
+| rota | o que faz |
+|---|---|
+| `POST /api/pix` | valida o e-mail (se vier), cria o Pix e devolve só `id`, `brCode`, `brCodeBase64`, `expiresAt` |
+| `GET /api/pix/[id]` | devolve só `status` |
+| `GET /api/ebook/paraguai/download?pix=<id>` | confere na AbacatePay que o Pix está `PAID`, com `amount` 1790 e `metadata.product` deste guia, e então entrega o PDF. Se não estiver pago, devolve 403 |
+
+- A chave fica em `ABACATEPAY_API_KEY` (variável de ambiente na Vercel, só no servidor). O valor nunca entra no código nem no vault.
+- O PDF **não** fica em `public/`. Fica fora da pasta pública e é incluído na função de download (`outputFileTracingIncludes`). O id do Pix funciona como chave de acesso. `[PREENCHER: PDF final do guia]`
+- O preço sai de uma constante do servidor. O cliente nunca manda o valor.
+
+**Teste:** a chave do MCP é de produção (`devMode: false`), então `simulateTransparentPixPayment` não funciona com ela. Para testar o fluxo inteiro sem dinheiro real, é preciso uma chave de teste da AbacatePay em `.env.local` ou no ambiente de preview.
+
+**Webhook `transparent.completed` + API de Conversões:** fica fora desta entrega. O Purchase do navegador, disparado só com o pagamento confirmado e com `eventID` igual ao id do Pix, já serve de base para deduplicar quando a API de Conversões entrar.
+
+### Rascunho oculto (`EBOOK_PARAGUAI_LIVE = false`)
+
 - `robots: noindex, nofollow` e fora de `app/sitemap.ts`.
-- Com o checkout vazio, o botão não navega: aponta para `#checkout-pendente`, que é uma faixa visível no topo dizendo "Rascunho: checkout ainda não configurado".
-- O pixel não dispara `ViewContent` nem `InitiateCheckout` enquanto a página não está no ar, para não sujar o público do pixel.
+- Faixa visível no topo: "Rascunho: página fora do ar".
+- O pixel não dispara nenhum evento de compra enquanto a página não está no ar, para não sujar o público do pixel.
+- O checkout funciona se houver chave configurada no ambiente. Com chave de teste, dá para testar o fluxo inteiro antes do lançamento.
 
 **Página:** `app/morar-no-paraguai/page.tsx` (Server Component) com o conteúdo em constantes no próprio arquivo, como na v2. Os componentes cliente ficam em `components/ebook/paraguai/` só se forem específicos (ex.: capa provisória).
 
@@ -199,17 +238,20 @@ export const EBOOK_PARAGUAI_LIVE = false;      // vira true no lançamento
 
 **Clarity:** `page=ebook-paraguai`.
 
-**Fora desta entrega (fica para o lançamento):** página de obrigado e PDF do guia; o Purchase fica para a página de obrigado ou para o webhook; termos que citem o guia (hoje `/termos` só cita o ebook logístico e cláusulas de IA, então precisam de uma linha genérica para os guias e uma cláusula de "conteúdo informativo, não é consultoria").
+**Página de obrigado:** `/obrigado-morar-no-paraguai`, com `noindex`, botão de download (rota protegida), código da compra, "por onde começar" (cap. 1 e checklist dos 90 dias) e WhatsApp de suporte com o código do Pix já na mensagem.
+
+**Fora desta entrega:** webhook e API de Conversões. Também os termos que citem o guia: hoje `/termos` só cita o ebook logístico e traz cláusulas de IA, então precisa de uma linha genérica para os guias e de uma cláusula de "conteúdo informativo, não é consultoria".
 
 ## Checklist do lançamento (o que o Alef manda)
 
-- [ ] Capa do ebook (imagem)
-- [ ] Link do checkout da AbacatePay
-- [ ] Número de páginas e sumário final
+- [x] Capa do ebook: `imageUrl` do produto na AbacatePay (baixar e servir otimizada em `public/ebook-paraguai/`)
+- [x] Número de páginas: 48
+- [ ] PDF final do guia
+- [ ] `ABACATEPAY_API_KEY` na Vercel (produção) e chave de teste em `.env.local` ou preview
+- [ ] Sumário final, para confirmar os 16 capítulos
 - [ ] Prazo de devolução do Pix
 - [ ] Decidir se compradores recebem a próxima edição
 - [ ] Ajustar `/termos` para cobrir o guia
-- [ ] Página de obrigado + PDF
 - [ ] Virar `EBOOK_PARAGUAI_LIVE` e conferir o sitemap
 
 ## Como verificar

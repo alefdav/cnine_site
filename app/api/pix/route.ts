@@ -10,6 +10,29 @@ import { EBOOK_PARAGUAI_PRODUCT, PIX_EXPIRES_IN_SECONDS } from '@/lib/ebook-para
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,24}$/;
 const UTM_KEYS = ['source', 'medium', 'campaign', 'content', 'term'] as const;
 
+/*
+  Sinais para a API de Conversões do Meta casar a venda com o clique no
+  anúncio (cookies do pixel, IP e navegador). Ficam no metadata do Pix e o
+  webhook os usa quando o pagamento cai. Nada disso vai para o navegador.
+*/
+function metaSignals(request: Request): Record<string, string> {
+  const cookies = Object.fromEntries(
+    (request.headers.get('cookie') ?? '')
+      .split(';')
+      .map((c) => c.trim().split('='))
+      .filter(([k, v]) => k && v)
+      .map(([k, ...v]) => [k, v.join('=')]),
+  );
+  const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim();
+  const ua = request.headers.get('user-agent') ?? '';
+  const signals: Record<string, string> = {};
+  if (cookies._fbp) signals.fbp = cookies._fbp.slice(0, 120);
+  if (cookies._fbc) signals.fbc = cookies._fbc.slice(0, 300);
+  if (ip) signals.ip = ip.slice(0, 64);
+  if (ua) signals.ua = ua.slice(0, 300);
+  return signals;
+}
+
 function readUtm(raw: unknown): PixUtm {
   const utm: PixUtm = {};
   if (!raw || typeof raw !== 'object') return utm;
@@ -36,7 +59,7 @@ export async function POST(request: Request) {
       amount: EBOOK_PARAGUAI_PRODUCT.priceCents,
       description: EBOOK_PARAGUAI_PRODUCT.shortName,
       expiresIn: PIX_EXPIRES_IN_SECONDS,
-      metadata: { product: EBOOK_PARAGUAI_PRODUCT.externalId, ...(email && { email }) },
+      metadata: { product: EBOOK_PARAGUAI_PRODUCT.externalId, ...(email && { email }), ...metaSignals(request) },
       utm: readUtm(body.utm),
     });
     return Response.json(

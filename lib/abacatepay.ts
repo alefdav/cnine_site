@@ -24,6 +24,8 @@ export interface Pix {
   brCode: string;
   brCodeBase64: string;
   expiresAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   metadata?: Record<string, unknown>;
 }
 

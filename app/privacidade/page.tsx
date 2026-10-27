@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <LegalPage title="Política de privacidade" updated="13/10/2026">
+    <LegalPage title="Política de privacidade" updated="27/10/2026">
       <p>
         Esta política explica como a {LEGAL_NAME}, {LEGAL_ID}, trata os dados de quem visita este site e compra os
         nossos produtos, de acordo com a Lei Geral de Proteção de Dados (Lei 13.709/2018).
@@ -26,6 +26,11 @@ export default function Page() {
         <li>
           <strong>Compra:</strong> nome, e-mail e os dados pedidos pela AbacatePay para processar o Pix. Esses dados são
           tratados pela AbacatePay no checkout.
+        </li>
+        <li>
+          <strong>Medição de compras:</strong> quando um Pix é pago, informamos a compra à Meta pela API de Conversões,
+          com o valor, o produto, os identificadores de cookie do Meta Pixel, o endereço IP, o navegador e, se você
+          informou, o e-mail em formato criptografado (hash). Isso serve para medir quais anúncios geraram vendas.
         </li>
         <li>
           <strong>Atendimento:</strong> nome, número e mensagens de quem fala com a gente pelo WhatsApp.

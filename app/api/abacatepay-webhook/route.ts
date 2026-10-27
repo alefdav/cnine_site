@@ -58,13 +58,21 @@ export async function POST(request: Request) {
 
   const url = new URL(request.url);
   const rawBody = await request.text();
-  if (!safeEqual(url.searchParams.get('webhookSecret') ?? '', secret)) {
+  const urlSecret = url.searchParams.get('webhookSecret');
+  if (urlSecret !== null && !safeEqual(urlSecret, secret)) {
     return new Response('unauthorized', { status: 401 });
   }
   if (!validSignature(rawBody, request.headers.get('x-webhook-signature'))) {
     console.warn('[abacatepay-webhook] assinatura inválida');
     return new Response('invalid signature', { status: 401 });
   }
+  /*
+    O cadastro guarda a URL sem o segredo e a documentação diz que a
+    AbacatePay o acrescenta na entrega. Se não vier, a assinatura basta:
+    nada é confiado no corpo (o Pix é reconferido na API), e um 401 aqui
+    faria a AbacatePay desistir do aviso sem tentar de novo.
+  */
+  if (urlSecret === null) console.warn('[abacatepay-webhook] aviso sem webhookSecret na URL, aceito pela assinatura');
 
   let payload: { id?: string; event?: string; devMode?: boolean; data?: unknown };
   try {

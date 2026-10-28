@@ -1,14 +1,14 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { PARAGUAI_CHECKOUT_EVENT } from '@/lib/ebook-paraguai';
+import { EBOOK_CHECKOUT_EVENT } from '@/lib/ebooks';
 
-/* Todo botão de compra da página: abre a janela do Pix (components/ebook/paraguai/pix-checkout). */
+/* Todo botão de compra da página: abre a janela do Pix (components/ebook/pix/pix-checkout). */
 export function BuyTrigger({ children, className, placement }: { children: ReactNode; className?: string; placement: string }) {
   return (
     <button
       type="button"
-      onClick={() => window.dispatchEvent(new CustomEvent(PARAGUAI_CHECKOUT_EVENT, { detail: { placement } }))}
+      onClick={() => window.dispatchEvent(new CustomEvent(EBOOK_CHECKOUT_EVENT, { detail: { placement } }))}
       className={className}
     >
       {children}

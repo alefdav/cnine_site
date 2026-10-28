@@ -1,12 +1,11 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { AbacatePayError, getPix } from '@/lib/abacatepay';
-import { EBOOK_PARAGUAI_PRODUCT, PIX_ID_PATTERN } from '@/lib/ebook-paraguai';
-import { EBOOK_PARAGUAI } from '@/lib/meta-pixel';
+import { ebookByExternalId, PIX_ID_PATTERN } from '@/lib/ebooks';
 import { sendCapiPurchase } from '@/lib/meta-capi';
 
 /*
-  Webhook da AbacatePay (evento transparent.completed): manda o Purchase do
-  ebook Paraguai para a API de Conversões do Meta.
+  Webhook da AbacatePay (evento transparent.completed): manda o Purchase dos
+  guias de lib/ebooks.ts para a API de Conversões do Meta.
 
   Autenticação dupla, como na documentação da AbacatePay: o segredo vai na
   URL (?webhookSecret=, igual a ABACATEPAY_WEBHOOK_SECRET) e o corpo vem
@@ -21,7 +20,7 @@ import { sendCapiPurchase } from '@/lib/meta-capi';
 const ABACATEPAY_PUBLIC_KEY =
   't9dXRhHHo3yDEj5pVDYz0frf7q6bMKyMRmxxCPIPp3RCplBfXRxqlC6ZpiWmOqj4L63qEaeUOtrCI8P0VMUgo6iIga2ri9ogaHFs0WIIywSMg0q7RmBfybe1E5XJcfC4IW3alNqym0tXoAKkzvfEjZxV6bE0oG2zJrNNYmUCKZyV0KZ3JS8Votf9EAWWYdiDkMkpbMdPggfh1EqHlVkMiTady6jOR3hyzGEHrIz2Ret0xHKMbiqkr9HS1JhNHDX9';
 
-const THANK_YOU_URL = 'https://cnine.company/obrigado-morar-no-paraguai';
+const SITE_URL = 'https://cnine.company';
 
 function safeEqual(a: string, b: string) {
   const A = Buffer.from(a);
@@ -110,7 +109,8 @@ export async function POST(request: Request) {
   }
 
   const meta = (pix.metadata ?? {}) as Record<string, unknown>;
-  if (pix.status !== 'PAID' || pix.amount !== EBOOK_PARAGUAI_PRODUCT.priceCents || meta.product !== EBOOK_PARAGUAI_PRODUCT.externalId) {
+  const ebook = ebookByExternalId(meta.product);
+  if (!ebook || pix.status !== 'PAID' || pix.amount !== ebook.priceCents) {
     console.log(`${tag} ${pixId}: não é compra paga do guia (status ${pix.status}), ignorado`);
     return new Response('not ours', { status: 200 });
   }
@@ -119,10 +119,10 @@ export async function POST(request: Request) {
   const result = await sendCapiPurchase({
     eventId: pix.id,
     eventTime: Math.floor(paidAt / 1000),
-    value: EBOOK_PARAGUAI.value,
-    contentIds: EBOOK_PARAGUAI.content_ids,
-    contentName: EBOOK_PARAGUAI.content_name,
-    sourceUrl: THANK_YOU_URL,
+    value: ebook.pixel.value,
+    contentIds: ebook.pixel.content_ids,
+    contentName: ebook.pixel.content_name,
+    sourceUrl: `${SITE_URL}${ebook.thankYouPath}`,
     email: str(meta.email),
     ip: str(meta.ip),
     userAgent: str(meta.ua),
@@ -130,7 +130,7 @@ export async function POST(request: Request) {
     fbc: str(meta.fbc),
   });
 
-  console.log(`${tag} ${pixId}: CAPI ${result.ok ? 'ok' : 'falhou'} (${result.detail})`);
+  console.log(`${tag} ${pixId} ${ebook.slug}: CAPI ${result.ok ? 'ok' : 'falhou'} (${result.detail})`);
   // Falha no Meta devolve 502 para a AbacatePay tentar de novo mais tarde.
   return new Response(result.ok ? 'ok' : 'capi failed', { status: result.ok ? 200 : 502 });
 }

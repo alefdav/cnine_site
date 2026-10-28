@@ -146,6 +146,7 @@
   --color-hero-line: var(--hero-line);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-hl: var(--hl, var(--accent));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -405,6 +406,48 @@ h3 {
   background:
     radial-gradient(90% 60% at 85% 0%, oklch(0.3 0.08 262 / 0.9) 0%, transparent 70%),
     radial-gradient(80% 50% at 10% 110%, oklch(0.55 0.11 75 / 0.35) 0%, transparent 70%),
+    var(--deep);
+}
+
+/*
+  Ebook "Morar nos Estados Unidos" (/morar-nos-estados-unidos e a página de
+  obrigado). Paleta da capa da Coleção Plano B: marinho, vermelho e branco.
+  Reaproveita a estrutura do Paraguai (.pg-hero, foco). O vermelho (--accent)
+  é botão com texto branco; sobre o marinho, destaque de texto usa --hl, um
+  vermelho claro que passa no contraste de texto grande.
+*/
+.lp-eua {
+  --bg: oklch(0.99 0.003 260);
+  --surface: oklch(0.96 0.01 260);
+  --ink: oklch(0.2 0.04 265);
+  --muted: oklch(0.45 0.03 265);
+  --primary: oklch(0.42 0.16 262);
+  --primary-hover: oklch(0.36 0.16 262);
+  --deep: oklch(0.21 0.065 266);
+  --tint: oklch(0.94 0.03 262);
+  --line: oklch(0.89 0.012 260);
+  --accent: oklch(0.53 0.2 25);
+  --accent-ink: oklch(1 0 0);
+  --hl: oklch(0.72 0.15 22);
+  --pg-focus: var(--primary);
+
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.lp-eua :is(a, button, summary, input, textarea):focus-visible {
+  outline: 3px solid var(--pg-focus);
+  outline-offset: 3px;
+}
+.lp-eua :is(.pg-hero, .bg-deep) {
+  --pg-focus: oklch(1 0 0);
+}
+
+/* Primeira tela: marinho com o vermelho e o azul dos círculos da capa. */
+.lp-eua .pg-hero {
+  background:
+    radial-gradient(70% 55% at 100% 8%, oklch(0.48 0.17 25 / 0.45) 0%, transparent 70%),
+    radial-gradient(80% 50% at 0% 110%, oklch(0.45 0.17 262 / 0.5) 0%, transparent 70%),
     var(--deep);
 }
 

@@ -9,9 +9,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // O PDF cifrado do guia é lido em tempo de execução: precisa ir junto com as funções que o entregam.
+  // Os PDFs cifrados dos guias são lidos em tempo de execução: precisam ir junto com a função que os entrega.
   outputFileTracingIncludes: {
-    "/api/ebook/paraguai/download": ["./private/ebook-paraguai.pdf.enc"],
+    "/api/ebook/[slug]/download": ["./private/*.pdf.enc"],
   },
 };
 

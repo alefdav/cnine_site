@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-import { EBOOK_PARAGUAI, track, whenPixelReady } from '@/lib/meta-pixel';
+import { track, whenPixelReady } from '@/lib/meta-pixel';
+import { EBOOKS, type EbookSlug } from '@/lib/ebooks';
 
 /*
-  Purchase do ebook Paraguai, só depois de o servidor confirmar o Pix pago.
+  Purchase de um guia (lib/ebooks.ts), só depois de o servidor confirmar o Pix pago.
   eventID = id do Pix: serve para deduplicar quando a API de Conversões
   entrar, e o localStorage impede contar de novo no refresh.
 */
-export function PurchaseOnce({ pixId }: { pixId: string }) {
+export function PurchaseOnce({ pixId, ebook }: { pixId: string; ebook: EbookSlug }) {
   useEffect(() => {
     const key = `purchase_${pixId}`;
     try {
@@ -19,9 +20,9 @@ export function PurchaseOnce({ pixId }: { pixId: string }) {
       try {
         window.localStorage.setItem(key, '1');
       } catch {}
-      track('Purchase', { ...EBOOK_PARAGUAI, num_items: 1 }, { eventID: pixId });
+      track('Purchase', { ...EBOOKS[ebook].pixel, num_items: 1 }, { eventID: pixId });
     });
-  }, [pixId]);
+  }, [pixId, ebook]);
 
   return null;
 }

@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Check, Copy, LoaderCircle, ShieldCheck, X } from 'lucide-react';
-import { EBOOK_PARAGUAI, track } from '@/lib/meta-pixel';
-import { EBOOK_PARAGUAI_LIVE, EBOOK_PARAGUAI_PRODUCT, PARAGUAI_CHECKOUT_EVENT } from '@/lib/ebook-paraguai';
+import { track } from '@/lib/meta-pixel';
+import { EBOOK_CHECKOUT_EVENT, EBOOKS, type EbookSlug } from '@/lib/ebooks';
 
 /*
-  Janela de compra do ebook Paraguai: resumo + e-mail opcional → QR do Pix →
+  Janela de compra de um guia (lib/ebooks.ts): resumo + e-mail opcional → QR do Pix →
   consulta o status a cada 4 s → página de obrigado quando o Pix cai.
 
   O Pix gerado fica no localStorage: no celular, abrir o app do banco pode
@@ -24,23 +24,24 @@ interface PendingPix {
 
 type Step = 'summary' | 'creating' | 'qr' | 'expired';
 
-const STORAGE_KEY = 'paraguai_pix';
 const POLL_MS = 4000;
-const THANK_YOU = '/obrigado-morar-no-paraguai';
 
-function loadPending(): PendingPix | null {
+// Mantém a chave antiga do Paraguai: quem tinha um Pix pendente antes da mudança ainda o encontra.
+const storageKey = (slug: EbookSlug) => (slug === 'paraguai' ? 'paraguai_pix' : `${slug}_pix`);
+
+function loadPending(slug: EbookSlug): PendingPix | null {
   try {
-    const pix = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null') as PendingPix | null;
+    const pix = JSON.parse(window.localStorage.getItem(storageKey(slug)) ?? 'null') as PendingPix | null;
     return pix && new Date(pix.expiresAt).getTime() > Date.now() ? pix : null;
   } catch {
     return null;
   }
 }
 
-function savePending(pix: PendingPix | null) {
+function savePending(slug: EbookSlug, pix: PendingPix | null) {
   try {
-    if (pix) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(pix));
-    else window.localStorage.removeItem(STORAGE_KEY);
+    if (pix) window.localStorage.setItem(storageKey(slug), JSON.stringify(pix));
+    else window.localStorage.removeItem(storageKey(slug));
   } catch {}
 }
 
@@ -59,7 +60,8 @@ function formatLeft(ms: number) {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 }
 
-export function PixCheckout() {
+export function PixCheckout({ ebook: slug }: { ebook: EbookSlug }) {
+  const ebook = EBOOKS[slug];
   const dialog = useRef<HTMLDialogElement>(null);
   const [step, setStep] = useState<Step>('summary');
   const [pix, setPix] = useState<PendingPix | null>(null);
@@ -69,9 +71,9 @@ export function PixCheckout() {
   const [now, setNow] = useState(() => Date.now());
 
   const goToThankYou = useCallback((id: string) => {
-    savePending(null);
-    window.location.assign(`${THANK_YOU}?pix=${encodeURIComponent(id)}`);
-  }, []);
+    savePending(slug, null);
+    window.location.assign(`${ebook.thankYouPath}?pix=${encodeURIComponent(id)}`);
+  }, [slug, ebook.thankYouPath]);
 
   const checkStatus = useCallback(
     async (id: string) => {
@@ -81,7 +83,7 @@ export function PixCheckout() {
         const { status } = (await res.json()) as { status: string };
         if (status === 'PAID') goToThankYou(id);
         else if (status === 'EXPIRED' || status === 'CANCELLED') {
-          savePending(null);
+          savePending(slug, null);
           setPix(null);
           setStep('expired');
         }
@@ -89,12 +91,12 @@ export function PixCheckout() {
         // Rede instável: a próxima consulta tenta de novo.
       }
     },
-    [goToThankYou],
+    [goToThankYou, slug],
   );
 
   const open = useCallback(
     (placement: string) => {
-      const pending = loadPending();
+      const pending = loadPending(slug);
       if (pending) {
         setPix(pending);
         setStep('qr');
@@ -104,23 +106,23 @@ export function PixCheckout() {
       }
       setError('');
       dialog.current?.showModal();
-      if (EBOOK_PARAGUAI_LIVE) track('InitiateCheckout', { ...EBOOK_PARAGUAI, num_items: 1, placement });
+      if (ebook.live) track('InitiateCheckout', { ...ebook.pixel, num_items: 1, placement });
     },
-    [checkStatus, step],
+    [checkStatus, step, slug, ebook],
   );
 
   // Botões da página (BuyTrigger) abrem a janela por evento.
   useEffect(() => {
     const onOpen = (e: Event) => open((e as CustomEvent<{ placement?: string }>).detail?.placement ?? 'unknown');
-    window.addEventListener(PARAGUAI_CHECKOUT_EVENT, onOpen);
-    return () => window.removeEventListener(PARAGUAI_CHECKOUT_EVENT, onOpen);
+    window.addEventListener(EBOOK_CHECKOUT_EVENT, onOpen);
+    return () => window.removeEventListener(EBOOK_CHECKOUT_EVENT, onOpen);
   }, [open]);
 
   // Quem volta do app do banco com um Pix pendente já pago vai direto ao download.
   useEffect(() => {
-    const pending = loadPending();
+    const pending = loadPending(slug);
     if (pending) void checkStatus(pending.id);
-  }, [checkStatus]);
+  }, [checkStatus, slug]);
 
   // Consulta a cada 4 s com o QR aberto, e na hora em que a aba volta a ficar visível.
   useEffect(() => {
@@ -140,11 +142,11 @@ export function PixCheckout() {
 
   useEffect(() => {
     if (step === 'qr' && pix && new Date(pix.expiresAt).getTime() <= now) {
-      savePending(null);
+      savePending(slug, null);
       setPix(null);
       setStep('expired');
     }
-  }, [now, pix, step]);
+  }, [now, pix, step, slug]);
 
   async function createPix() {
     setStep('creating');
@@ -153,14 +155,14 @@ export function PixCheckout() {
       const res = await fetch('/api/pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() || undefined, utm: utmFromUrl() }),
+        body: JSON.stringify({ product: slug, email: email.trim() || undefined, utm: utmFromUrl() }),
       });
       const body = (await res.json()) as Partial<PendingPix> & { error?: string };
       if (!res.ok || !body.id || !body.brCode || !body.brCodeBase64 || !body.expiresAt) {
         throw new Error(body.error || 'Não deu para gerar o Pix agora. Tente de novo em instantes.');
       }
       const created = body as PendingPix;
-      savePending(created);
+      savePending(slug, created);
       setPix(created);
       setNow(Date.now());
       setStep('qr');
@@ -213,19 +215,19 @@ export function PixCheckout() {
           <>
             <div className="mt-2 flex gap-4">
               <Image
-                src="/ebook-paraguai/capa.webp"
+                src={ebook.cover.src}
                 alt=""
-                width={600}
-                height={852}
+                width={ebook.cover.width}
+                height={ebook.cover.height}
                 sizes="72px"
                 className="h-auto w-[72px] flex-none rounded-md border border-line"
               />
               <div>
-                <p className="font-bold leading-snug">{EBOOK_PARAGUAI_PRODUCT.name}</p>
+                <p className="font-bold leading-snug">{ebook.name}</p>
                 <p className="mt-1 text-[14px] text-muted">
-                  PDF · {EBOOK_PARAGUAI_PRODUCT.pages} páginas · valores de outubro de 2026
+                  PDF · {ebook.pages} páginas · valores de outubro de 2026
                 </p>
-                <p className="mt-2 text-[1.75rem] font-extrabold leading-none tracking-tighter">{EBOOK_PARAGUAI_PRODUCT.priceLabel}</p>
+                <p className="mt-2 text-[1.75rem] font-extrabold leading-none tracking-tighter">{ebook.priceLabel}</p>
               </div>
             </div>
 
@@ -268,7 +270,7 @@ export function PixCheckout() {
                     Gerando o Pix…
                   </>
                 ) : (
-                  `Gerar Pix de ${EBOOK_PARAGUAI_PRODUCT.priceLabel}`
+                  `Gerar Pix de ${ebook.priceLabel}`
                 )}
               </button>
             </form>
@@ -293,7 +295,7 @@ export function PixCheckout() {
                 <strong>1.</strong> Copie o código abaixo ou leia o QR no app do seu banco.
               </li>
               <li>
-                <strong>2.</strong> Confira o valor de {EBOOK_PARAGUAI_PRODUCT.priceLabel} e pague.
+                <strong>2.</strong> Confira o valor de {ebook.priceLabel} e pague.
               </li>
               <li>
                 <strong>3.</strong> Volte para cá: o download abre sozinho.

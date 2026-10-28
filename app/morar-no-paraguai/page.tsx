@@ -8,8 +8,8 @@ import { EBOOK_PARAGUAI_LIVE, EBOOK_PARAGUAI_PRODUCT as P } from '@/lib/ebook-pa
 import { Reveal } from '@/components/reveal';
 import { Clarity } from '@/components/clarity';
 import { SalesTracking } from '@/components/ebook/sales-tracking';
-import { BuyTrigger } from '@/components/ebook/paraguai/buy-trigger';
-import { PixCheckout } from '@/components/ebook/paraguai/pix-checkout';
+import { BuyTrigger } from '@/components/ebook/pix/buy-trigger';
+import { PixCheckout } from '@/components/ebook/pix/pix-checkout';
 
 /*
   Página de vendas do ebook "Paraguai ou Uruguai?" (spec:
@@ -628,7 +628,7 @@ export default function Page() {
         </div>
       </div>
 
-      <PixCheckout />
+      <PixCheckout ebook="paraguai" />
     </div>
   );
 }

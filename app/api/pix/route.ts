@@ -1,8 +1,9 @@
 import { AbacatePayError, createPix, type PixUtm } from '@/lib/abacatepay';
-import { EBOOK_PARAGUAI_PRODUCT, PIX_EXPIRES_IN_SECONDS } from '@/lib/ebook-paraguai';
+import { EBOOKS, ebookBySlug, PIX_EXPIRES_IN_SECONDS } from '@/lib/ebooks';
 
 /*
-  Cria o Pix do ebook Paraguai. O preço sai daqui, nunca do navegador. Sem
+  Cria o Pix de um guia (body.product = slug em lib/ebooks.ts; sem ele, o
+  Paraguai, primeiro guia). O preço sai daqui, nunca do navegador. Sem
   objeto `customer` (a API exige nome, e-mail, CPF e celular juntos): o e-mail
   opcional vai no metadata, só para o suporte achar a compra.
 */
@@ -54,12 +55,15 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Confira o e-mail ou deixe o campo em branco.' }, { status: 400 });
   }
 
+  const ebook = body.product === undefined ? EBOOKS.paraguai : ebookBySlug(body.product);
+  if (!ebook) return Response.json({ error: 'Guia não encontrado.' }, { status: 400 });
+
   try {
     const pix = await createPix({
-      amount: EBOOK_PARAGUAI_PRODUCT.priceCents,
-      description: EBOOK_PARAGUAI_PRODUCT.shortName,
+      amount: ebook.priceCents,
+      description: ebook.shortName,
       expiresIn: PIX_EXPIRES_IN_SECONDS,
-      metadata: { product: EBOOK_PARAGUAI_PRODUCT.externalId, ...(email && { email }), ...metaSignals(request) },
+      metadata: { product: ebook.externalId, ...(email && { email }), ...metaSignals(request) },
       utm: readUtm(body.utm),
     });
     return Response.json(

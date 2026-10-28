@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { EBOOK_PARAGUAI_LIVE } from '@/lib/ebook-paraguai';
+import { EBOOKS } from '@/lib/ebooks';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://c9company.com.br';
@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1,
     },
-    ...['sos-wordpress', 'sos-vibe-code', 'claude-no-adm-logistico', 'claude-no-adm-logistico-v2', 'termos', 'privacidade', 'achados-natal', ...(EBOOK_PARAGUAI_LIVE ? ['morar-no-paraguai'] : [])].map((slug) => ({
+    ...['sos-wordpress', 'sos-vibe-code', 'claude-no-adm-logistico', 'claude-no-adm-logistico-v2', 'termos', 'privacidade', 'achados-natal', ...Object.values(EBOOKS).filter((e) => e.live).map((e) => e.salesPath.slice(1))].map((slug) => ({
       url: `${baseUrl}/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,

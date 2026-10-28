@@ -1,5 +1,5 @@
 import { AbacatePayError, checkPix } from '@/lib/abacatepay';
-import { PIX_ID_PATTERN } from '@/lib/ebook-paraguai';
+import { PIX_ID_PATTERN } from '@/lib/ebooks';
 
 /* Status do Pix para a janela de compra, consultado a cada poucos segundos. */
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {

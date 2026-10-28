@@ -84,3 +84,12 @@ export const EBOOK_PARAGUAI = {
   value: 17.9,
   currency: 'BRL',
 } as const;
+
+/* Ebook "Morar nos Estados Unidos" (Coleção Plano B, Pix transparente). */
+export const EBOOK_EUA = {
+  content_ids: ['ebook-eua-2026'],
+  content_type: 'product',
+  content_name: 'Morar nos Estados Unidos (Coleção Plano B)',
+  value: 27.9,
+  currency: 'BRL',
+} as const;

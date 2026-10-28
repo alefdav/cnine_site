@@ -67,7 +67,7 @@ export const EBOOKS: Record<EbookSlug, Ebook> = {
     cover: { src: '/ebook-eua/capa.webp', width: 600, height: 852 },
     salesPath: '/morar-nos-estados-unidos',
     thankYouPath: '/obrigado-morar-nos-estados-unidos',
-    live: false,
+    live: true,
     pixel: EBOOK_EUA,
   },
 };

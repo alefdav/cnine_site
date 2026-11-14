@@ -1,8 +1,92 @@
 # DESIGN.md
 
-Visual system of the C9 Company landing page. Generated from the shipped code (2026-07-11 redesign). Every future surface reads this before adding UI.
+Two systems live in this repo. Every future surface reads the one that owns its route before adding UI.
 
-## Theme
+- **2026-11 institutional system** (next section): the home `/` and the six service pages. Route group `app/(c9)/`.
+- **2026-07 daypart system** (everything after it): the pages outside that group (SOS rescue pages, legal pages, ebooks). It stays until those pages are migrated.
+
+## 2026-11 system: vintage halftone sky
+
+The brand motif is clouds, always. Here they are drawn as a halftone print (dots on a grid, magazine grain) over a night-cobalt sky.
+
+**Routes.** `app/(c9)/page.tsx` (overview home) and `app/(c9)/[service]/page.tsx`, which is static through `generateStaticParams` with `dynamicParams = false`:
+
+- `/google-meu-negocio`
+- `/trafego-pago`
+- `/sites-e-paginas`
+- `/atendimento-com-ia`
+- `/conteudo`
+- `/sistemas-sob-medida`
+
+The slugs and nav labels live in `SERVICES` in `lib/c9.ts`. The page copy lives in `SERVICE_PAGES` in `lib/c9-services.ts`. A new service is one entry in each, plus its hero art and band in `components/c9/service-art.tsx`.
+
+**Isolation.** `app/(c9)/layout.tsx` wraps the group in `<div class="c9" data-theme="c9">` and imports `c9.css`:
+
+- Every rule in that file is prefixed `.c9 `.
+- Its tokens are declared on `[data-theme="c9"]`.
+- Because of both, nothing leaks into or out of the old pages, even where token names collide with `globals.css` (`--night`, `--ink`, `--muted`, `--tint`, `--line`).
+
+**CSS is generated. Do not hand-edit `app/(c9)/c9.css`.** Edit the unprefixed source, `scripts/c9/c9.src.css`, then run `npm run css:c9`, which calls `scripts/c9/prefix.mjs`. The prefixer skips selectors that already start with `.c9` or `[data-theme` and recurses into `@media`.
+
+**Hallmark stamp.** Lines 1 to ~10 of `c9.css` hold it: the stamp, the critique line, the waivers (38iii, 44c, 77) and dismissed F24. Before shipping, run:
+
+```
+node ~/.claude/skills/hallmark/scripts/sloplint.mjs "app/(c9)/c9.css" components/c9 --genre modern-minimal --render --url http://localhost:<port>/<route>
+```
+
+It must report 0 FAIL on all 7 routes.
+
+**Tokens** (hex, on `[data-theme="c9"]`):
+
+| Group | Tokens |
+|---|---|
+| Sky ground | `--night` … `--night-4`, `--far` |
+| Light body | `--paper`, `--paper-2`, `--card`, `--tint` |
+| Text | `--ink`, `--muted`, `--faint` (`#55687e`, the floor for 4.5:1) |
+| Lines | `--line`, `--line-2` |
+| Brand | `--blue` |
+| Accent | `--sky` … `--sky-4` |
+| CTA | `--cta-1`, `--cta-2`, `--cta-ink` |
+| On-dark text and fills | `--on*` |
+| Surfaces | `--glass`, `--shade`, `--glow`, `--bubble` |
+| Halftone fills | `--mist`, `--ht-*` |
+| Fonts | `--sans`, `--mono` (Geist) |
+
+No literal colour past the token block.
+
+**Clouds.** `components/c9/clouds.tsx` is a client canvas:
+
+- It draws a halftone cloud bank seeded by `seed`, so the same seed gives the same cloud.
+- Colours come from the tokens through `getComputedStyle`. Ramps are `sky`, `rise` and `near`.
+- It redraws on parent resize (ResizeObserver).
+- It is decorative only (`aria-hidden`). Content never depends on it.
+- `HeroClouds` makes the hero's far and near banks.
+- `BandClouds` makes the top and bottom banks of dark bands. `className="bot"` anchors a bank to the bottom.
+- `Grain` is the SVG noise overlay.
+
+**Chrome** (`components/c9/chrome.tsx`):
+
+- The nav carries the logo, the six service links (`aria-current` on the current one) and the "Agendar diagnóstico" button.
+- Below 1180px the links collapse into a `<details class="mnav">` "Serviços" menu, with no JS.
+- There is no EN pill yet. EN is pending.
+- The footer carries services, Resgate (SOS links), contact and the legal line.
+
+**CTA.** Every primary action opens WhatsApp through `waLink(topic?)` in `lib/c9.ts`, which prefills the diagnostic message (with the service when given). FAQ "ask" links use `waQuestion(topic)`. Secondary buttons only scroll (`#mostra`, `#servicos`). The closing band is `#diagnostico`.
+
+**Page anatomy.**
+
+- Service page: hero (h1, lede, two actions, bespoke art) → pain → what's included → dark band (`#mostra`) → FAQ → closing band → footer.
+- Home: hero with the Nexus Lab badge and a chat card → services bento with the SOS strip → Nexus Lab case → process → promises (dark band) → audience → FAQ → closing → footer.
+
+**SEO.** Each route has its own `generateMetadata`. JSON-LD is `Service` + `FAQPage` on service pages and `ProfessionalService` (with `OfferCatalog`) + `FAQPage` on the home. `app/sitemap.ts` lists the six services at priority 0.9.
+
+**Icons.** `components/c9/icon.tsx` is a hand-drawn set: stroke 1.6, round caps, 24 viewBox. lucide-react stays for the old pages only.
+
+**Breakpoints.** 1180px (nav collapses), 900px (columns stack; dark bands get extra padding so the clouds clear the text), 560px (the content stack becomes a grid).
+
+`prefers-reduced-motion` turns off every transition.
+
+## Theme (2026-07 daypart system)
 
 The brand is the sky (Cloud Nine), so the page shows the sky at the visitor's own hour. `data-daypart` on `<html>` selects one of four palettes, and every token in `:root` is redefined per daypart:
 

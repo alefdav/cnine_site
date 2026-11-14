@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "css:c9": "node scripts/c9/prefix.mjs scripts/c9/c9.src.css \"app/(c9)/c9.css\""
   },
   "dependencies": {
     "lucide-react": "^0.562.0",

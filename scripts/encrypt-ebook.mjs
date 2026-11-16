@@ -1,13 +1,14 @@
 // Cifra o PDF do guia para o repo (que é público). Uso:
-//   EBOOK_PARAGUAI_PDF_KEY=... node scripts/encrypt-ebook.mjs entregas/ebook-paraguai/Paraguai-ou-Uruguai-Guia-2026.pdf
+//   EBOOK_PDF_KEY=... node scripts/encrypt-ebook.mjs entregas/ebook-paraguai/Paraguai-ou-Uruguai-Guia-2026.pdf
+// A chave é a mesma da Vercel (EBOOK_PDF_KEY; EBOOK_PARAGUAI_PDF_KEY é o nome antigo).
 // Formato do .enc: iv (12 bytes) + tag (16 bytes) + texto cifrado, AES-256-GCM.
 import { createCipheriv, randomBytes } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const [src, out = 'private/ebook-paraguai.pdf.enc'] = process.argv.slice(2);
-const key = Buffer.from(process.env.EBOOK_PARAGUAI_PDF_KEY ?? '', 'base64');
+const key = Buffer.from(process.env.EBOOK_PDF_KEY ?? process.env.EBOOK_PARAGUAI_PDF_KEY ?? '', 'base64');
 if (!src || key.length !== 32) {
-  console.error('Uso: EBOOK_PARAGUAI_PDF_KEY=<32 bytes em base64> node scripts/encrypt-ebook.mjs <pdf> [saida]');
+  console.error('Uso: EBOOK_PDF_KEY=<32 bytes em base64> node scripts/encrypt-ebook.mjs <pdf> [saida]');
   process.exit(1);
 }
 

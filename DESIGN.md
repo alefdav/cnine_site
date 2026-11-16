@@ -3,7 +3,7 @@
 Two systems live in this repo. Every future surface reads the one that owns its route before adding UI.
 
 - **2026-11 institutional system** (next section): the home `/` and the six service pages. Route group `app/(c9)/`.
-- **2026-07 daypart system** (everything after it): the pages outside that group (SOS rescue pages, legal pages, ebooks). It stays until those pages are migrated.
+- **2026-07 daypart system** (everything after it): the pages outside that group (SOS rescue pages, legal pages, the older ebooks). It stays until those pages are migrated.
 
 ## 2026-11 system: vintage halftone sky
 
@@ -85,6 +85,14 @@ No literal colour past the token block.
 **Breakpoints.** 1180px (nav collapses), 900px (columns stack; dark bands get extra padding so the clouds clear the text), 560px (the content stack becomes a grid).
 
 `prefers-reduced-motion` turns off every transition.
+
+**Ebook sales pages (c9).** The series "Do Zero ao Lançamento" lives in the same group:
+
+- `/do-zero-ao-lancamento` (the 7-book bundle) and `/do-zero-ao-lancamento/<livro>` (one page per book, static through `generateStaticParams`), plus `/obrigado` under each.
+- Copy in `lib/do-zero.ts`; price, pages and files in `lib/ebooks.ts` (the bundle has `parts`, and its Pix unlocks each part's download).
+- Components in `components/c9/ebook/`, classes `eb-*` in `scripts/c9/c9.src.css`. They reuse `hero`, `split/rows`, `dk/flow`, `faq` and `end`.
+- One goal per page: the nav has no menu, every primary button opens the Pix sheet (`PixSheet`, same logic as the old `PixCheckout` through `usePixCheckout`). The only way out is the series card on each book page.
+- Anatomy: hero with price and cover → pain → what's inside (#dentro, chapters and real pages) → dark band with a real piece of the book → for whom → sample prompt → offer → FAQ → closing → short footer, sticky buy bar below 900px.
 
 ## Theme (2026-07 daypart system)
 

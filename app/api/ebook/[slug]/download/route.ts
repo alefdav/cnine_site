@@ -7,7 +7,8 @@ import { ebookBySlug } from '@/lib/ebooks';
 */
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const ebook = ebookBySlug((await params).slug);
-  if (!ebook) return new Response('Guia não encontrado.', { status: 404 });
+  // Pacote não tem arquivo próprio: cada guia dele é baixado pelo próprio slug, com o Pix do pacote.
+  if (!ebook || !ebook.encryptedFile) return new Response('Guia não encontrado.', { status: 404 });
 
   const url = new URL(request.url);
   const check = await checkPurchase(ebook, url.searchParams.get('pix'));

@@ -92,6 +92,7 @@ No literal colour past the token block.
 - Copy in `lib/do-zero.ts`; price, pages and files in `lib/ebooks.ts` (the bundle has `parts`, and its Pix unlocks each part's download).
 - Components in `components/c9/ebook/`, classes `eb-*` in `scripts/c9/c9.src.css`. They reuse `hero`, `split/rows`, `dk/flow`, `faq` and `end`.
 - One goal per page: the nav has no menu, every primary button opens the Pix sheet (`PixSheet`, same logic as the old `PixCheckout` through `usePixCheckout`). The only way out is the series card on each book page.
+- Order bump (book pages only, never the series): the Pix sheet offers the complementary book (`bump` in `lib/ebooks.ts`, full price) or the swap to the series (`upgrade`). `/api/pix` builds the amount on the server and `resolvePurchase` decides what a paid Pix unlocks (download, thank-you, webhook).
 - Anatomy: hero with price and cover → pain → what's inside (#dentro, chapters and real pages) → dark band with a real piece of the book → for whom → sample prompt → offer → FAQ → closing → short footer, sticky buy bar below 900px.
 
 ## Theme (2026-07 daypart system)

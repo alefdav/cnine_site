@@ -638,3 +638,20 @@
 @media (max-width: 560px) {
   .c9 .hero.eb .l { font-size: 18px }
 }
+
+/* order bump na janela do Pix */
+.c9 .eb-sheet .bumps { margin-top: 20px; display: grid; gap: 8px }
+.c9 .eb-sheet .opt { display: grid; grid-template-columns: 20px 44px minmax(0, 1fr); gap: 12px; align-items: center; border: 1.5px dashed var(--line-2); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .16s ease, background .16s ease }
+.c9 .eb-sheet .opt:hover { border-color: var(--sky) }
+.c9 .eb-sheet .opt.on { border-style: solid; border-color: var(--blue); background: var(--tint) }
+.c9 .eb-sheet .opt input { width: 20px; height: 20px; margin: 0; accent-color: var(--blue) }
+.c9 .eb-sheet .opt img { width: 44px; height: auto; border-radius: 3px; border: 1px solid var(--line) }
+.c9 .eb-sheet .opt .ic { width: 44px; height: 44px }
+.c9 .eb-sheet .opt b { display: block; font-size: 15px; line-height: 1.3 }
+.c9 .eb-sheet .opt small { display: block; margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--muted) }
+.c9 .eb-sheet .tot { display: flex; justify-content: space-between; padding: 8px 2px 0; font-size: 15px; color: var(--muted) }
+.c9 .eb-sheet .tot b { font-size: 18px; color: var(--ink); letter-spacing: -.02em }
+.c9 .eb-sheet .opt input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px }
+@media (prefers-reduced-motion: reduce) {
+  .c9 .eb-sheet .opt { transition: none }
+}

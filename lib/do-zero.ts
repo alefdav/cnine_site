@@ -56,6 +56,8 @@ export interface DzBook {
   notFor: string[];
   faq: [string, string][];
   closing: string;
+  /* Por que o livro do order bump (lib/ebooks.ts, `bump`) combina com este. */
+  bumpPitch: string;
   firstSteps: { title: string; body: string }[];
 }
 
@@ -80,7 +82,7 @@ export const DZ_PAGES: Record<DzPath, DzBook> = {
     role: 'Livro base',
     seoTitle: 'O Método: da ideia ao primeiro cliente com IA, sem programar | Ebook',
     description:
-      'O livro base da série Do Zero ao Lançamento: achar a ideia certa, validar sem gastar, versão mínima, memória do projeto, cobrar e os primeiros clientes sem verba. Com plano de 30 dias. R$ 19,90 no Pix.',
+      'O livro base da série Do Zero ao Lançamento: achar a ideia certa, validar sem gastar, versão mínima, memória do projeto, cobrar e os primeiros clientes sem verba. Com plano de 30 dias. R$ 24,99 no Pix.',
     h1: ['Da ideia ao primeiro cliente,', 'sem saber programar.'],
     lede: 'O livro base da série: achar a ideia certa, validar sem gastar, definir a versão mínima, cobrar e conseguir os primeiros clientes sem verba. Fecha com um plano de 30 dias.',
     card: 'Da ideia ao primeiro cliente, com plano de 30 dias.',
@@ -132,6 +134,7 @@ export const DZ_PAGES: Record<DzPath, DzBook> = {
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Comece pelo problema,\nnão pelo app.',
+    bumpPitch: 'Os 42 prompts da série num só lugar, um para cada etapa do método.',
     firstSteps: [
       { title: 'Responda as três perguntas do capítulo 1', body: 'Quem tem o problema, como resolve hoje e se pagaria. Por escrito, antes de abrir qualquer ferramenta.' },
       { title: 'Marque as 10 conversas do capítulo 2', body: 'A mensagem de WhatsApp para pedir a conversa já está no livro. Pergunte sobre o passado, nunca sobre o futuro.' },
@@ -145,7 +148,7 @@ export const DZ_PAGES: Record<DzPath, DzBook> = {
     role: 'Trilha',
     seoTitle: 'Com Lovable: construa seu site ou app com IA, sem código | Ebook',
     description:
-      'A trilha para quem nunca programou: primeira página no ar na primeira tarde, design sem cara de IA e como construir sem estourar os créditos grátis do Lovable. R$ 14,90 no Pix.',
+      'A trilha para quem nunca programou: primeira página no ar na primeira tarde, design sem cara de IA e como construir sem estourar os créditos grátis do Lovable. R$ 17,99 no Pix.',
     h1: ['Construa seu site ou app', 'conversando com a IA.'],
     lede: 'A trilha para quem nunca programou: sua primeira página no ar na primeira tarde, um design sem cara de IA e um jeito de construir que não estoura os créditos grátis do mês.',
     card: 'Construir conversando, sem escrever código.',
@@ -200,6 +203,7 @@ export const DZ_PAGES: Record<DzPath, DzBook> = {
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Sua primeira página\nno ar ainda hoje.',
+    bumpPitch: 'Para quando o projeto for vender: domínio, hospedagem e quando pagar.',
     firstSteps: [
       { title: 'Reserve uma tarde para o capítulo 1', body: 'Crie as contas grátis e publique sua primeira página. O pedido para colar no Lovable já está no livro.' },
       { title: 'Escreva suas regras de gosto', body: 'Do capítulo 3: anote no caderno o que te incomoda ("sem degradê", "fotos reais") e cole em todo pedido.' },
@@ -213,7 +217,7 @@ export const DZ_PAGES: Record<DzPath, DzBook> = {
     role: 'Trilha',
     seoTitle: 'Com o Claude: do chat grátis ao Claude Code, sem depender de plataforma | Ebook',
     description:
-      'Páginas completas no chat gratuito do Claude, publicadas de graça na Cloudflare, e o momento certo de passar para o Claude Code. Com exemplo de CLAUDE.md. R$ 14,90 no Pix.',
+      'Páginas completas no chat gratuito do Claude, publicadas de graça na Cloudflare, e o momento certo de passar para o Claude Code. Com exemplo de CLAUDE.md. R$ 17,99 no Pix.',
     h1: ['Do chat grátis ao Claude Code,', 'sem ficar preso a plataforma.'],
     lede: 'A trilha para quem quer controle: páginas completas no chat gratuito do Claude, publicadas de graça na Cloudflare, e o momento certo de passar para o Claude Code.',
     card: 'Do chat grátis ao Claude Code, com os arquivos na sua mão.',
@@ -282,6 +286,7 @@ Recepcionista de clínica, usando no celular, com pressa.
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Seus arquivos,\nseu endereço.',
+    bumpPitch: 'O Claude Code lendo e escrevendo as notas do projeto sozinho.',
     firstSteps: [
       { title: 'Descubra o seu nível no capítulo 1', body: 'Se o projeto é página, site simples ou ferramenta sem login, fique no grátis.' },
       { title: 'Prepare o pedido antes de abrir o chat', body: 'O capítulo 2 lista o que juntar no caderno. Quanto melhor o pedido, menos mensagens você gasta.' },
@@ -295,7 +300,7 @@ Recepcionista de clínica, usando no celular, com pressa.
     role: 'Trilha',
     seoTitle: 'Colocando no Ar: Cloudflare, Vercel ou Hostinger, onde publicar | Ebook',
     description:
-      'Cloudflare Pages, Vercel e Hostinger lado a lado: hospedagem, domínio e DNS em linguagem simples, uso comercial no plano grátis e quando começar a pagar. R$ 14,90 no Pix.',
+      'Cloudflare Pages, Vercel e Hostinger lado a lado: hospedagem, domínio e DNS em linguagem simples, uso comercial no plano grátis e quando começar a pagar. R$ 17,99 no Pix.',
     h1: ['Onde publicar seu projeto', 'e quando começar a pagar.'],
     lede: 'Cloudflare Pages, Vercel e Hostinger lado a lado, em linguagem simples: hospedagem, domínio e DNS sem medo, e o caminho do grátis ao pago sem surpresa na conta.',
     card: 'Cloudflare, Vercel e Hostinger lado a lado.',
@@ -351,6 +356,7 @@ Recepcionista de clínica, usando no celular, com pressa.
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Publique uma vez,\nno lugar certo.',
+    bumpPitch: 'Páginas completas no chat grátis do Claude, prontas para a Cloudflare.',
     firstSteps: [
       { title: 'Ache o seu caso na tabela do capítulo 2', body: 'Vai vender ou não? É página simples, Next.js ou WordPress? A linha certa decide a hospedagem.' },
       { title: 'Registre o domínio no seu nome', body: 'No Registro.br, com renovação automática. Guarde onde está a senha, nunca a senha no caderno.' },
@@ -364,7 +370,7 @@ Recepcionista de clínica, usando no celular, com pressa.
     role: 'Trilha',
     seoTitle: 'Identificando Tendências: ache ideias de negócio com dados gratuitos | Ebook',
     description:
-      'Google Trends, Biblioteca de Anúncios da Meta, avaliações e redes: como separar tendência de moda e escolher a ideia com uma planilha de pontuação. R$ 14,90 no Pix.',
+      'Google Trends, Biblioteca de Anúncios da Meta, avaliações e redes: como separar tendência de moda e escolher a ideia com uma planilha de pontuação. R$ 17,99 no Pix.',
     h1: ['Ache ideias que valem o teste', 'com dados gratuitos.'],
     lede: 'Como ler os rastros que as pessoas deixam no Google, nos anúncios, nas avaliações e nas redes, separar tendência de moda e escolher a ideia com uma planilha de pontuação.',
     card: 'Ideias a partir do que as pessoas procuram, compram e reclamam.',
@@ -421,6 +427,7 @@ Recepcionista de clínica, usando no celular, com pressa.
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Leia os rastros\nantes de construir.',
+    bumpPitch: 'Achou a ideia? O Método valida com 10 conversas e leva ao primeiro cliente.',
     firstSteps: [
       { title: 'Pesquise 10 termos no Google Trends', body: 'Brasil, últimos 5 anos. Anote as consultas em ascensão: é ali que o assunto novo aparece.' },
       { title: 'Anote 30 reclamações com a frase exata', body: 'Avaliações de 1 a 3 estrelas do seu nicho. As palavras do cliente vendem na sua página depois.' },
@@ -434,7 +441,7 @@ Recepcionista de clínica, usando no celular, com pressa.
     role: 'Trilha',
     seoTitle: 'Memória com Obsidian + IA: a IA nunca mais esquece o seu projeto | Ebook',
     description:
-      'O sistema de notas no Obsidian para a IA e você saberem onde cada projeto parou: uma pasta por projeto, decisões que não se perdem e o protocolo para o Claude Code. R$ 14,90 no Pix.',
+      'O sistema de notas no Obsidian para a IA e você saberem onde cada projeto parou: uma pasta por projeto, decisões que não se perdem e o protocolo para o Claude Code. R$ 17,99 no Pix.',
     h1: ['A IA esquece entre conversas.', 'O seu projeto não precisa.'],
     lede: 'O sistema de notas que o autor usa com dezenas de projetos ao mesmo tempo: uma pasta por projeto no Obsidian, decisões que não se perdem e um protocolo para a IA ler no começo e escrever no fim.',
     card: 'O sistema para a IA nunca esquecer o que já foi decidido.',
@@ -501,6 +508,7 @@ Recepcionista de clínica, usando no celular, com pressa.
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Pare de explicar\no projeto de novo.',
+    bumpPitch: 'Com os prompts de fim de sessão e de revisão semanal, prontos para colar.',
     firstSteps: [
       { title: 'Instale o Obsidian e crie o vault', body: 'Com a pasta projetos e o backup no Drive, no OneDrive ou no GitHub.' },
       { title: 'Monte a pasta do primeiro projeto', body: 'Os 7 arquivos e a pasta sessoes. O prompt do capítulo 3 preenche sem inventar.' },
@@ -514,7 +522,7 @@ Recepcionista de clínica, usando no celular, com pressa.
     role: 'Bônus',
     seoTitle: 'Biblioteca de Prompts: 42 prompts para criar e lançar seu projeto com IA | Ebook',
     description:
-      'Todos os prompts da série Do Zero ao Lançamento, organizados por etapa do projeto, mais 6 prompts do dia a dia do autor. Funcionam no Claude e no ChatGPT grátis. R$ 9,90 no Pix.',
+      'Todos os prompts da série Do Zero ao Lançamento, organizados por etapa do projeto, mais 6 prompts do dia a dia do autor. Funcionam no Claude e no ChatGPT grátis. R$ 12,99 no Pix.',
     h1: ['42 prompts prontos', 'para cada etapa do projeto.'],
     lede: 'Todos os prompts da série, organizados pela etapa em que você está, e mais 6 do dia a dia de trabalho do autor. Copie, troque o que está entre colchetes e cole na IA que você usa.',
     card: 'Os 42 prompts da série num só lugar, prontos para copiar.',
@@ -572,6 +580,7 @@ Recepcionista de clínica, usando no celular, com pressa.
       ['E se eu não gostar?', REFUND],
     ],
     closing: 'Copie, ajuste\ne cole.',
+    bumpPitch: 'O caminho completo por trás dos prompts, com plano de 30 dias.',
     firstSteps: [
       { title: 'Leia as três regras da introdução', body: 'Contexto, formato e o que você não quer. Elas melhoram qualquer prompt, inclusive os seus.' },
       { title: 'Vá direto à parte da sua etapa', body: 'Ideia, construção, publicação, tendências ou memória. Cada parte segue a ordem dos capítulos.' },
@@ -586,7 +595,7 @@ export const DZ_PATHS = Object.keys(DZ_PAGES) as DzPath[];
 export const DZ_SERIES = {
   seoTitle: 'Do Zero ao Lançamento: crie e lance seu projeto com IA, sem programar | 7 ebooks',
   description:
-    'Série com 7 ebooks em PDF: o método da ideia ao primeiro cliente, as trilhas Lovable e Claude, onde publicar de graça, tendências, memória do projeto e 42 prompts prontos. R$ 47,90 no Pix.',
+    'Série com 7 ebooks em PDF: o método da ideia ao primeiro cliente, as trilhas Lovable e Claude, onde publicar de graça, tendências, memória do projeto e 42 prompts prontos. R$ 74,99 no Pix.',
   h1: ['Tire a ideia do papel com IA,', 'do zero ao primeiro cliente.'] as [string, string],
   lede: 'A IA já escreve o código. O que trava é o resto: saber o que construir, validar, não se perder, publicar e cobrar. São 7 livros com o método, as ferramentas grátis e 42 prompts prontos.',
   pain: {

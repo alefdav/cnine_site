@@ -3,7 +3,10 @@ import { EBOOKS, ebookBySlug, PIX_EXPIRES_IN_SECONDS } from '@/lib/ebooks';
 
 /*
   Cria o Pix de um guia (body.product = slug em lib/ebooks.ts; sem ele, o
-  Paraguai, primeiro guia). O preço sai daqui, nunca do navegador. Sem
+  Paraguai, primeiro guia). O preço sai daqui, nunca do navegador. Order
+  bump: body.bump soma o livro complementar do guia (a preço cheio) e
+  body.upgrade troca o guia pela série; os dois só valem para o que o
+  registro oferece àquele guia. Sem
   objeto `customer` (a API exige nome, e-mail, CPF e celular juntos): o e-mail
   opcional vai no metadata, só para o suporte achar a compra.
 */
@@ -55,19 +58,37 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Confira o e-mail ou deixe o campo em branco.' }, { status: 400 });
   }
 
-  const ebook = body.product === undefined ? EBOOKS.paraguai : ebookBySlug(body.product);
-  if (!ebook) return Response.json({ error: 'Guia não encontrado.' }, { status: 400 });
+  const chosen = body.product === undefined ? EBOOKS.paraguai : ebookBySlug(body.product);
+  if (!chosen) return Response.json({ error: 'Guia não encontrado.' }, { status: 400 });
+
+  // Upgrade: o Pix passa a ser da série (que não tem bump). Senão, o bump opcional do guia.
+  const ebook = body.upgrade === true && chosen.upgrade ? EBOOKS[chosen.upgrade] : chosen;
+  const bump = ebook === chosen && body.bump === true && chosen.bump ? EBOOKS[chosen.bump] : undefined;
+  const amount = ebook.priceCents + (bump?.priceCents ?? 0);
 
   try {
     const pix = await createPix({
-      amount: ebook.priceCents,
-      description: ebook.shortName,
+      amount,
+      description: bump ? `${ebook.shortName} + ${bump.shortName}` : ebook.shortName,
       expiresIn: PIX_EXPIRES_IN_SECONDS,
-      metadata: { product: ebook.externalId, ...(email && { email }), ...metaSignals(request) },
+      metadata: {
+        product: ebook.externalId,
+        ...(bump && { bump: bump.externalId }),
+        ...(ebook !== chosen && { from: chosen.externalId }),
+        ...(email && { email }),
+        ...metaSignals(request),
+      },
       utm: readUtm(body.utm),
     });
     return Response.json(
-      { id: pix.id, brCode: pix.brCode, brCodeBase64: pix.brCodeBase64, expiresAt: pix.expiresAt },
+      {
+        id: pix.id,
+        brCode: pix.brCode,
+        brCodeBase64: pix.brCodeBase64,
+        expiresAt: pix.expiresAt,
+        amount,
+        thankYouPath: ebook.thankYouPath,
+      },
       { headers: { 'Cache-Control': 'no-store' } },
     );
   } catch (err) {

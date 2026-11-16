@@ -111,7 +111,7 @@ export function BookPageView({ b }: { b: DzBook }) {
       <Closing h2={b.closing} meta={meta} label={label} seed={seed + 3} />
       <EbookFooter />
       <StickyBuy ebook={P} label="Quero o livro" />
-      <PixSheet ebook={b.slug} />
+      <PixSheet ebook={b.slug} bumpPitch={b.bumpPitch} />
 
       <FaqJsonLd
         faq={b.faq}

@@ -2,7 +2,7 @@ import { createDecipheriv } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { AbacatePayError, getPix } from '@/lib/abacatepay';
-import { ebookByExternalId, PIX_ID_PATTERN, type Ebook } from '@/lib/ebooks';
+import { PIX_ID_PATTERN, resolvePurchase, type Ebook, type Purchase } from '@/lib/ebooks';
 
 /*
   O repo é público, então o PDF pago fica cifrado em private/ (AES-256-GCM,
@@ -25,23 +25,27 @@ export async function readEbook(ebook: Ebook): Promise<Buffer> {
 export type PurchaseCheck = 'paid' | 'pending' | 'invalid' | 'error';
 
 /*
-  O id do Pix é a chave de acesso ao PDF: só libera Pix pago, no valor do guia
-  e criado para este produto (metadata.product), ou para um pacote que inclui
-  este guia, no valor do pacote. Outro Pix da mesma conta, mesmo pago, não
-  abre o arquivo.
+  O id do Pix é a chave de acesso ao PDF: só libera Pix pago, no valor exato
+  do que foi comprado (resolvePurchase em lib/ebooks.ts), e só os arquivos
+  dessa compra: o próprio guia, os guias do pacote e o livro do order bump.
+  Outro Pix da mesma conta, mesmo pago, não abre o arquivo.
 */
-export async function checkPurchase(ebook: Ebook, pixId: string | undefined | null): Promise<PurchaseCheck> {
-  if (!pixId || !PIX_ID_PATTERN.test(pixId)) return 'invalid';
+export async function inspectPurchase(
+  ebook: Ebook,
+  pixId: string | undefined | null,
+): Promise<{ status: PurchaseCheck; purchase?: Purchase }> {
+  if (!pixId || !PIX_ID_PATTERN.test(pixId)) return { status: 'invalid' };
   try {
     const pix = await getPix(pixId);
-    const bought = ebookByExternalId(pix.metadata?.product);
-    const ours =
-      bought !== undefined &&
-      pix.amount === bought.priceCents &&
-      (bought.slug === ebook.slug || (bought.parts?.includes(ebook.slug) ?? false));
-    if (!ours) return 'invalid';
-    return pix.status === 'PAID' ? 'paid' : 'pending';
+    const purchase = resolvePurchase(pix.metadata, pix.amount);
+    const covers = purchase && (purchase.main.slug === ebook.slug || purchase.files.includes(ebook.slug));
+    if (!covers) return { status: 'invalid' };
+    return { status: pix.status === 'PAID' ? 'paid' : 'pending', purchase };
   } catch (err) {
-    return err instanceof AbacatePayError && err.status === 404 ? 'invalid' : 'error';
+    return { status: err instanceof AbacatePayError && err.status === 404 ? 'invalid' : 'error' };
   }
+}
+
+export async function checkPurchase(ebook: Ebook, pixId: string | undefined | null): Promise<PurchaseCheck> {
+  return (await inspectPurchase(ebook, pixId)).status;
 }

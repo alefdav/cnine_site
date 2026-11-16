@@ -20,7 +20,13 @@ export interface PendingPix {
   brCode: string;
   brCodeBase64: string;
   expiresAt: string;
+  /* Valor cobrado (com order bump) e o obrigado do que foi comprado (série, no upgrade). */
+  amount?: number;
+  thankYouPath?: string;
 }
+
+/* Order bump: nada, o livro complementar, ou a troca pela série. */
+export type Extra = 'none' | 'bump' | 'upgrade';
 
 export type Step = 'summary' | 'creating' | 'qr' | 'expired';
 
@@ -69,22 +75,23 @@ export function usePixCheckout(slug: EbookSlug) {
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [extra, setExtra] = useState<Extra>('none');
 
   const goToThankYou = useCallback(
-    (id: string) => {
+    (paid: PendingPix) => {
       savePending(slug, null);
-      window.location.assign(`${ebook.thankYouPath}?pix=${encodeURIComponent(id)}`);
+      window.location.assign(`${paid.thankYouPath ?? ebook.thankYouPath}?pix=${encodeURIComponent(paid.id)}`);
     },
     [slug, ebook.thankYouPath],
   );
 
   const checkStatus = useCallback(
-    async (id: string) => {
+    async (pending: PendingPix) => {
       try {
-        const res = await fetch(`/api/pix/${encodeURIComponent(id)}`, { cache: 'no-store' });
+        const res = await fetch(`/api/pix/${encodeURIComponent(pending.id)}`, { cache: 'no-store' });
         if (!res.ok) return;
         const { status } = (await res.json()) as { status: string };
-        if (status === 'PAID') goToThankYou(id);
+        if (status === 'PAID') goToThankYou(pending);
         else if (status === 'EXPIRED' || status === 'CANCELLED') {
           savePending(slug, null);
           setPix(null);
@@ -103,7 +110,7 @@ export function usePixCheckout(slug: EbookSlug) {
       if (pending) {
         setPix(pending);
         setStep('qr');
-        void checkStatus(pending.id);
+        void checkStatus(pending);
       } else if (step !== 'creating') {
         setStep('summary');
       }
@@ -124,14 +131,14 @@ export function usePixCheckout(slug: EbookSlug) {
   // Quem volta do app do banco com um Pix pendente já pago vai direto ao download.
   useEffect(() => {
     const pending = loadPending(slug);
-    if (pending) void checkStatus(pending.id);
+    if (pending) void checkStatus(pending);
   }, [checkStatus, slug]);
 
   // Consulta a cada 4 s com o QR aberto, e na hora em que a aba volta a ficar visível.
   useEffect(() => {
     if (step !== 'qr' || !pix) return;
     const poll = () => {
-      if (document.visibilityState === 'visible') void checkStatus(pix.id);
+      if (document.visibilityState === 'visible') void checkStatus(pix);
     };
     const timer = window.setInterval(poll, POLL_MS);
     const tick = window.setInterval(() => setNow(Date.now()), 1000);
@@ -158,7 +165,13 @@ export function usePixCheckout(slug: EbookSlug) {
       const res = await fetch('/api/pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: slug, email: email.trim() || undefined, utm: utmFromUrl() }),
+        body: JSON.stringify({
+          product: slug,
+          email: email.trim() || undefined,
+          utm: utmFromUrl(),
+          ...(extra === 'bump' && { bump: true }),
+          ...(extra === 'upgrade' && { upgrade: true }),
+        }),
       });
       const body = (await res.json()) as Partial<PendingPix> & { error?: string };
       if (!res.ok || !body.id || !body.brCode || !body.brCodeBase64 || !body.expiresAt) {
@@ -191,5 +204,32 @@ export function usePixCheckout(slug: EbookSlug) {
   const close = () => dialog.current?.close();
   const left = pix ? new Date(pix.expiresAt).getTime() - now : 0;
 
-  return { ebook, dialog, step, pix, email, setEmail, error, copied, left, createPix, copyCode, close };
+  // Total do pedido com a escolha do order bump (o servidor recalcula; isto é só o que a tela mostra).
+  const bumpEbook = ebook.bump ? EBOOKS[ebook.bump] : undefined;
+  const upgradeEbook = ebook.upgrade ? EBOOKS[ebook.upgrade] : undefined;
+  const totalCents =
+    pix?.amount ??
+    (extra === 'upgrade' && upgradeEbook
+      ? upgradeEbook.priceCents
+      : ebook.priceCents + (extra === 'bump' && bumpEbook ? bumpEbook.priceCents : 0));
+
+  return {
+    ebook,
+    dialog,
+    step,
+    pix,
+    email,
+    setEmail,
+    error,
+    copied,
+    left,
+    createPix,
+    copyCode,
+    close,
+    extra,
+    setExtra,
+    bumpEbook,
+    upgradeEbook,
+    totalCents,
+  };
 }

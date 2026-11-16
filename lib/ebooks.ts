@@ -6,7 +6,8 @@ import { EBOOK_EUA, EBOOK_PARAGUAI, pixelProduct, type PixelProduct } from '@/li
   servidor. Um guia novo entra aqui, com o PDF cifrado em private/.
 
   Um pacote (`parts`) não tem arquivo próprio: o Pix do pacote libera o
-  download de cada guia da lista (lib/ebook-file.ts, checkPurchase).
+  download de cada guia da lista. Um Pix com order bump (metadata.bump) libera
+  também o livro do bump. Quem decide o que um Pix comprou é resolvePurchase.
 */
 export type EbookSlug =
   | 'paraguai'
@@ -38,6 +39,12 @@ export interface Ebook {
   encryptedFile?: string;
   /* Pacote: os guias que o Pix dele libera. */
   parts?: EbookSlug[];
+  /*
+    Order bump no checkout: o livro complementar, a preço cheio, ou a troca
+    pela série (upgrade). O pacote não tem bump.
+  */
+  bump?: EbookSlug;
+  upgrade?: EbookSlug;
   cover: { src: string; width: number; height: number };
   salesPath: string;
   thankYouPath: string;
@@ -66,6 +73,7 @@ function dz(
   priceCents: number,
   pages: number,
   chapters: number,
+  bump: EbookSlug,
 ): Ebook {
   const externalId = `ebook-do-zero-${path}-2026`;
   const fullName = `Do Zero ao Lançamento: ${name}`;
@@ -86,6 +94,8 @@ function dz(
     thankYouPath: `${DZ_BASE}/${path}/obrigado`,
     live: false,
     pixel: pixelProduct(externalId, fullName, priceCents),
+    bump,
+    upgrade: 'dz-serie',
   };
 }
 
@@ -131,20 +141,21 @@ export const EBOOKS: Record<EbookSlug, Ebook> = {
     pixel: EBOOK_EUA,
   },
 
-  'dz-metodo': dz('dz-metodo', 'o-metodo', 'O-Metodo', 'O Método', 1990, 31, 7),
-  'dz-lovable': dz('dz-lovable', 'com-lovable', 'Com-Lovable', 'Com Lovable', 1490, 24, 5),
-  'dz-claude': dz('dz-claude', 'com-o-claude', 'Com-o-Claude', 'Com o Claude', 1490, 20, 5),
-  'dz-no-ar': dz('dz-no-ar', 'colocando-no-ar', 'Colocando-no-Ar', 'Colocando no Ar', 1490, 19, 6),
-  'dz-tendencias': dz('dz-tendencias', 'identificando-tendencias', 'Identificando-Tendencias', 'Identificando Tendências', 1490, 19, 6),
-  'dz-obsidian': dz('dz-obsidian', 'memoria-obsidian-ia', 'Memoria-Obsidian-IA', 'Memória com Obsidian + IA', 1490, 23, 7),
-  'dz-prompts': dz('dz-prompts', 'biblioteca-de-prompts', 'Biblioteca-de-Prompts', 'Biblioteca de Prompts', 990, 25, 7),
+  // último argumento: o livro complementar oferecido no order bump
+  'dz-metodo': dz('dz-metodo', 'o-metodo', 'O-Metodo', 'O Método', 2499, 31, 7, 'dz-prompts'),
+  'dz-lovable': dz('dz-lovable', 'com-lovable', 'Com-Lovable', 'Com Lovable', 1799, 24, 5, 'dz-no-ar'),
+  'dz-claude': dz('dz-claude', 'com-o-claude', 'Com-o-Claude', 'Com o Claude', 1799, 20, 5, 'dz-obsidian'),
+  'dz-no-ar': dz('dz-no-ar', 'colocando-no-ar', 'Colocando-no-Ar', 'Colocando no Ar', 1799, 19, 6, 'dz-claude'),
+  'dz-tendencias': dz('dz-tendencias', 'identificando-tendencias', 'Identificando-Tendencias', 'Identificando Tendências', 1799, 19, 6, 'dz-metodo'),
+  'dz-obsidian': dz('dz-obsidian', 'memoria-obsidian-ia', 'Memoria-Obsidian-IA', 'Memória com Obsidian + IA', 1799, 23, 7, 'dz-prompts'),
+  'dz-prompts': dz('dz-prompts', 'biblioteca-de-prompts', 'Biblioteca-de-Prompts', 'Biblioteca de Prompts', 1299, 25, 7, 'dz-metodo'),
   'dz-serie': {
     slug: 'dz-serie',
     externalId: 'ebook-do-zero-serie-completa-2026',
     name: 'Do Zero ao Lançamento: a série completa',
     shortName: 'Do Zero ao Lançamento (7 livros)',
-    priceCents: 4790,
-    priceLabel: 'R$ 47,90',
+    priceCents: 7499,
+    priceLabel: 'R$ 74,99',
     pages: 161,
     chapters: 43,
     checkoutLine: `7 livros em PDF · 161 páginas · ${DZ_EDITION}`,
@@ -154,7 +165,7 @@ export const EBOOKS: Record<EbookSlug, Ebook> = {
     salesPath: DZ_BASE,
     thankYouPath: `${DZ_BASE}/obrigado`,
     live: false,
-    pixel: pixelProduct('ebook-do-zero-serie-completa-2026', 'Do Zero ao Lançamento: a série completa', 4790),
+    pixel: pixelProduct('ebook-do-zero-serie-completa-2026', 'Do Zero ao Lançamento: a série completa', 7499),
   },
 };
 
@@ -174,6 +185,32 @@ export function ebookBySlug(slug: unknown): Ebook | undefined {
 
 export function ebookByExternalId(externalId: unknown): Ebook | undefined {
   return Object.values(EBOOKS).find((e) => e.externalId === externalId);
+}
+
+export interface Purchase {
+  /* O produto do Pix (metadata.product): o livro, ou a série no upgrade. */
+  main: Ebook;
+  /* O livro do order bump, quando o Pix o inclui. */
+  bump?: Ebook;
+  /* Tudo o que o Pix libera para baixar. */
+  files: EbookSlug[];
+  valueCents: number;
+}
+
+/*
+  O que um Pix comprou, a partir do metadata gravado pelo servidor ao criar o
+  Pix e do valor pago. O valor precisa bater exatamente com o produto (mais o
+  bump, se houver), senão não é compra de guia.
+*/
+export function resolvePurchase(metadata: Record<string, unknown> | undefined, amount: number): Purchase | undefined {
+  const main = ebookByExternalId(metadata?.product);
+  if (!main) return undefined;
+  const bumpOffer = main.bump ? EBOOKS[main.bump] : undefined;
+  const bump = bumpOffer && metadata?.bump === bumpOffer.externalId ? bumpOffer : undefined;
+  const valueCents = main.priceCents + (bump?.priceCents ?? 0);
+  if (amount !== valueCents) return undefined;
+  const files = main.parts ?? [main.slug];
+  return { main, bump, files: bump ? [...files, bump.slug] : files, valueCents };
 }
 
 /* Pix expira em 30 min: tempo de abrir o app do banco sem pressa. */

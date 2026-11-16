@@ -1,17 +1,41 @@
 'use client';
 
 import Image from 'next/image';
-import type { EbookSlug } from '@/lib/ebooks';
+import { DZ_SEPARATE_CENTS, formatBRL, type EbookSlug } from '@/lib/ebooks';
 import { formatLeft, usePixCheckout } from '@/components/ebook/pix/use-pix-checkout';
 import { Icon } from '@/components/c9/icon';
 
 /*
   Janela de compra no sistema c9 (mesma lógica de PixCheckout, via
-  usePixCheckout): resumo + e-mail opcional → QR do Pix → obrigado quando cai.
-  No celular abre como folha presa ao rodapé; no desktop, centrada.
+  usePixCheckout): resumo + order bump + e-mail opcional → QR do Pix →
+  obrigado quando cai. No celular abre como folha presa ao rodapé; no
+  desktop, centrada.
+
+  Order bump (só nos livros, nunca na série): marcar o livro complementar
+  soma o preço cheio dele; marcar a série troca o pedido pela série inteira.
+  As duas caixas se excluem. `bumpPitch` diz por que o complementar combina.
 */
-export function PixSheet({ ebook: slug }: { ebook: EbookSlug }) {
-  const { ebook, dialog, step, pix, email, setEmail, error, copied, left, createPix, copyCode, close } = usePixCheckout(slug);
+export function PixSheet({ ebook: slug, bumpPitch }: { ebook: EbookSlug; bumpPitch?: string }) {
+  const {
+    ebook,
+    dialog,
+    step,
+    pix,
+    email,
+    setEmail,
+    error,
+    copied,
+    left,
+    createPix,
+    copyCode,
+    close,
+    extra,
+    setExtra,
+    bumpEbook,
+    upgradeEbook,
+    totalCents,
+  } = usePixCheckout(slug);
+  const total = formatBRL(totalCents);
 
   return (
     <dialog
@@ -41,6 +65,51 @@ export function PixSheet({ ebook: slug }: { ebook: EbookSlug }) {
 
             {step === 'expired' && <p className="exp">O Pix anterior expirou. Gere um novo, leva 2 segundos.</p>}
 
+            {(bumpEbook || upgradeEbook) && (
+              <div className="bumps" role="group" aria-label="Adicione ao pedido">
+                {bumpEbook && (
+                  <label className={extra === 'bump' ? 'opt on' : 'opt'}>
+                    <input
+                      type="checkbox"
+                      checked={extra === 'bump'}
+                      disabled={step === 'creating'}
+                      onChange={(e) => setExtra(e.target.checked ? 'bump' : 'none')}
+                    />
+                    <Image src={bumpEbook.cover.src} alt="" width={bumpEbook.cover.width} height={bumpEbook.cover.height} sizes="44px" />
+                    <span>
+                      <b>Sim, quero também {bumpEbook.shortName}</b>
+                      <small>
+                        + {bumpEbook.priceLabel}
+                        {bumpPitch ? ` · ${bumpPitch}` : ''}
+                      </small>
+                    </span>
+                  </label>
+                )}
+                {upgradeEbook && (
+                  <label className={extra === 'upgrade' ? 'opt up on' : 'opt up'}>
+                    <input
+                      type="checkbox"
+                      checked={extra === 'upgrade'}
+                      disabled={step === 'creating'}
+                      onChange={(e) => setExtra(e.target.checked ? 'upgrade' : 'none')}
+                    />
+                    <span className="ic">
+                      <Icon name="layers" size={20} />
+                    </span>
+                    <span>
+                      <b>Ou leve a série completa</b>
+                      <small>
+                        Os 7 livros, este incluído, por {upgradeEbook.priceLabel} no total. Separados, saem por {formatBRL(DZ_SEPARATE_CENTS)}.
+                      </small>
+                    </span>
+                  </label>
+                )}
+                <p className="tot">
+                  Total <b>{total}</b>
+                </p>
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -68,7 +137,7 @@ export function PixSheet({ ebook: slug }: { ebook: EbookSlug }) {
               )}
 
               <button type="submit" className="b s" disabled={step === 'creating'}>
-                {step === 'creating' ? 'Gerando o Pix…' : `Gerar Pix de ${ebook.priceLabel}`}
+                {step === 'creating' ? 'Gerando o Pix…' : `Gerar Pix de ${total}`}
               </button>
             </form>
 
@@ -88,7 +157,7 @@ export function PixSheet({ ebook: slug }: { ebook: EbookSlug }) {
           <div>
             <ol>
               <li>Copie o código abaixo ou leia o QR no app do seu banco.</li>
-              <li>Confira o valor de {ebook.priceLabel} e pague.</li>
+              <li>Confira o valor de {total} e pague.</li>
               <li>Volte para cá: o download abre sozinho.</li>
             </ol>
 

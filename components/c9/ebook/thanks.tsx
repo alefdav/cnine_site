@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER } from '@/lib/content';
-import { checkPurchase } from '@/lib/ebook-file';
-import { EBOOKS, type EbookSlug } from '@/lib/ebooks';
+import { inspectPurchase } from '@/lib/ebook-file';
+import { EBOOKS, formatBRL, type EbookSlug } from '@/lib/ebooks';
 import { HeroClouds, Grain } from '@/components/c9/clouds';
 import { Arrow, Icon } from '@/components/c9/icon';
 import { Clarity } from '@/components/clarity';
@@ -13,7 +13,8 @@ import { EbookFooter, EbookNav } from '@/components/c9/ebook/chrome';
 /*
   Pós-compra no sistema c9 (série Do Zero ao Lançamento). O servidor confere
   o Pix na AbacatePay antes de mostrar o download; a URL sozinha não libera
-  nada. Pacote: um download por livro, todos com o mesmo código de compra.
+  nada. Pacote ou order bump: um download por livro, todos com o mesmo
+  código de compra.
 */
 
 const wa = (text: string) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
@@ -28,15 +29,16 @@ export async function EbookThanks({
   firstSteps: { title: string; body: string }[];
 }) {
   const P = EBOOKS[slug];
-  const status = await checkPurchase(P, pixId);
-  const files = (P.parts ?? [slug]).map((s) => EBOOKS[s]);
+  const { status, purchase } = await inspectPurchase(P, pixId);
+  const files = (purchase?.files ?? P.parts ?? [slug]).map((s) => EBOOKS[s]);
+  const pages = files.reduce((sum, f) => sum + f.pages, 0);
   const link = (s: EbookSlug) => `/api/ebook/${s}/download?pix=${encodeURIComponent(pixId ?? '')}`;
   const many = files.length > 1;
 
   return (
     <>
       <Clarity tags={{ page: `ebook-${slug}-obrigado`, purchase: status }} />
-      {status === 'paid' && pixId && P.live && <PurchaseOnce pixId={pixId} ebook={slug} />}
+      {status === 'paid' && pixId && P.live && <PurchaseOnce pixId={pixId} ebook={slug} bump={purchase?.bump?.slug} />}
       {status === 'pending' && <RefreshWhilePending />}
 
       <section className="hero eb eb-ty">
@@ -52,10 +54,12 @@ export async function EbookThanks({
               <h1>
                 Obrigado.
                 <br />
-                <span>{many ? 'Seus 7 livros já estão aqui.' : 'Seu livro já está aqui.'}</span>
+                <span>{many ? `Seus ${files.length} livros já estão aqui.` : 'Seu livro já está aqui.'}</span>
               </h1>
               <p className="l">
-                {P.name}. {P.pages} páginas{many ? ' em 7 PDFs' : ''}, com checklist e prompt pronto em cada capítulo.
+                {purchase?.bump ? `${P.shortName} e ${purchase.bump.shortName}` : P.name}. {pages} páginas
+                {many ? ` em ${files.length} PDFs` : ''}, com checklist e prompt pronto em cada capítulo.
+                {purchase && ` Total pago: ${formatBRL(purchase.valueCents)}.`}
               </p>
 
               {many ? (

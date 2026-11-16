@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { AbacatePayError, getPix } from '@/lib/abacatepay';
-import { ebookByExternalId, PIX_ID_PATTERN } from '@/lib/ebooks';
+import { PIX_ID_PATTERN, resolvePurchase } from '@/lib/ebooks';
 import { sendCapiPurchase } from '@/lib/meta-capi';
 
 /*
@@ -109,19 +109,20 @@ export async function POST(request: Request) {
   }
 
   const meta = (pix.metadata ?? {}) as Record<string, unknown>;
-  const ebook = ebookByExternalId(meta.product);
-  if (!ebook || pix.status !== 'PAID' || pix.amount !== ebook.priceCents) {
+  const purchase = resolvePurchase(meta, pix.amount);
+  if (!purchase || pix.status !== 'PAID') {
     console.log(`${tag} ${pixId}: não é compra paga do guia (status ${pix.status}), ignorado`);
     return new Response('not ours', { status: 200 });
   }
 
+  const ebook = purchase.main;
   const paidAt = Date.parse(pix.updatedAt ?? '') || Date.now();
   const result = await sendCapiPurchase({
     eventId: pix.id,
     eventTime: Math.floor(paidAt / 1000),
-    value: ebook.pixel.value,
-    contentIds: ebook.pixel.content_ids,
-    contentName: ebook.pixel.content_name,
+    value: purchase.valueCents / 100,
+    contentIds: purchase.bump ? [...ebook.pixel.content_ids, ...purchase.bump.pixel.content_ids] : ebook.pixel.content_ids,
+    contentName: purchase.bump ? `${ebook.pixel.content_name} + ${purchase.bump.shortName}` : ebook.pixel.content_name,
     sourceUrl: `${SITE_URL}${ebook.thankYouPath}`,
     email: str(meta.email),
     ip: str(meta.ip),

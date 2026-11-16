@@ -65,6 +65,19 @@ export function whenPixelReady(run: () => void): () => void {
   return () => window.clearInterval(timer);
 }
 
+/* Produto de ebook como o pixel e a API de Conversões recebem. */
+export type PixelProduct = {
+  content_ids: readonly string[];
+  content_type: 'product';
+  content_name: string;
+  value: number;
+  currency: 'BRL';
+};
+
+export function pixelProduct(id: string, name: string, priceCents: number): PixelProduct {
+  return { content_ids: [id], content_type: 'product', content_name: name, value: priceCents / 100, currency: 'BRL' };
+}
+
 /* Ebook "Claude no ADM Logístico". */
 export const EBOOK_LOGISTICA = {
   content_ids: ['ebook-logistica'],

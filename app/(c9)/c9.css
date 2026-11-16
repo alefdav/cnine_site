@@ -361,3 +361,297 @@
   .c9 .b, .c9 .sv, .c9 .ncta, .c9 .links a, .c9 .sos a, .c9 .ft li a, .c9 .legal a { transition: none }
   .c9 .b.s:hover, .c9 .b.g:active, .c9 .sv:hover { transform: none }
 }
+
+/*
+  Páginas de venda dos ebooks no sistema c9 (série Do Zero ao Lançamento).
+  Classes eb-*; reaproveitam hero, split/rows, dk/flow/fl, faq e end.
+*/
+.c9 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer }
+.c9 button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 99px }
+.c9 .hero button:focus-visible, .c9 .end button:focus-visible { outline-color: var(--sky-2) }
+.c9 .eb-draft { position: relative; z-index: 50; background: var(--sky); color: var(--cta-ink); text-align: center; font-size: 13px; font-weight: 700; padding: 8px 16px }
+.c9 .eb-ed { white-space: nowrap; font-size: 14px; font-weight: 700; color: var(--on-soft) }
+.c9 a.eb-ed { border: 1px solid var(--on-line); background: var(--on-fill); border-radius: 99px; padding: 8px 16px; transition: border-color .16s ease }
+.c9 a.eb-ed:hover { border-color: var(--on-faint) }
+.c9 .hero.eb h1 { font-size: 60px }
+.c9 .hero.eb .badge { margin-bottom: 24px }
+.c9 .eb-buy { margin-top: 32px }
+.c9 .eb-row { display: flex; align-items: center; gap: 16px }
+.c9 .eb-thumb { display: none; flex: none; width: 84px; height: auto; border-radius: 4px; box-shadow: 0 0 0 1px var(--on-line), 0 14px 30px var(--shade) }
+.c9 .eb-price small { display: block; font-size: 13px; font-weight: 700; color: var(--on-faint) }
+.c9 .eb-price b { display: block; font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -.05em }
+.c9 .eb-price span { display: block; margin-top: 4px; font-size: 14px; color: var(--on-soft) }
+.c9 .eb-buy .btns { margin-top: 20px }
+.c9 .eb-safe { margin-top: 12px; font-size: 14px; color: var(--on-soft) }
+.c9 .eb-safe b { color: var(--on); font-weight: 700 }
+.c9 .eb-cover { justify-self: center; width: min(360px, 100%) }
+.c9 .eb-cover img { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--on-line), 0 30px 80px var(--shade) }
+.c9 .eb-cover figcaption { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center }
+.c9 .eb-cover figcaption span, .c9 .eb-shelf .top span { border: 1px solid var(--on-line); background: var(--on-fill); border-radius: 99px; padding: 4px 12px; font-size: 13px; font-weight: 700; color: var(--on-soft) }
+.c9 .eb-shelf .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-top: 16px }
+.c9 .eb-shelf img { display: block; width: 100%; height: auto; border-radius: 3px; box-shadow: 0 0 0 1px var(--on-line) }
+.c9 .eb-shelf .sum { display: flex; flex-direction: column; justify-content: center; border: 1px dashed var(--on-line); border-radius: 6px; padding: 12px }
+.c9 .eb-shelf .sum b { font-family: var(--mono); font-size: 28px; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums }
+.c9 .eb-shelf .sum span { margin-top: 4px; font-size: 13px; color: var(--on-soft) }
+.c9 .eb-shelf .top span { margin-left: auto; font-weight: 500 }
+
+/* o que tem dentro */
+.c9 .eb-in { padding: 104px 0 120px; background: var(--paper-2); border-top: 1px solid var(--line) }
+.c9 .eb-meta { margin-top: 16px; font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums }
+.c9 .eb-ch { list-style: none; padding: 0; margin-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; border-top: 1.5px solid var(--ink) }
+.c9 .eb-ch li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 20px 0; border-bottom: 1px solid var(--line-2) }
+.c9 .eb-ch .n { font-family: var(--mono); font-weight: 700; font-size: 15px; color: var(--blue); padding-top: 3px; font-variant-numeric: tabular-nums }
+.c9 .eb-ch h3 { font-size: 20px; line-height: 1.2; font-weight: 800; letter-spacing: -.03em }
+.c9 .eb-ch p { margin-top: 4px; font-size: 16px; line-height: 1.5; color: var(--muted) }
+.c9 .eb-extra { margin-top: 20px; font-size: 16px; color: var(--muted) }
+.c9 .eb-pages { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+.c9 .eb-pages figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: var(--card) }
+.c9 .eb-pages figcaption { margin-top: 8px; font-size: 14px; color: var(--faint) }
+.c9 .eb-ph { margin-top: 64px; font-size: 21px; font-weight: 800; letter-spacing: -.03em }
+
+/* faixa escura: variações */
+.c9 .flow.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.c9 .eb-cmp { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+.c9 .eb-cmp .fl h3 { margin-top: 0 }
+.c9 .eb-cmp dl { margin-top: 12px }
+.c9 .eb-cmp dl div { padding: 12px 0; border-top: 1px solid var(--on-line) }
+.c9 .eb-cmp dt { font-size: 13px; font-weight: 700; color: var(--on-faint) }
+.c9 .eb-cmp dd { margin-top: 4px; font-size: 16px; line-height: 1.45 }
+.c9 .eb-cmp .fl.on { background: var(--on); color: var(--ink); border-color: var(--on) }
+.c9 .eb-cmp .fl.on dt { color: var(--faint) }
+.c9 .eb-cmp .fl.on dl div { border-color: var(--line) }
+.c9 .eb-crit { list-style: none; padding: 0; margin-top: 56px; border-top: 1.5px solid var(--on-line) }
+.c9 .eb-crit li { display: grid; grid-template-columns: 240px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--on-line) }
+.c9 .eb-crit h3 { font-size: 30px; line-height: 1; font-weight: 800; letter-spacing: -.05em }
+.c9 .eb-crit p { font-size: 18px; line-height: 1.5; color: var(--on-soft) }
+.c9 .eb-crit i { display: block; width: 104px; height: 14px; background: radial-gradient(circle, var(--sky-2) 3px, transparent 3.4px) 0 0 / 21px 14px }
+.c9 .eb-code { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 40px; align-items: start }
+.c9 .eb-code pre { margin-top: 16px; overflow-x: auto; font-family: var(--mono); font-size: 14px; line-height: 1.7; color: var(--on-soft); white-space: pre }
+.c9 .eb-side { list-style: none; padding: 0; border-top: 1.5px solid var(--on-line) }
+.c9 .eb-side li { position: relative; padding: 24px 0 24px 28px; border-bottom: 1px solid var(--on-line) }
+.c9 .eb-side li::before { content: ''; position: absolute; left: 0; top: 32px; width: 12px; height: 12px; border-radius: 50%; background: var(--sky) }
+.c9 .eb-side h3 { font-size: 21px; line-height: 1.2; font-weight: 800; letter-spacing: -.03em }
+.c9 .eb-side p { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--on-soft) }
+
+/* para quem */
+.c9 .eb-fit { padding: 104px 0 112px }
+.c9 .eb-fg { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; align-items: start }
+.c9 .eb-fc { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px 16px }
+.c9 .eb-fc.no { background: transparent; border-style: dashed; border-color: var(--line-2) }
+.c9 .eb-fc h3 { font-size: 24px; font-weight: 800; letter-spacing: -.035em }
+.c9 .eb-fc ul { list-style: none; padding: 0; margin-top: 12px }
+.c9 .eb-fc li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 0; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.45 }
+.c9 .eb-fc li svg { color: var(--blue) }
+.c9 .eb-fc.no li { color: var(--muted) }
+.c9 .eb-fc.no li svg { color: var(--faint) }
+.c9 .eb-author { margin-top: 20px; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; align-items: start; border-top: 1px solid var(--line-2); padding-top: 24px; max-width: 72ch }
+.c9 .eb-author p { font-size: 16px; line-height: 1.6; color: var(--muted) }
+.c9 .eb-author b { color: var(--ink) }
+
+/* amostra: como o capítulo termina */
+.c9 .eb-sample { padding: 104px 0 120px; background: var(--paper-2); border-top: 1px solid var(--line) }
+.c9 .eb-three { list-style: none; padding: 0; margin-top: 32px; display: grid; gap: 16px }
+.c9 .eb-three li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; align-items: center }
+.c9 .eb-three b { display: block; font-size: 18px; letter-spacing: -.02em }
+.c9 .eb-three .t { display: block; font-size: 15px; line-height: 1.5; color: var(--muted) }
+.c9 .eb-prompt { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px 32px 24px; box-shadow: 0 20px 60px var(--mist) }
+.c9 .eb-prompt .from { display: flex; align-items: center; gap: 8px; padding-bottom: 16px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 700; color: var(--blue) }
+.c9 .eb-prompt blockquote { margin-top: 20px; font-size: 19px; line-height: 1.6; letter-spacing: -.01em }
+.c9 .eb-copy { margin-top: 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: 99px; padding: 12px 20px; background: var(--tint); color: var(--blue); font-size: 15px; font-weight: 700; transition: background .16s ease }
+.c9 .eb-copy:hover { background: var(--sky-4) }
+.c9 .eb-copy small { font-size: 13px; font-weight: 500; color: var(--muted) }
+
+/* série: os livros */
+.c9 .eb-books { margin-top: 48px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px }
+.c9 .eb-bk { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 16px 16px 20px; transition: border-color .16s ease, transform .16s ease }
+.c9 .eb-bk:hover { border-color: var(--sky); transform: translateY(-2px) }
+.c9 .eb-bk:focus-visible { border-radius: 20px }
+.c9 .eb-bk img { display: block; width: 100%; height: auto; border-radius: 8px }
+.c9 .eb-bk .role { margin-top: 16px; align-self: flex-start; border: 1px solid var(--line); border-radius: 99px; padding: 2px 10px; font-size: 12px; font-weight: 700; color: var(--muted) }
+.c9 .eb-bk h3 { margin-top: 8px; font-size: 21px; line-height: 1.15; font-weight: 800; letter-spacing: -.035em }
+.c9 .eb-bk p { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--muted) }
+.c9 .eb-bk .go { margin-top: auto; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--blue) }
+.c9 .eb-bk .go span { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--faint); font-weight: 500 }
+.c9 .eb-bk.all { justify-content: center; background: var(--ink); border-color: var(--ink); color: var(--on); padding: 28px }
+.c9 .eb-bk.all b { font-family: var(--mono); font-size: 56px; line-height: 1; letter-spacing: -.06em; font-variant-numeric: tabular-nums }
+.c9 .eb-bk.all p { color: var(--on-soft); font-size: 16px }
+.c9 .eb-bk.all .go { color: var(--sky-2) }
+
+/* série: ferramentas */
+.c9 .eb-tools-s { padding: 104px 0 112px }
+.c9 .eb-tools { margin-top: 48px; border-top: 1.5px solid var(--ink) }
+.c9 .eb-tools div { display: grid; grid-template-columns: 220px 240px minmax(0, 1fr); gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--line-2); align-items: baseline }
+.c9 .eb-tools b { font-size: 19px; letter-spacing: -.02em }
+.c9 .eb-tools span { font-size: 15px; color: var(--faint) }
+.c9 .eb-tools p { font-size: 17px; line-height: 1.5 }
+.c9 .eb-tools div.paid b, .c9 .eb-tools div.paid p { color: var(--blue) }
+
+/* oferta */
+.c9 .eb-offer { padding: 104px 0 120px }
+.c9 .eb-card { max-width: 680px; margin-inline: auto; background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 40px 44px 36px; box-shadow: 0 30px 80px var(--mist) }
+.c9 .eb-card h2 { font-size: 40px }
+.c9 .eb-card ul { list-style: none; padding: 0; margin-top: 24px }
+.c9 .eb-card li { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.45 }
+.c9 .eb-card li svg { color: var(--blue); margin-top: 1px }
+.c9 .eb-card li small { font-family: var(--mono); font-size: 15px; color: var(--faint); font-variant-numeric: tabular-nums }
+.c9 .eb-tot { margin-top: 8px; padding-top: 16px; border-top: 1.5px solid var(--ink); display: flex; justify-content: space-between; gap: 16px; font-size: 16px; color: var(--muted) }
+.c9 .eb-tot b { font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums }
+.c9 .eb-pay { margin-top: 28px; text-align: center }
+.c9 .eb-pay small { display: block; font-size: 13px; font-weight: 700; color: var(--faint) }
+.c9 .eb-pay strong { display: block; font-size: 64px; line-height: 1.05; font-weight: 800; letter-spacing: -.06em }
+.c9 .eb-pay .save { margin-top: 4px; font-size: 15px; font-weight: 700; color: var(--blue) }
+.c9 .eb-pay .b { margin-top: 20px; width: 100%; justify-content: center }
+.c9 .eb-pay .eb-safe { color: var(--muted) }
+.c9 .eb-pay .eb-safe b { color: var(--ink) }
+.c9 .eb-trust { max-width: 680px; margin: 40px auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px }
+.c9 .eb-trust h3 { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 800; letter-spacing: -.03em }
+.c9 .eb-trust p { margin-top: 8px; font-size: 16px; line-height: 1.6; color: var(--muted) }
+.c9 .eb-trust a { display: inline-block; margin-top: 8px; font-weight: 700; color: var(--blue); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px }
+.c9 .eb-up { max-width: 680px; margin: 40px auto 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center; background: var(--ink); color: var(--on); border-radius: 20px; padding: 24px 28px }
+.c9 .eb-up .mini { display: flex }
+.c9 .eb-up .mini img { width: 40px; height: auto; border-radius: 2px; box-shadow: 0 0 0 1px var(--on-line) }
+.c9 .eb-up .mini img + img { margin-left: -18px }
+.c9 .eb-up b { display: block; font-size: 19px; letter-spacing: -.02em }
+.c9 .eb-up p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--on-soft) }
+.c9 .eb-up a { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 15px; font-weight: 700; color: var(--sky-2) }
+
+/* fechamento e rodapé */
+.c9 .end .eb-buy { margin-top: 36px }
+.c9 .end .eb-meta { color: var(--sky-2) }
+.c9 .eb-foot { padding: 48px 0 48px; background: var(--paper); border-top: 1px solid var(--line) }
+.c9 .eb-foot .w { display: grid; gap: 12px; font-size: 14px; line-height: 1.6; color: var(--faint) }
+.c9 .eb-foot nav { display: flex; gap: 20px; flex-wrap: wrap }
+.c9 .eb-foot a { font-weight: 700; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px }
+.c9 .eb-foot .logo { font-size: 28px; color: var(--ink); text-decoration: none }
+.c9 .eb-foot .logo span { color: var(--blue) }
+
+/* barra fixa (celular) */
+.c9 .eb-sticky { display: none; position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); box-shadow: 0 -10px 30px var(--mist); padding: 8px 16px max(8px, env(safe-area-inset-bottom)); align-items: center; gap: 12px }
+.c9 .eb-sticky p { flex: none; line-height: 1.2 }
+.c9 .eb-sticky p b { display: block; font-size: 19px; font-weight: 800; letter-spacing: -.03em }
+.c9 .eb-sticky p span { display: block; font-size: 12.5px; color: var(--muted) }
+.c9 .eb-sticky .b { flex: 1; justify-content: center; padding: 14px 16px }
+
+/* janela do Pix */
+.c9 .eb-sheet { margin: auto; width: min(440px, 100% - 32px); max-height: none; border: 0; border-radius: 24px; padding: 0; background: var(--card); color: var(--ink); box-shadow: 0 30px 80px var(--shade) }
+.c9 .eb-sheet::backdrop { background: var(--shade); backdrop-filter: blur(2px) }
+.c9 .eb-sheet .in { max-height: 92dvh; overflow-y: auto; padding: 20px 28px 28px }
+.c9 .eb-sheet .hd { display: flex; align-items: center; justify-content: space-between; gap: 16px }
+.c9 .eb-sheet .hd p { font-size: 13px; font-weight: 700; color: var(--faint) }
+.c9 .eb-sheet .x { width: 40px; height: 40px; margin-right: -10px; border-radius: 99px; display: grid; place-items: center; color: var(--muted) }
+.c9 .eb-sheet .x:hover { background: var(--tint) }
+.c9 .eb-sheet .sum { margin-top: 8px; display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 16px; align-items: start }
+.c9 .eb-sheet .sum img { width: 72px; height: auto; border-radius: 4px; border: 1px solid var(--line) }
+.c9 .eb-sheet .sum b { display: block; font-size: 16px; line-height: 1.35 }
+.c9 .eb-sheet .sum span { display: block; margin-top: 4px; font-size: 14px; color: var(--muted) }
+.c9 .eb-sheet .sum strong { display: block; margin-top: 8px; font-size: 30px; line-height: 1; font-weight: 800; letter-spacing: -.05em }
+.c9 .eb-sheet form { margin-top: 24px }
+.c9 .eb-sheet label { font-size: 15px; font-weight: 700 }
+.c9 .eb-sheet label span { font-weight: 500; color: var(--muted) }
+.c9 .eb-sheet input { display: block; width: 100%; margin-top: 8px; height: 48px; border: 1px solid var(--line-2); border-radius: 12px; padding: 0 16px; font: inherit; font-size: 16px; color: var(--ink); background: var(--card) }
+.c9 .eb-sheet input:focus { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue) }
+.c9 .eb-sheet .hint { margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--muted) }
+.c9 .eb-sheet .err { margin-top: 16px; border-radius: 12px; padding: 12px 16px; background: var(--tint); color: var(--ink); font-size: 15px; font-weight: 700 }
+.c9 .eb-sheet .b { width: 100%; justify-content: center; margin-top: 20px }
+.c9 .eb-sheet .b:disabled { opacity: .7; cursor: progress }
+.c9 .eb-sheet .ok { list-style: none; padding: 0; margin-top: 20px; display: grid; gap: 8px; font-size: 14px; color: var(--muted) }
+.c9 .eb-sheet .ok li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px }
+.c9 .eb-sheet .ok svg { color: var(--blue) }
+.c9 .eb-sheet ol { padding-left: 20px; display: grid; gap: 4px; font-size: 15px; line-height: 1.45 }
+.c9 .eb-sheet textarea { display: block; width: 100%; margin-top: 12px; resize: none; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; background: var(--paper-2); font-family: var(--mono); font-size: 12px; line-height: 1.4; color: var(--muted) }
+.c9 .eb-sheet .qr { display: block; width: 216px; height: 216px; margin: 12px auto 0; border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 8px }
+.c9 .eb-sheet .wait { margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; color: var(--muted) }
+.c9 .eb-sheet .wait i { width: 8px; height: 8px; border-radius: 50%; background: var(--sky); animation: eb-blink 1.2s ease-in-out infinite }
+.c9 .eb-sheet .exp { margin-top: 20px; border-radius: 12px; padding: 12px 16px; background: var(--tint); font-size: 15px }
+@keyframes eb-blink { 50% { opacity: .25 } }
+
+/* obrigado */
+.c9 .eb-ty .hg { grid-template-columns: minmax(0, 1fr); padding-bottom: 220px }
+.c9 .eb-ty h1 { max-width: 18ch }
+.c9 .eb-ty .l { max-width: 52ch }
+.c9 .eb-ty .code { margin-top: 16px; font-family: var(--mono); font-size: 13px; color: var(--on-faint) }
+.c9 .eb-dl { list-style: none; padding: 0; margin-top: 32px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 920px }
+.c9 .eb-dl li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: center; border: 1px solid var(--on-line); background: var(--on-fill); border-radius: 16px; padding: 12px 16px }
+.c9 .eb-dl img { width: 48px; height: auto; border-radius: 3px }
+.c9 .eb-dl b { display: block; font-size: 16px; letter-spacing: -.02em }
+.c9 .eb-dl span { display: flex; gap: 16px; margin-top: 4px; font-size: 14px }
+.c9 .eb-dl a { font-weight: 700; color: var(--sky-2); text-decoration: underline; text-underline-offset: 3px }
+.c9 .eb-steps { list-style: none; padding: 0; margin-top: 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
+.c9 .eb-steps li { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 24px 24px 28px }
+.c9 .eb-steps .n { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--blue) }
+.c9 .eb-steps h3 { margin-top: 16px; font-size: 21px; line-height: 1.2; font-weight: 800; letter-spacing: -.03em }
+.c9 .eb-steps p { margin-top: 8px; font-size: 16px; line-height: 1.55; color: var(--muted) }
+
+@media (max-width: 1180px) {
+  .c9 .eb-books { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+}
+@media (max-width: 900px) {
+  .c9 .hero.eb h1 { font-size: 44px }
+  .c9 .eb-art.cover { display: none }
+  .c9 .eb-thumb { display: block }
+  .c9 .eb-ch, .c9 .eb-fg, .c9 .eb-cmp, .c9 .eb-code, .c9 .eb-trust, .c9 .eb-steps, .c9 .eb-dl, .c9 .flow.c3 { grid-template-columns: minmax(0, 1fr) }
+  .c9 .eb-pages { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -16px; padding: 0 16px 8px }
+  .c9 .eb-pages figure { flex: none; width: 72%; scroll-snap-align: start }
+  .c9 .eb-crit li { grid-template-columns: minmax(0, 1fr); gap: 8px }
+  .c9 .eb-crit i { display: none }
+  .c9 .eb-tools div { grid-template-columns: minmax(0, 1fr); gap: 4px }
+  .c9 .eb-books { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+  .c9 .eb-in, .c9 .eb-fit, .c9 .eb-sample, .c9 .eb-tools-s, .c9 .eb-offer { padding: 72px 0 88px }
+  .c9 .eb-card { padding: 28px 20px 24px }
+  .c9 .eb-card h2 { font-size: 30px }
+  .c9 .eb-pay strong { font-size: 52px }
+  .c9 .eb-sticky { display: flex }
+  .c9 .eb-foot { padding-bottom: 120px }
+  .c9 .eb-ty .hg { padding-bottom: 180px }
+}
+@media (max-width: 560px) {
+  .c9 .hero.eb h1 { font-size: 34px }
+  .c9 .eb-price b { font-size: 40px }
+  .c9 .eb-buy .btns .b { width: 100%; justify-content: center }
+  .c9 .eb-buy .btns .b.g { display: none }
+  .c9 .eb-books { grid-template-columns: minmax(0, 1fr) }
+  .c9 .eb-bk { display: grid; grid-template-columns: 96px minmax(0, 1fr); column-gap: 16px; align-items: start }
+  .c9 .eb-bk img { grid-row: span 4 }
+  .c9 .eb-bk .role { margin-top: 0 }
+  .c9 .eb-bk .go { grid-column: 2 }
+  .c9 .eb-bk.all { display: flex }
+  .c9 .eb-up { grid-template-columns: minmax(0, 1fr) }
+  .c9 .eb-sheet { margin: auto 0 0; width: 100%; max-width: none; border-radius: 24px 24px 0 0 }
+  .c9 .eb-sheet .in { padding: 16px 20px max(20px, env(safe-area-inset-bottom)) }
+  .c9 .eb-crit h3 { font-size: 26px }
+  .c9 .eb-shelf .grid { gap: 8px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c9 .eb-bk, .c9 .eb-copy, .c9 a.eb-ed { transition: none }
+  .c9 .eb-bk:hover { transform: none }
+  .c9 .eb-sheet .wait i { animation: none }
+}
+.c9 .eb-three b { color: var(--ink) }
+.c9 .eb-safe a { color: var(--sky-2); font-weight: 700; text-decoration: underline; text-underline-offset: 3px }
+.c9 .eb-author a { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 3px }
+.c9 .hero.eb > canvas { top: auto; bottom: 0 }
+.c9 .eb-tools-s + .eb-fit, .c9 .eb-offer + .faq { border-top: 1px solid var(--line) }
+.c9 .eb-foot { border-top: 0 }
+@media (max-width: 900px) {
+  .c9 .eb-pages { scroll-padding-inline: 16px }
+}
+@media (max-width: 560px) {
+  .c9 .hero.eb .l { font-size: 18px }
+}
+
+/* order bump na janela do Pix */
+.c9 .eb-sheet .bumps { margin-top: 20px; display: grid; gap: 8px }
+.c9 .eb-sheet .opt { display: grid; grid-template-columns: 20px 44px minmax(0, 1fr); gap: 12px; align-items: center; border: 1.5px dashed var(--line-2); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .16s ease, background .16s ease }
+.c9 .eb-sheet .opt:hover { border-color: var(--sky) }
+.c9 .eb-sheet .opt.on { border-style: solid; border-color: var(--blue); background: var(--tint) }
+.c9 .eb-sheet .opt input { width: 20px; height: 20px; margin: 0; accent-color: var(--blue) }
+.c9 .eb-sheet .opt img { width: 44px; height: auto; border-radius: 3px; border: 1px solid var(--line) }
+.c9 .eb-sheet .opt .ic { width: 44px; height: 44px }
+.c9 .eb-sheet .opt b { display: block; font-size: 15px; line-height: 1.3 }
+.c9 .eb-sheet .opt small { display: block; margin-top: 2px; font-size: 13px; line-height: 1.45; color: var(--muted) }
+.c9 .eb-sheet .tot { display: flex; justify-content: space-between; padding: 8px 2px 0; font-size: 15px; color: var(--muted) }
+.c9 .eb-sheet .tot b { font-size: 18px; color: var(--ink); letter-spacing: -.02em }
+.c9 .eb-sheet .opt input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px }
+@media (prefers-reduced-motion: reduce) {
+  .c9 .eb-sheet .opt { transition: none }
+}

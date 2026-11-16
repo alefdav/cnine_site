@@ -39,6 +39,13 @@ while (i < css.length) {
     if (inRuleBody) {
       // declarations inside a rule never contain {; this shouldn't happen
       o += prelude + '{';
+    } else if (p.startsWith('@keyframes')) {
+      // keyframes: os passos (0%, 50%…) não são seletores; copia o bloco inteiro como está
+      let k = j + 1, d = 1;
+      while (d) { if (css[k] === '{') d++; else if (css[k] === '}') d--; k++; }
+      o += css.slice(i, k);
+      i = k;
+      continue;
     } else if (p.startsWith('@')) {
       o += prelude + '{';
       atStack.push('at');
